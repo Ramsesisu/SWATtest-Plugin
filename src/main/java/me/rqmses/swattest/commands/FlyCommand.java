@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class FlyCommand implements CommandExecutor {
 
-    private final ArrayList<Player> list_of_flying_players = new ArrayList<>();
+    private final ArrayList<Player> flyingplayers = new ArrayList<>();
 
     Player player;
 
@@ -25,13 +25,13 @@ public class FlyCommand implements CommandExecutor {
             } else {
                 player = (Player) sender;
             }
-            if (list_of_flying_players.contains(player)) {
-                list_of_flying_players.remove(player);
+            if (flyingplayers.contains(player)) {
+                flyingplayers.remove(player);
                 player.setAllowFlight(false);
                 player.setPlayerListName(player.getPlayerListName().substring(0, player.getPlayerListName().length()-4));
                 player.sendMessage(ChatColor.AQUA + "Flug-Modus deaktiviert!");
-            } else if (!list_of_flying_players.contains(player)) {
-                list_of_flying_players.add(player);
+            } else if (!flyingplayers.contains(player)) {
+                flyingplayers.add(player);
                 player.setAllowFlight(true);
                 player.setPlayerListName(player.getPlayerListName() + ChatColor.translateAlternateColorCodes('&', "&b&l F"));
                 player.sendMessage(ChatColor.AQUA + "Flug-Modus aktiviert!");
