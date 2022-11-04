@@ -412,12 +412,7 @@ public class PlayerInteractListener implements Listener {
                         loc.getWorld().spawnParticle(Particle.FIREWORKS_SPARK,loc.subtract(direction.clone().multiply(0.75)),1,0.05, 0.05, 0.05,0);
                     }
 
-                    int helditemslot = player.getInventory().getHeldItemSlot();
-
-                    player.getInventory().setHeldItemSlot(1);
-                    player.getInventory().setHeldItemSlot(helditemslot);
-
-                    tazerstatus.put(player.getName(), 0);
+                    tazerstatus.put(player.getName(), 1);
 
                     List<Entity> nearbyE = player.getNearbyEntities(5, 5, 5);
                     ArrayList<LivingEntity> livingE = new ArrayList<LivingEntity>();
@@ -676,14 +671,14 @@ public class PlayerInteractListener implements Listener {
                     tazerstatus.put(player.getName(), 10);
                 }
 
+                reloadmsg[0] = ChatColor.translateAlternateColorCodes('&', "&eRecharge... &7» &8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛");
+
                 if (tazerstatus.get(player.getName()) < 10) {
 
                     final int[] temptazerstatus = {tazerstatus.get(player.getName())};
 
-                    reloadmsg[0] = ChatColor.translateAlternateColorCodes('&', "&eRecharge... &7» &8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛");
-
                     for (int i = 0; i < 10; i++) {
-                        if (i == temptazerstatus[0]) {break;}
+                        if (i >= temptazerstatus[0] - 1) {break;}
                         reloadmsg[0] = reloadmsg[0].replaceFirst("8", "a");
                     }
 
