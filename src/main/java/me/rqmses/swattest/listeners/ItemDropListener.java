@@ -76,6 +76,18 @@ public class ItemDropListener implements Listener {
         if (event.getItemDrop().getItemStack().getType() == Material.WOOD_HOE) {
             event.setCancelled(true);
         }
+
+        // Flammi
+
+        if (event.getItemDrop().getItemStack().getType() == Material.BLAZE_POWDER) {
+            event.setCancelled(true);
+        }
+
+        // RPG
+
+        if (event.getItemDrop().getItemStack().getType() == Material.GOLD_AXE) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler
