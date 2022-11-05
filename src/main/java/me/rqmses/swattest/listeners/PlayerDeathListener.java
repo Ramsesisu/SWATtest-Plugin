@@ -89,9 +89,16 @@ public class PlayerDeathListener implements Listener {
 
         deathloadmsg.put(player.getName(), ChatColor.translateAlternateColorCodes('&', "&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛"));
 
+        final int[] i = {0};
+
         BukkitRunnable death = new BukkitRunnable() {
             @Override
             public void run() {
+                i[0]++;
+                if (i[0] == 15) {
+                    i[0] = 0;
+                    cancel();
+                }
                 deathloadmsg.put(player.getName(), deathloadmsg.get(player.getName()).replaceFirst("8", "a"));
                 player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(deathloadmsg.get(player.getName())));
             }
