@@ -59,6 +59,14 @@ public class PlayerDeathListener implements Listener {
             deathmessage = ChatColor.translateAlternateColorCodes('&', "&7" + event.getEntity().getName() + " &f&lwurde von &7" + killer + " &f&lmit&7&l " + weapon + " &f&lerschossen.");
         } else {
             killer = String.valueOf(event.getEntity().getLastDamageCause().getCause());
+            switch (killer) {
+                case "CUSTOM":
+                    killer = "RPG";
+                    break;
+                case "WITHER":
+                    killer = "RPG";
+                    break;
+            }
             deathmessage = ChatColor.translateAlternateColorCodes('&', "&7" + event.getEntity().getName() + " &f&lwurde von &7" + killer + " &f&lgetötet.");
         }
 
