@@ -370,6 +370,18 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
                     case "ucm":
                         loc = new Location(Bukkit.getWorld("world"), 1154, 69, -186);
                         break;
+                    case "altes-gefängnis":
+                        loc = new Location(Bukkit.getWorld("world"), 117, 37, 218);
+                        break;
+                    case "hölle":
+                        loc = new Location(Bukkit.getWorld("world"), 345, 9, -106);
+                        break;
+                    case "himmel":
+                        loc = new Location(Bukkit.getWorld("world"), 647, 230, -621);
+                        break;
+                    case "checkpoint-gefängnis":
+                        loc = new Location(Bukkit.getWorld("world"), -638, 9, 144);
+                        break;
                     default:
                         player.sendMessage(ChatColor.GOLD + args[0] + ChatColor.YELLOW + " ist kein gültiges Ziel!");
                         return true;
@@ -397,7 +409,8 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
                 "Tankstelle-Chinatown", "Windrad-Chinatown", "Fischerhütte", "Westside-Ballas", "Mechaniker", "Waffenladen-Ballas",
                 "Basketball", "CFK", "Kran-Uran", "Neulingshotel", "Flughafen-Unica", "Flughafen-Chinatown", "Flughafen-LasUnicas",
                 "Urantransport", "Deathmatch-Arena", "Gefängnis", "Hochseefischer", "Feuerwerksladen", "Angelschein", "Terroristen",
-                "Sägewerk", "200", "363", "531", "Bäckerei", "Shop", "Windrad-FBI", "UCM", "X3-Oben"};
+                "Sägewerk", "200", "363", "531", "Bäckerei", "Shop", "Windrad-FBI", "UCM", "X3-Oben", "Altes-Gefängnis", "Hölle",
+                "Himmel", "Checkpoint-Gefängnis"};
         if (args.length == 1) {
             for (String target : targets) {
                 if (target.toUpperCase().startsWith(args[0].toUpperCase())) {
