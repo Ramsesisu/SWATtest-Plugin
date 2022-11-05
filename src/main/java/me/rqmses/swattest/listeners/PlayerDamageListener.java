@@ -131,8 +131,6 @@ public class PlayerDamageListener implements Listener {
                     }
                 }
                 if (weapontype == "rpg") {
-                    event.setDamage(1000);
-
                     Location loc = player.getLocation();
                     loc.getWorld().createExplosion(loc, 10, true);
                     loc.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc, 1);
