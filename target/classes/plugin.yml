@@ -1,5 +1,5 @@
 name: SWATtest
-version: '1.0'
+version: '1.1'
 main: me.rqmses.swattest.SWATtest
 commands:
   fly:
