@@ -14,7 +14,7 @@ import java.util.*;
 
 public class UseCommand implements CommandExecutor, TabCompleter {
 
-    public HashMap<String, Long> cooldowns = new HashMap<String, Long>();
+    public static HashMap<String, Long> cooldowns = new HashMap<String, Long>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -44,13 +44,17 @@ public class UseCommand implements CommandExecutor, TabCompleter {
                             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_BURP, 100, 1);
                             player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 20*150, 3));
                             player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20*16, 0));
-                            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20*10, 0));
+                            if (!player.getActivePotionEffects().toString().contains("SLOW")) {
+                                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20 * 10, 0));
+                            }
                             break;
                         case "koks":
                             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_BURP, 100, 1);
                             player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 20*220, 3));
                             player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20*16, 0));
-                            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20*10, 0));
+                            if (!player.getActivePotionEffects().toString().contains("SLOW")) {
+                                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20 * 10, 0));
+                            }
                             break;
                         case "marihuana":
                             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_BURP, 100, 1);
@@ -66,14 +70,18 @@ public class UseCommand implements CommandExecutor, TabCompleter {
                             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_BURP, 100, 1);
                             player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 20*220, 3));
                             player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20*16, 1));
-                            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20*10, 0));
+                            if (!player.getActivePotionEffects().toString().contains("SLOW")) {
+                                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20 * 10, 0));
+                            }
                             player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 20*16, 0));
                             break;
                         case "meth":
                             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_BURP, 100, 1);
                             player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 20*220, 3));
                             player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20*16, 1));
-                            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20*10, 0));
+                            if (!player.getActivePotionEffects().toString().contains("SLOW")) {
+                                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20 * 10, 0));
+                            }
                             player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 20*16, 0));
                             break;
                         default:

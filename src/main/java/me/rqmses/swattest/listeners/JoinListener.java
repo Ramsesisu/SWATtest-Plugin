@@ -1,5 +1,6 @@
 package me.rqmses.swattest.listeners;
 
+import me.rqmses.swattest.commands.EquipCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -30,6 +31,7 @@ public class JoinListener implements Listener {
         event.getPlayer().removePotionEffect(PotionEffectType.SLOW);
         event.getPlayer().removePotionEffect(PotionEffectType.JUMP);
         event.getPlayer().setGlowing(false);
+        EquipCommand.playerinv.put(event.getPlayer().getName(), event.getPlayer().getInventory().getContents());
         changeName(event.getPlayer().getName(), event.getPlayer());
     }
 

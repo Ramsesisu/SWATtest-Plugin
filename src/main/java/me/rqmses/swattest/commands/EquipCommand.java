@@ -18,9 +18,9 @@ import java.util.*;
 
 public class EquipCommand implements CommandExecutor, TabCompleter {
 
-    public static HashMap<String, PlayerInventory> playerinv = new HashMap<String, PlayerInventory>();
+    public static HashMap<String, ItemStack[]> playerinv = new HashMap<String, ItemStack[]>();
 
-    public HashMap<String, Long> cooldowns = new HashMap<String, Long>();
+    public static HashMap<String, Long> cooldowns = new HashMap<String, Long>();
 
     Player player;
 
@@ -110,9 +110,20 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
                 jagdflintemeta.setLore(jagdflintelore);
                 jagdflinte.setItemMeta(jagdflintemeta);
 
+                ItemStack rpg = new ItemStack(Material.GOLD_AXE);
+                ItemMeta rpgmeta = rpg.getItemMeta();
+                rpgmeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&8&lRPG-7"));
+                ArrayList<String> rpglore = new ArrayList<String>();
+                rpglore.add(ChatColor.translateAlternateColorCodes('&', "&61&8/&6100"));
+                rpgmeta.setLore(rpglore);
+                rpg.setItemMeta(rpgmeta);
+
                 ItemStack messer = new ItemStack(Material.FEATHER);
                 ItemMeta messermeta = messer.getItemMeta();
                 messermeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&8Messer"));
+                ArrayList<String> messerlore = new ArrayList<String>();
+                messerlore.add(ChatColor.translateAlternateColorCodes('&', "&6100&8/&6100"));
+                messermeta.setLore(messerlore);
                 messer.setItemMeta(messermeta);
 
                 ItemStack tazer = new ItemStack(Material.WOOD_HOE);
@@ -120,13 +131,23 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
                 tazermeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&eTazer"));
                 tazer.setItemMeta(tazermeta);
 
+                ItemStack flammenwerfer = new ItemStack(Material.BLAZE_POWDER);
+                ItemMeta flammenwerfermeta = flammenwerfer.getItemMeta();
+                flammenwerfermeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&cFlammenwerfer"));
+                ArrayList<String> flammenwerferlore = new ArrayList<String>();
+                flammenwerferlore.add(ChatColor.translateAlternateColorCodes('&', "&6500&8/&6500"));
+                flammenwerfermeta.setLore(flammenwerferlore);
+                flammenwerfer.setItemMeta(flammenwerfermeta);
+
+                playerinv.putIfAbsent(player.getName(), null);
+
                 switch (args[0].toLowerCase()) {
                     case "elytra":
                         player.getInventory().clear();
                         player.getInventory().addItem(elytra);
                         player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&3Elytra&8&l] &r") + player.getName() + fly);
                         player.getInventory();
-                        EquipCommand.playerinv.put(player.getName(),player.getInventory());
+                        EquipCommand.playerinv.put(player.getName(),player.getInventory().getContents());
                         break;
                     case "swat":
                         player.getInventory().clear();
@@ -137,7 +158,7 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
                         player.getInventory().addItem(sniper);
                         player.getInventory().addItem(flashes);
                         player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&1SWAT&8&l] &r") + player.getName() + fly);
-                        EquipCommand.playerinv.put(player.getName(),player.getInventory());
+                        EquipCommand.playerinv.put(player.getName(),player.getInventory().getContents());
                         break;
                     case "ucpd":
                         player.getInventory().clear();
@@ -147,7 +168,7 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
                         player.getInventory().addItem(mp5);
                         player.getInventory().addItem(tazer);
                         player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&9UCPD&8&l] &r") + player.getName() + fly);
-                        EquipCommand.playerinv.put(player.getName(),player.getInventory());
+                        EquipCommand.playerinv.put(player.getName(),player.getInventory().getContents());
                         break;
                     case "ballas":
                         player.getInventory().clear();
@@ -157,19 +178,36 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
                         player.getInventory().addItem(jagdflinte);
                         player.getInventory().addItem(messer);
                         player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&5Ballas&8&l] &r") + player.getName() + fly);
-                        EquipCommand.playerinv.put(player.getName(),player.getInventory());
+                        EquipCommand.playerinv.put(player.getName(),player.getInventory().getContents());
+                        break;
+                    case "terror":
+                        player.getInventory().clear();
+                        kev.setDurability((short) 50);
+                        player.getInventory().addItem(kev);
+                        player.getInventory().addItem(m4);
+                        player.getInventory().addItem(rpg);
+                        player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&eTerror&8&l] &r") + player.getName() + fly);
+                        EquipCommand.playerinv.put(player.getName(),player.getInventory().getContents());
                         break;
                     case "zivilist":
                         player.getInventory().clear();
                         player.getInventory().addItem(mp5);
                         player.getInventory().addItem(messer);
                         player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&7Zivi&8&l] &r") + player.getName() + fly);
-                        EquipCommand.playerinv.put(player.getName(),player.getInventory());
+                        EquipCommand.playerinv.put(player.getName(),player.getInventory().getContents());
+                        break;
+                    case "flammi":
+                        player.getInventory().clear();
+                        kev.setDurability((short) 50);
+                        player.getInventory().addItem(kev);
+                        player.getInventory().addItem(flammenwerfer);
+                        player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&cFlammi&8&l] &r") + player.getName() + fly);
+                        EquipCommand.playerinv.put(player.getName(),player.getInventory().getContents());
                         break;
                     case "none":
                         player.getInventory().clear();
                         player.setPlayerListName(player.getName() + fly);
-                        EquipCommand.playerinv.put(player.getName(),player.getInventory());
+                        EquipCommand.playerinv.put(player.getName(),player.getInventory().getContents());
                         break;
                     default:
                         player.sendMessage(ChatColor.DARK_GRAY + args[0] + ChatColor.GRAY + " ist kein vorgegebenes Equip!");
@@ -186,7 +224,7 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         ArrayList<String> list = new ArrayList<>();
-        String[] equip = new String[] {"Elytra", "SWAT", "UCPD","Ballas", "Zivilist", "None"};
+        String[] equip = new String[] {"Elytra", "SWAT", "UCPD", "Ballas", "Terror", "Zivilist", "Flammi", "None"};
         if (args.length == 1) {
             for (String items : equip) {
                 if (items.toUpperCase().startsWith(args[0].toUpperCase())) {

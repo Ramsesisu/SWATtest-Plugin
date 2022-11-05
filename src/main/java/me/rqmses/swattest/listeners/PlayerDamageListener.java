@@ -1,38 +1,30 @@
 package me.rqmses.swattest.listeners;
 
 import com.google.common.collect.Sets;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleSprintEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class PlayerDamageListener implements Listener {
 
-    public static String weapontype;
-
-    public void setWeapontype(String type) {
-        weapontype = type;
-    }
-
     public static String shooter;
-
     public void setShooter(String name) {
         shooter = name;
     }
+
+    List<Entity> entitylist;
 
     @EventHandler
     public void onBulletHit(EntityDamageByEntityEvent event) {
@@ -43,6 +35,8 @@ public class PlayerDamageListener implements Listener {
 
                 PlayerDeathListener killer = new PlayerDeathListener();
                 killer.setKiller(shooter);
+
+                String weapontype = event.getDamager().getCustomName();
 
                 if (weapontype == "m4") {
                     if (player.getInventory().getChestplate() == null) {
@@ -136,6 +130,47 @@ public class PlayerDamageListener implements Listener {
                         }
                     }
                 }
+                if (weapontype == "rpg") {
+                    event.setDamage(1000);
+
+                    Location loc = player.getLocation();
+                    loc.getWorld().createExplosion(loc, 10, true);
+                    loc.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc, 1);
+
+                    Player nearplayer;
+                    entitylist = event.getEntity().getNearbyEntities(2, 2, 2);
+                    for (Entity entity : entitylist) {
+                        nearplayer = (Player) entity;
+                        nearplayer.damage(100);
+                        nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 20*10,1));
+                        nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20*3,1));
+                    }
+                    entitylist.clear();
+                    entitylist = event.getEntity().getNearbyEntities(6, 6, 6);
+                    for (Entity entity : entitylist) {
+                        nearplayer = (Player) entity;
+                        nearplayer.damage(35);
+                        nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 20*10,1));
+                        nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20*3,1));
+                    }
+                    entitylist.clear();
+                    entitylist = event.getEntity().getNearbyEntities(10, 10, 10);
+                    for (Entity entity : entitylist) {
+                        nearplayer = (Player) entity;
+                        nearplayer.damage(20);
+                        nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 20*5,1));
+                        nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20*3,1));
+                    }
+                    entitylist.clear();
+                    entitylist = event.getEntity().getNearbyEntities(15, 15, 15);
+                    for (Entity entity : entitylist) {
+                        nearplayer = (Player) entity;
+                        nearplayer.damage(8);
+                        nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 20*2,1));
+                        nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20*2,1));
+                    }
+                    entitylist.clear();
+                }
             }
         }
     }
@@ -146,7 +181,8 @@ public class PlayerDamageListener implements Listener {
             Player player = (Player) event.getEntity();
             if (event.getCause() == EntityDamageEvent.DamageCause.FALL) {
                 if (event.getDamage() >= 30) {
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 3));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 3), true);
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40, 1), true);
                     player.setCustomName("brokenleg");
                     player.sendMessage(ChatColor.GRAY + "Du hast dir dein Bein gebrochen!");
                 }
@@ -188,5 +224,10 @@ public class PlayerDamageListener implements Listener {
         } else {
             prevPlayersOnGround.remove(player.getUniqueId());
         }
+    }
+
+    @EventHandler
+    public void onHunger(FoodLevelChangeEvent event) {
+        event.setCancelled(true);
     }
 }

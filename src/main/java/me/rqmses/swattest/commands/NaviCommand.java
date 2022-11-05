@@ -3,31 +3,38 @@ package me.rqmses.swattest.commands;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class WarpCommand implements CommandExecutor, TabCompleter {
+import static me.rqmses.swattest.SWATtest.plugin;
 
-    Player player;
+public class NaviCommand implements CommandExecutor, TabCompleter {
+
+    public static HashMap<String, BukkitTask> navitask = new HashMap<String, BukkitTask>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
-            if (args.length == 2) {
-                if (sender.isOp()) {
-                    player = Bukkit.getPlayer(args[1]);
-                }
-            } else {
-                player = (Player) sender;
-            }
+            Player player = (Player) sender;
             if(args.length == 0 ) {
-                player.sendMessage(ChatColor.YELLOW + "Du musst ein Ziel angeben!");
+                if (navitask.get(player.getName()) == null) {
+                    player.sendMessage(ChatColor.YELLOW + "Du musst ein Ziel angeben!");
+                } else {
+                    navitask.get(player.getName()).cancel();
+                    player.sendMessage(ChatColor.YELLOW + "Du hast dein Navi gelöscht!");
+                    navitask.put(player.getName(), null);
+                }
             } else {
                 Location loc;
                 switch (args[0].toLowerCase()) {
@@ -56,16 +63,16 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
                         loc = new Location(Bukkit.getWorld("world"), 1562, 206, 330);
                         break;
                     case "flug-1":
-                        loc = new Location(Bukkit.getWorld("world"), -392, 194, 761);
+                        loc = new Location(Bukkit.getWorld("world"), 1562, 206, 330);
                         break;
                     case "flug-2":
-                        loc = new Location(Bukkit.getWorld("world"), 897, 128, 21);
+                        loc = new Location(Bukkit.getWorld("world"), 1154, 80, -199);
                         break;
                     case "flug-3":
                         loc = new Location(Bukkit.getWorld("world"), 70, 95, -448);
                         break;
                     case "flug-4":
-                        loc = new Location(Bukkit.getWorld("world"), 35, 135, -197);
+                        loc = new Location(Bukkit.getWorld("world"), -274, 76, -397);
                         break;
                     case "psychiatrie":
                         loc = new Location(Bukkit.getWorld("world"), 1631, 68, -413);
@@ -374,8 +381,28 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
                         player.sendMessage(ChatColor.GOLD + args[0] + ChatColor.YELLOW + " ist kein gültiges Ziel!");
                         return true;
                 }
-                player.teleport(loc);
-                player.sendMessage(ChatColor.YELLOW + "Du wurdest zu " + ChatColor.GOLD + args[0] + ChatColor.YELLOW + " teleportiert!");
+
+                BukkitRunnable navi = new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        Location origin = player.getLocation();
+                        Vector direction = loc.clone().subtract(player.getLocation()).toVector();
+
+                        direction.normalize();
+                        for (int i = 0; i < 20 * 20; i++) {
+                            Location temploc = origin.add(direction);
+                            player.spawnParticle(Particle.REDSTONE, temploc.subtract(direction.clone().multiply(0.75)), 1, 0.05, 0.05, 0.05, 0);
+                        }
+                    }
+                };
+                player.sendMessage(ChatColor.YELLOW + "Dir wird nun ein Navi zu " + ChatColor.GOLD + args[0] + ChatColor.YELLOW + " angezeigt!");
+
+                if (navitask.get(player.getName()) != null) {
+                    navitask.get(player.getName()).cancel();
+                    navitask.put(player.getName(), null);
+                }
+
+                navitask.put(player.getName(), navi.runTaskTimer(plugin, 0, 5L));
             }
         }
         return true;

@@ -19,9 +19,11 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PlayerHitListener implements Listener {
@@ -38,6 +40,21 @@ public class PlayerHitListener implements Listener {
             if (!(event.getDamager().getType() == EntityType.ARROW)) {
                 hitter = (Player) event.getDamager();
                 Player player = (Player) event.getEntity();
+
+                int ammo;
+
+                ItemStack messer = hitter.getInventory().getItemInMainHand();
+                ItemMeta meta = messer.getItemMeta();
+
+                String strlore = String.valueOf(meta.getLore());
+                String[] ammos = strlore.split("/");
+                ammos[0] = ammos[0].substring(3, ammos[0].length() - 2).replace("§", "");
+                ammo = Integer.valueOf(ammos[0]);
+
+                if (ammo == 0) {
+                    event.setCancelled(true);
+                    return true;
+                }
 
                 PlayerDeathListener killer = new PlayerDeathListener();
                 killer.setKiller(hitter.getName());
@@ -56,13 +73,18 @@ public class PlayerHitListener implements Listener {
                         long secondsLeft = ((cooldowns.get(hitter.getName())) + cooldownTime) - (System.currentTimeMillis());
                         if (secondsLeft > 0) {
                             event.setCancelled(true);
-                            hitter.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.GRAY + "Du kannst diese Waffe gerade nicht benutzen..."));
                             return true;
                         }
                     }
                     cooldowns.put(hitter.getName(), System.currentTimeMillis());
 
                     event.setDamage(7);
+
+                    ArrayList<String> lore = new ArrayList<String>();
+                    String templore = ChatColor.translateAlternateColorCodes('&', "&6" + (ammo - 1) + "&8/&6" + 100);
+                    lore.add(templore);
+                    meta.setLore(lore);
+                    messer.setItemMeta(meta);
 
                     cooldownTime = 12000;
                 }

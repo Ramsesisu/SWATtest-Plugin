@@ -73,6 +73,7 @@ public final class SWATtest extends JavaPlugin implements Listener {
         pluginManager.registerEvents(new PlayerChatListener(), this);
         pluginManager.registerEvents(new InventoryOpenListener(), this);
         pluginManager.registerEvents(new BlockBreakListener(), this);
+        pluginManager.registerEvents(new BlockPlaceListener(), this);
     }
 
     private void commandRegistration() {
@@ -85,6 +86,8 @@ public final class SWATtest extends JavaPlugin implements Listener {
         getCommand("team").setExecutor(new TeamCommand());
         getCommand("camera").setExecutor(new CameraCommand());
         getCommand("bombe").setExecutor(new BombeCommand());
+        getCommand("navi").setExecutor(new NaviCommand());
+        getCommand("cooldown").setExecutor(new CoolDownCommand());
     }
 
     public static SWATtest getInstance() {

@@ -29,3 +29,9 @@ commands:
   bombe:
     description: Platziere eine temporäre Bombe.
     usage: /<command>
+  navi:
+    description: Zeige die Richtung deines Ziels an.
+    usage: /<command> <target>
+  cooldown:
+    description: Setzt sämtliche Reload-Zeiten zurück.
+    usage: /<command>
