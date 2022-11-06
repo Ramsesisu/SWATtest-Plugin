@@ -16,7 +16,6 @@ me\rqmses\swattest\SWATtest.class
 me\rqmses\swattest\listeners\PlayerDamageListener.class
 me\rqmses\swattest\listeners\PlayerInteractListener$3.class
 me\rqmses\swattest\listeners\PlayerInteractListener$2.class
-me\rqmses\swattest\SWATtest$1.class
 me\rqmses\swattest\commands\EquipCommand.class
 me\rqmses\swattest\listeners\PlayerDeathListener$1.class
 me\rqmses\swattest\listeners\ProjectileHitListener.class

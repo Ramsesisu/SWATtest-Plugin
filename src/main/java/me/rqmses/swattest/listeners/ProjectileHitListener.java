@@ -34,7 +34,7 @@ public class ProjectileHitListener implements Listener {
             for (Entity entity : entitylist) {
                 nearplayer = (Player) entity;
                 nearplayer.damage(100);
-                nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 20*10,1));
+                nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 20*10,2));
                 nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20*3,1));
             }
             entitylist.clear();
@@ -42,7 +42,7 @@ public class ProjectileHitListener implements Listener {
             for (Entity entity : entitylist) {
                 nearplayer = (Player) entity;
                 nearplayer.damage(35);
-                nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 20*10,1));
+                nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 20*10,2));
                 nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20*3,1));
             }
             entitylist.clear();

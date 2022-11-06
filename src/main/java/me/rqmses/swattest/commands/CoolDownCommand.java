@@ -19,6 +19,7 @@ public class CoolDownCommand implements CommandExecutor {
                     player = Bukkit.getPlayer(args[0]);
                 }
                 PlayerInteractListener.cooldowntimes.put(player.getName(), 0);
+                PlayerInteractListener.cooldowns.put(player.getName(), 0L);
                 PlayerInteractListener.tazerstatus.put(player.getName(), 10);
                 UseCommand.cooldowns.put(player.getName(), 0L);
                 EquipCommand.cooldowns.put(player.getName(), 0L);

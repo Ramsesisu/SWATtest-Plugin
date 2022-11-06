@@ -382,6 +382,9 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
                     case "checkpoint-gefängnis":
                         loc = new Location(Bukkit.getWorld("world"), -638, 9, 144);
                         break;
+                    case "anwaltskanzelei":
+                        loc = new Location(Bukkit.getWorld("world"), -134, 71, -500);
+                        break;
                     default:
                         player.sendMessage(ChatColor.GOLD + args[0] + ChatColor.YELLOW + " ist kein gültiges Ziel!");
                         return true;
@@ -410,7 +413,7 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
                 "Basketball", "CFK", "Kran-Uran", "Neulingshotel", "Flughafen-Unica", "Flughafen-Chinatown", "Flughafen-LasUnicas",
                 "Urantransport", "Deathmatch-Arena", "Gefängnis", "Hochseefischer", "Feuerwerksladen", "Angelschein", "Terroristen",
                 "Sägewerk", "200", "363", "531", "Bäckerei", "Shop", "Windrad-FBI", "UCM", "X3-Oben", "Altes-Gefängnis", "Hölle",
-                "Himmel", "Checkpoint-Gefängnis"};
+                "Himmel", "Checkpoint-Gefängnis", "Anwaltskanzelei"};
         if (args.length == 1) {
             for (String target : targets) {
                 if (target.toUpperCase().startsWith(args[0].toUpperCase())) {

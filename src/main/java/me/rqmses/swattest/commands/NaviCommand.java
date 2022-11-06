@@ -377,6 +377,9 @@ public class NaviCommand implements CommandExecutor, TabCompleter {
                     case "ucm":
                         loc = new Location(Bukkit.getWorld("world"), 1154, 69, -186);
                         break;
+                    case "anwaltskanzelei":
+                        loc = new Location(Bukkit.getWorld("world"), -134, 71, -500);
+                        break;
                     default:
                         player.sendMessage(ChatColor.GOLD + args[0] + ChatColor.YELLOW + " ist kein gültiges Ziel!");
                         return true;
@@ -424,7 +427,7 @@ public class NaviCommand implements CommandExecutor, TabCompleter {
                 "Tankstelle-Chinatown", "Windrad-Chinatown", "Fischerhütte", "Westside-Ballas", "Mechaniker", "Waffenladen-Ballas",
                 "Basketball", "CFK", "Kran-Uran", "Neulingshotel", "Flughafen-Unica", "Flughafen-Chinatown", "Flughafen-LasUnicas",
                 "Urantransport", "Deathmatch-Arena", "Gefängnis", "Hochseefischer", "Feuerwerksladen", "Angelschein", "Terroristen",
-                "Sägewerk", "200", "363", "531", "Bäckerei", "Shop", "Windrad-FBI", "UCM", "X3-Oben"};
+                "Sägewerk", "200", "363", "531", "Bäckerei", "Shop", "Windrad-FBI", "UCM", "X3-Oben", "Anwaltskanzelei"};
         if (args.length == 1) {
             for (String target : targets) {
                 if (target.toUpperCase().startsWith(args[0].toUpperCase())) {

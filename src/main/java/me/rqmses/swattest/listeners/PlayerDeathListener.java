@@ -9,8 +9,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -32,8 +34,9 @@ public class PlayerDeathListener implements Listener {
 
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
-
         Player player = event.getEntity().getPlayer();
+
+        player.spigot().respawn();
 
         player.setCustomName("dead");
 
@@ -66,6 +69,15 @@ public class PlayerDeathListener implements Listener {
                 case "WITHER":
                     killer = "RPG";
                     break;
+                case "PROJECTILE":
+                    killer = "RPG";
+                    break;
+                case "BLOCK_EXPLOSION":
+                    killer = "RPG";
+                    break;
+                case "FIRE_TICK":
+                    killer = "Flammenwerfer";
+                    break;
             }
             deathmessage = ChatColor.translateAlternateColorCodes('&', "&7" + event.getEntity().getName() + " &f&lwurde von &7" + killer + " &f&lgetötet.");
         }
@@ -84,8 +96,6 @@ public class PlayerDeathListener implements Listener {
         nearPlayers2.forEach((Entity playerName2) -> {
             playerName2.sendMessage(deathmessage);
         });
-
-        player.getInventory().setContents(EquipCommand.playerinv.get(player.getName()));
 
         event.setDeathMessage("");
 
@@ -121,13 +131,39 @@ public class PlayerDeathListener implements Listener {
             Player player = event.getEntity().getPlayer();
 
             player.teleport(new Location(Bukkit.getWorld(player.getWorld().getName()), player.getBedSpawnLocation().getBlockX(), player.getBedSpawnLocation().getBlockY() + 1, player.getBedSpawnLocation().getBlockZ()));
-            player.setGameMode(GameMode.SURVIVAL);
 
             player.sendTitle(ChatColor.GREEN + "Du lebst nun wieder!", "", 10, 30, 20);
             player.setCustomName(player.getDisplayName());
 
+            EquipCommand.cooldowns.put(player.getName(), 0L);
+            if (player.getPlayerListName().contains("3Eyltra")) {
+                player.chat("/equip Elytra");
+            }
+            if (player.getPlayerListName().contains("1SWAT")) {
+                player.chat("/equip SWAT");
+            }
+            if (player.getPlayerListName().contains("9UCPD")) {
+                player.chat("/equip Polizei");
+            }
+            if (player.getPlayerListName().contains("5Ballas")) {
+                player.chat("/equip Ballas");
+            }
+            if (player.getPlayerListName().contains("eTerror")) {
+                player.chat("/equip Terrorist");
+            }
+            if (player.getPlayerListName().contains("7Zivi")) {
+                player.chat("/equip Zivilist");
+            }
+            if (player.getPlayerListName().contains("cFlammi")) {
+                player.chat("/equip Flammenwerfer");
+            }
+            EquipCommand.cooldowns.put(player.getName(), 0L);
+
             deathtask.get(player.getName()).cancel();
             PlayerInteractListener.cooldowntimes.put(player.getName(), 0);
+            PlayerInteractListener.cooldowns.put(player.getName(), 0L);
+
+            player.setGameMode(GameMode.SURVIVAL);
         }, 300L);
     }
 

@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.potion.PotionEffectType;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -22,16 +21,15 @@ public class JoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         event.setJoinMessage(ChatColor.GOLD + event.getPlayer().getName() + ChatColor.YELLOW + " ist nun" +  ChatColor.GREEN + " online" + ChatColor.YELLOW + ".");
         event.getPlayer().getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(40);
+        event.getPlayer().setHealth(40);
         event.getPlayer().getInventory().clear();
         event.getPlayer().setGameMode(GameMode.SURVIVAL);
         event.getPlayer().setBedSpawnLocation(new Location(Bukkit.getWorld(event.getPlayer().getWorld().getName()), 103, 70, 157), true);
         event.getPlayer().teleport(event.getPlayer().getBedSpawnLocation());
         event.getPlayer().setPlayerListName(event.getPlayer().getName());
         event.getPlayer().setCustomName("");
-        event.getPlayer().removePotionEffect(PotionEffectType.SLOW);
-        event.getPlayer().removePotionEffect(PotionEffectType.JUMP);
+        event.getPlayer().getActivePotionEffects().clear();
         event.getPlayer().setGlowing(false);
-        EquipCommand.playerinv.put(event.getPlayer().getName(), event.getPlayer().getInventory().getContents());
         changeName(event.getPlayer().getName(), event.getPlayer());
     }
 

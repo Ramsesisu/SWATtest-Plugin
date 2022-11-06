@@ -87,6 +87,8 @@ public class PlayerHitListener implements Listener {
                     messer.setItemMeta(meta);
 
                     cooldownTime = 12000;
+                } else {
+                    event.setDamage(1);
                 }
             }
         }

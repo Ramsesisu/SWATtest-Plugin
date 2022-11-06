@@ -131,8 +131,7 @@ public class PlayerDamageListener implements Listener {
                     }
                 }
                 if (weapontype == "rpg") {
-                    event.setDamage(0);
-                    
+                    event.setDamage(100);
                     Location loc = player.getLocation();
                     loc.getWorld().createExplosion(loc, 10, true);
                     loc.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc, 1);
@@ -142,7 +141,7 @@ public class PlayerDamageListener implements Listener {
                     for (Entity entity : entitylist) {
                         nearplayer = (Player) entity;
                         nearplayer.damage(100);
-                        nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 20*10,1));
+                        nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 20*10,2));
                         nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20*3,1));
                     }
                     entitylist.clear();
@@ -150,7 +149,7 @@ public class PlayerDamageListener implements Listener {
                     for (Entity entity : entitylist) {
                         nearplayer = (Player) entity;
                         nearplayer.damage(35);
-                        nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 20*10,1));
+                        nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 20*10,2));
                         nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20*3,1));
                     }
                     entitylist.clear();

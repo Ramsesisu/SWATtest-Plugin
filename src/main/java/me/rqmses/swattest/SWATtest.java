@@ -6,7 +6,9 @@ import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.world.WorldSaveEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -22,31 +24,6 @@ public final class SWATtest extends JavaPlugin implements Listener {
 
         listenerRegistration();
         commandRegistration();
-
-        Bukkit.getWorld("world").getLivingEntities().forEach((Entity singleEntity) -> {
-            if (singleEntity.getType() == EntityType.CHICKEN) {
-                singleEntity.remove();
-            }
-        });
-
-        World myWorld = Bukkit.getWorld("world");
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-
-                int X = -1000 + (int)(Math.random() * ((2000 - -1000) + 1));
-                int Z = -600 + (int)(Math.random() * ((1000 - -600) + 1));
-
-                Location spawnLocation = new Location(myWorld, X, 70, Z);
-
-                EntityType TYPE_TO_SEARCH = EntityType.CHICKEN;
-                long amount = myWorld.getLivingEntities().stream().map(LivingEntity::getType).filter(TYPE_TO_SEARCH::equals).count();
-
-                if (amount < 100) {
-                    Entity spawnedChicken = myWorld.spawnEntity(spawnLocation, EntityType.CHICKEN);
-                }
-            }
-        }, 20L, 20L);
     }
 
     @Override
