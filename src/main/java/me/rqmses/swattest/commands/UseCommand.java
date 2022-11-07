@@ -84,6 +84,11 @@ public class UseCommand implements CommandExecutor, TabCompleter {
                     nearPlayers.clear();
                     nearPlayers = new ArrayList<>(getEntitiesAroundPoint(player.getLocation(), 30));
                     nearPlayers.remove(player);
+                    List<Entity> nearPlayers2 = new ArrayList<>(nearPlayers);
+                    nearPlayers2.forEach((Entity playerName) -> {
+                        nearPlayers.remove(playerName);
+                        nearPlayers.add(playerName);
+                    });
                     nearPlayers.forEach((Entity playerName) -> playerName.sendMessage(ChatColor.DARK_RED + player.getName() +  ChatColor.RED + " hat " + ChatColor.DARK_RED + args[0] + ChatColor.RED + " genommen."));
                 }
             }

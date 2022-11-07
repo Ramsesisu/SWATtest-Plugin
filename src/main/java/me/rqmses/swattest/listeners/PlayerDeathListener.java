@@ -85,6 +85,11 @@ public class PlayerDeathListener implements Listener {
 
         nearPlayers.clear();
         nearPlayers = new ArrayList<>(getEntitiesAroundPoint(event.getEntity().getLocation(), 30));
+        List<Entity> nearPlayers2 = new ArrayList<>(nearPlayers);
+        nearPlayers2.forEach((Entity playerName) -> {
+            nearPlayers.remove(playerName);
+            nearPlayers.add(playerName);
+        });
         nearPlayers.forEach((Entity playerName) -> playerName.sendMessage(deathmessage));
 
         event.setDeathMessage("");
