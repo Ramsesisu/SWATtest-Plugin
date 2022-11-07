@@ -727,7 +727,7 @@ public class PlayerInteractListener implements Listener {
         ammo = Integer.parseInt(ammos[0]);
         allammo = Integer.parseInt(ammos[1]);
 
-        if (!(ammo == 1)) {
+        if (!(ammo == maxammo)) {
 
             if (ammo + allammo >= maxammo) {
                 allammo = allammo - (maxammo - ammo);

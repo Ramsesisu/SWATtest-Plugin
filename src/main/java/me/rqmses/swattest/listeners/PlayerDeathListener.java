@@ -30,6 +30,8 @@ public class PlayerDeathListener implements Listener {
 
     String deathmessage;
 
+    List<Entity> nearPlayers = new ArrayList<>();;
+
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
         Player player = event.getEntity().getPlayer();
@@ -81,13 +83,9 @@ public class PlayerDeathListener implements Listener {
 
         player.sendTitle(ChatColor.translateAlternateColorCodes('&', "&cDu wurdest getötet!"), ChatColor.translateAlternateColorCodes('&', "&cvon &7" + killer), 10, 30, 20);
 
-        List<Entity> nearPlayers = new ArrayList<>(getEntitiesAroundPoint(event.getEntity().getLocation(), 30));
-        List<Entity> nearPlayers2 = new ArrayList<>();
-        nearPlayers.forEach((Entity playerName) -> {
-            nearPlayers2.remove(playerName);
-            nearPlayers2.add(playerName);
-        });
-        nearPlayers2.forEach((Entity playerName2) -> playerName2.sendMessage(deathmessage));
+        nearPlayers.clear();
+        nearPlayers = new ArrayList<>(getEntitiesAroundPoint(event.getEntity().getLocation(), 30));
+        nearPlayers.forEach((Entity playerName) -> playerName.sendMessage(deathmessage));
 
         event.setDeathMessage("");
 

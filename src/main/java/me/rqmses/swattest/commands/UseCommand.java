@@ -16,6 +16,8 @@ public class UseCommand implements CommandExecutor, TabCompleter {
 
     public static final HashMap<String, Long> cooldowns = new HashMap<>();
 
+    List<Entity> nearPlayers = new ArrayList<>();;
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
@@ -79,14 +81,10 @@ public class UseCommand implements CommandExecutor, TabCompleter {
 
                     player.sendMessage(ChatColor.RED + "Du hast " + ChatColor.DARK_RED + args[0] + ChatColor.RED + " genommen.");
 
-                    List<Entity> nearPlayers = new ArrayList<>(getEntitiesAroundPoint(player.getLocation(), 30));
-                    List<Entity> nearPlayers2 = new ArrayList<>();
-                    nearPlayers.forEach((Entity playerName) -> {
-                        nearPlayers2.remove(playerName);
-                        nearPlayers2.add(playerName);
-                    });
-                    nearPlayers2.remove(player);
-                    nearPlayers2.forEach((Entity playerName2) -> playerName2.sendMessage(ChatColor.DARK_RED + player.getName() +  ChatColor.RED + " hat " + ChatColor.DARK_RED + args[0] + ChatColor.RED + " genommen."));
+                    nearPlayers.clear();
+                    nearPlayers = new ArrayList<>(getEntitiesAroundPoint(player.getLocation(), 30));
+                    nearPlayers.remove(player);
+                    nearPlayers.forEach((Entity playerName) -> playerName.sendMessage(ChatColor.DARK_RED + player.getName() +  ChatColor.RED + " hat " + ChatColor.DARK_RED + args[0] + ChatColor.RED + " genommen."));
                 }
             }
         }
@@ -111,7 +109,6 @@ public class UseCommand implements CommandExecutor, TabCompleter {
         List<Entity> entities = new ArrayList<>();
         World world = location.getWorld();
 
-        // To find chunks we use chunk coordinates (not block coordinates!)
         int smallX = (int) Math.floor((location.getX() - radius) / 16.0D);
         int bigX = (int) Math.floor((location.getX() + radius) / 16.0D);
         int smallZ = (int) Math.floor((location.getZ() - radius) / 16.0D);
@@ -120,16 +117,11 @@ public class UseCommand implements CommandExecutor, TabCompleter {
         for (int x = smallX; x <= bigX; x++) {
             for (int z = smallZ; z <= bigZ; z++) {
                 if (world.isChunkLoaded(x, z)) {
-                    entities.addAll(Arrays.asList(world.getChunkAt(x, z).getEntities())); // Add all entities from this chunk to the list
+                    entities.addAll(Arrays.asList(world.getChunkAt(x, z).getEntities()));
                 }
             }
         }
 
-        // Remove the entities that are within the box above but not actually in the sphere we defined with the radius and location
-        // This code below could probably be replaced in Java 8 with a stream -> filter
-        // Create an iterator so we can loop through the list while removing entries
-        // If the entity is outside of the sphere...
-        // Remove it
         entities.removeIf(entity -> entity.getLocation().distanceSquared(location) > radius * radius);
         return entities;
     }

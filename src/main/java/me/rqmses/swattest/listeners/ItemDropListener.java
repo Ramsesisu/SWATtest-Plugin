@@ -3,9 +3,7 @@ package me.rqmses.swattest.listeners;
 import me.rqmses.swattest.SWATtest;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
@@ -23,14 +21,14 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class ItemDropListener implements Listener {
 
     public static final HashMap<String, Long> cooldowns = new HashMap<>();
     public static final HashMap<String, Integer> cooldowntimes = new HashMap<>();
+
+    List<Entity> nearPlayers = new ArrayList<>();;
 
     @EventHandler
     public void onItemDrop(PlayerDropItemEvent event) {
@@ -127,48 +125,46 @@ public class ItemDropListener implements Listener {
         } return true;
     }
 
+    Player nextplayer;
+
     @EventHandler
     public void onItemSpawn(ItemSpawnEvent event) {
         if (event.getEntity().getItemStack().getType() == Material.SLIME_BALL) {
-            FlashDelay(event);
+            Bukkit.getScheduler().runTaskLater(SWATtest.plugin, () -> {
+                event.getEntity().remove();
+
+                nearPlayers.clear();
+                nearPlayers = new ArrayList<>(getEntitiesAroundPoint(event.getEntity().getLocation(), 5));
+                for (Entity nearPlayer: nearPlayers) {
+                    if (nearPlayer instanceof Player) {
+                        nextplayer = (Player) nearPlayer;
+                        Random rand = new Random();
+
+                        if (PlayerDeathListener.spawnprotection.get(nextplayer.getName()) != null) {
+                            if (!PlayerDeathListener.spawnprotection.get(nextplayer.getName())) {
+                                nextplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, rand.nextInt(140) + 60, 0));
+                                nextplayer.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, rand.nextInt(200) + 200, 0));
+                            }
+                        }
+                    }
+                }
+                nearPlayers.clear();
+                nearPlayers = new ArrayList<>(getEntitiesAroundPoint(event.getEntity().getLocation(), 10));
+                for (Entity nearPlayer: nearPlayers) {
+                    if (nearPlayer instanceof Player) {
+                        nextplayer = (Player) nearPlayer;
+                        Random rand = new Random();
+
+                        if (PlayerDeathListener.spawnprotection.get(nextplayer.getName()) != null) {
+                            if (!PlayerDeathListener.spawnprotection.get(nextplayer.getName())) {
+                                nextplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, rand.nextInt(100), 0));
+                                nextplayer.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, rand.nextInt(200), 0));
+                            }
+                        }
+                    }
+                }
+            }, 60L);
         }
-    }
-
-    public void FlashDelay(ItemSpawnEvent event) {
-        Bukkit.getScheduler().runTaskLater(SWATtest.plugin, () -> {
-
-            List<Entity> entitylist1 = event.getEntity().getNearbyEntities(5, 5, 5);
-            for (Entity entity : entitylist1) {
-                if (entity.getType() == EntityType.PLAYER) {
-
-                    Player player = (Player) entity;
-
-                    Random rand = new Random();
-
-                    if (!PlayerDeathListener.spawnprotection.get(player.getName())) {
-                        player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, rand.nextInt(140) + 60, 0));
-                        player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, rand.nextInt(200) + 200, 0));
-                    }
-                }
-            }
-
-            List<Entity> entitylist2 = event.getEntity().getNearbyEntities(10, 10, 10);
-            for (Entity entity : entitylist2) {
-                if (entity.getType() == EntityType.PLAYER) {
-
-                    Player player = (Player) entity;
-
-                    Random rand = new Random();
-
-                    if (!PlayerDeathListener.spawnprotection.get(player.getName())) {
-                        player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, rand.nextInt(100), 0));
-                        player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, rand.nextInt(200), 0));
-                    }
-                }
-            }
-
-            event.getEntity().remove();
-        }, 60L);
     }
 
     @EventHandler
@@ -176,5 +172,27 @@ public class ItemDropListener implements Listener {
         if (event.getItem().getItemStack().getType() == Material.SLIME_BALL) {
             event.setCancelled(true);
         }
+    }
+
+    public static List<Entity> getEntitiesAroundPoint(Location location, double radius) {
+        List<Entity> entities = new ArrayList<>();
+        entities.clear();
+        World world = location.getWorld();
+
+        int smallX = (int) Math.floor((location.getX() - radius) / 16.0D);
+        int bigX = (int) Math.floor((location.getX() + radius) / 16.0D);
+        int smallZ = (int) Math.floor((location.getZ() - radius) / 16.0D);
+        int bigZ = (int) Math.floor((location.getZ() + radius) / 16.0D);
+
+        for (int x = smallX; x <= bigX; x++) {
+            for (int z = smallZ; z <= bigZ; z++) {
+                if (world.isChunkLoaded(x, z)) {
+                    entities.addAll(Arrays.asList(world.getChunkAt(x, z).getEntities()));
+                }
+            }
+        }
+
+        entities.removeIf(entity -> entity.getLocation().distanceSquared(location) > radius * radius);
+        return entities;
     }
 }
