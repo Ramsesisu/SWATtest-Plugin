@@ -9,10 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -23,12 +19,14 @@ import static me.rqmses.swattest.SWATtest.plugin;
 public class PlayerDeathListener implements Listener {
 
     public static String killer = "Unbekannt";
-    public void setKiller(String name) {
+    public static void setKiller(String name) {
         killer = name;
     }
 
-    public static HashMap<String, String> deathloadmsg = new HashMap<String, String>();
-    public static HashMap<String, BukkitTask> deathtask = new HashMap<String, BukkitTask>();
+    public static final HashMap<String, String> deathloadmsg = new HashMap<>();
+    public static final HashMap<String, BukkitTask> deathtask = new HashMap<>();
+
+    public static final HashMap<String, Boolean> spawnprotection = new HashMap<>();
 
     String deathmessage;
 
@@ -40,13 +38,12 @@ public class PlayerDeathListener implements Listener {
 
         player.setCustomName("dead");
 
-        String[] words = event.getDeathMessage().split("\\W+");
-
         if(event.getDeathMessage().contains("fell")) {
             killer = "Fallschaden";
             deathmessage = ChatColor.translateAlternateColorCodes('&', "&7" + event.getEntity().getName() + " &f&lstarb an &7&lFallschaden&f&l.");
-        } else if (event.getDeathMessage().contains("M4") || event.getDeathMessage().contains("Sniper") || event.getDeathMessage().contains("MP5") || event.getDeathMessage().contains("Jagdflinte")) {
+        } else if (event.getDeathMessage().contains("M4") || event.getDeathMessage().contains("Sniper") || event.getDeathMessage().contains("MP5") || event.getDeathMessage().contains("Jagdflinte") || event.getDeathMessage().contains("Messer")) {
             String weapon = null;
+            String verb = "erschossen";
             if (event.getDeathMessage().contains("M4")) {
                 weapon = "M4";
             }
@@ -59,24 +56,24 @@ public class PlayerDeathListener implements Listener {
             if (event.getDeathMessage().contains("Jagdflinte")) {
                 weapon = "Jagdflinte";
             }
-            deathmessage = ChatColor.translateAlternateColorCodes('&', "&7" + event.getEntity().getName() + " &f&lwurde von &7" + killer + " &f&lmit&7&l " + weapon + " &f&lerschossen.");
+            if (event.getDeathMessage().contains("Messer")) {
+                weapon = "Messer";
+                verb = "erstochen";
+            }
+            deathmessage = ChatColor.translateAlternateColorCodes('&', "&7" + event.getEntity().getName() + " &f&lwurde von &7" + killer + " &f&lmit&7&l " + weapon + " &f&l" + verb + ".");
         } else {
-            killer = String.valueOf(event.getEntity().getLastDamageCause().getCause());
-            switch (killer) {
+            String killcause = String.valueOf(event.getEntity().getLastDamageCause().getCause());
+            switch (killcause) {
                 case "CUSTOM":
-                    killer = "RPG";
-                    break;
-                case "WITHER":
-                    killer = "RPG";
-                    break;
-                case "PROJECTILE":
-                    killer = "RPG";
-                    break;
                 case "BLOCK_EXPLOSION":
+                case "PROJECTILE":
+                case "WITHER":
                     killer = "RPG";
                     break;
                 case "FIRE_TICK":
                     killer = "Flammenwerfer";
+                    break;
+                case "ENTITY_ATTACK":
                     break;
             }
             deathmessage = ChatColor.translateAlternateColorCodes('&', "&7" + event.getEntity().getName() + " &f&lwurde von &7" + killer + " &f&lgetötet.");
@@ -84,18 +81,13 @@ public class PlayerDeathListener implements Listener {
 
         player.sendTitle(ChatColor.translateAlternateColorCodes('&', "&cDu wurdest getötet!"), ChatColor.translateAlternateColorCodes('&', "&cvon &7" + killer), 10, 30, 20);
 
-        List<Entity> nearPlayers = new ArrayList<>();
-        getEntitiesAroundPoint(event.getEntity().getLocation(), 30).forEach((Entity nearPlayer) -> {
-            nearPlayers.add(nearPlayer);
-        });
+        List<Entity> nearPlayers = new ArrayList<>(getEntitiesAroundPoint(event.getEntity().getLocation(), 30));
         List<Entity> nearPlayers2 = new ArrayList<>();
         nearPlayers.forEach((Entity playerName) -> {
             nearPlayers2.remove(playerName);
             nearPlayers2.add(playerName);
         });
-        nearPlayers2.forEach((Entity playerName2) -> {
-            playerName2.sendMessage(deathmessage);
-        });
+        nearPlayers2.forEach((Entity playerName2) -> playerName2.sendMessage(deathmessage));
 
         event.setDeathMessage("");
 
@@ -104,7 +96,57 @@ public class PlayerDeathListener implements Listener {
         player.teleport(loc);
 
         player.setGameMode(GameMode.SPECTATOR);
-        KillDelay(event);
+
+        spawnprotection.put(player.getName(), true);
+
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            player.teleport(new Location(Bukkit.getWorld(player.getWorld().getName()), player.getBedSpawnLocation().getBlockX(), player.getBedSpawnLocation().getBlockY() + 1, player.getBedSpawnLocation().getBlockZ()));
+
+            player.sendTitle(ChatColor.GREEN + "Du lebst nun wieder!", "", 10, 30, 20);
+            player.setCustomName(player.getDisplayName());
+
+            EquipCommand.cooldowns.put(player.getName(), 0L);
+            EquipCommand.playerequip.putIfAbsent(player.getName(), "none");
+
+            switch (EquipCommand.playerequip.get(player.getName())) {
+                case "elytra":
+                    player.chat("/equip Elytra");
+                    break;
+                case "swat":
+                    player.chat("/equip SWAT");
+                    break;
+                case "polizei":
+                    player.chat("/equip Polizei");
+                    break;
+                case "ballas":
+                    player.chat("/equip Ballas");
+                    break;
+                case "terror":
+                    player.chat("/equip Terror");
+                    break;
+                case "zivilist":
+                    player.chat("/equip Zivilist");
+                    break;
+                case "flammenwerfer":
+                    player.chat("/equip Flammenwerfer");
+                    break;
+            }
+            EquipCommand.cooldowns.put(player.getName(), 0L);
+
+            deathtask.get(player.getName()).cancel();
+            PlayerInteractListener.cooldowntimes.put(player.getName(), 0);
+            PlayerInteractListener.cooldowns.put(player.getName(), 0L);
+
+            player.setGameMode(GameMode.SURVIVAL);
+
+        }, 300L);
+
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            if (PlayerDeathListener.spawnprotection.get(player.getName())) {
+                PlayerDeathListener.spawnprotection.put(player.getName(), false);
+                player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
+            }
+        }, 400L);
 
         deathloadmsg.put(player.getName(), ChatColor.translateAlternateColorCodes('&', "&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛"));
 
@@ -126,49 +168,8 @@ public class PlayerDeathListener implements Listener {
         deathtask.put(player.getName(), death.runTaskTimer(plugin, 0, 20L));
     }
 
-    public void KillDelay(PlayerDeathEvent event) {
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            Player player = event.getEntity().getPlayer();
-
-            player.teleport(new Location(Bukkit.getWorld(player.getWorld().getName()), player.getBedSpawnLocation().getBlockX(), player.getBedSpawnLocation().getBlockY() + 1, player.getBedSpawnLocation().getBlockZ()));
-
-            player.sendTitle(ChatColor.GREEN + "Du lebst nun wieder!", "", 10, 30, 20);
-            player.setCustomName(player.getDisplayName());
-
-            EquipCommand.cooldowns.put(player.getName(), 0L);
-            if (player.getPlayerListName().contains("3Eyltra")) {
-                player.chat("/equip Elytra");
-            }
-            if (player.getPlayerListName().contains("1SWAT")) {
-                player.chat("/equip SWAT");
-            }
-            if (player.getPlayerListName().contains("9UCPD")) {
-                player.chat("/equip Polizei");
-            }
-            if (player.getPlayerListName().contains("5Ballas")) {
-                player.chat("/equip Ballas");
-            }
-            if (player.getPlayerListName().contains("eTerror")) {
-                player.chat("/equip Terrorist");
-            }
-            if (player.getPlayerListName().contains("7Zivi")) {
-                player.chat("/equip Zivilist");
-            }
-            if (player.getPlayerListName().contains("cFlammi")) {
-                player.chat("/equip Flammenwerfer");
-            }
-            EquipCommand.cooldowns.put(player.getName(), 0L);
-
-            deathtask.get(player.getName()).cancel();
-            PlayerInteractListener.cooldowntimes.put(player.getName(), 0);
-            PlayerInteractListener.cooldowns.put(player.getName(), 0L);
-
-            player.setGameMode(GameMode.SURVIVAL);
-        }, 300L);
-    }
-
     public static List<Entity> getEntitiesAroundPoint(Location location, double radius) {
-        List<Entity> entities = new ArrayList<Entity>();
+        List<Entity> entities = new ArrayList<>();
         World world = location.getWorld();
 
         int smallX = (int) Math.floor((location.getX() - radius) / 16.0D);
@@ -184,12 +185,7 @@ public class PlayerDeathListener implements Listener {
             }
         }
 
-        Iterator<Entity> entityIterator = entities.iterator();
-        while (entityIterator.hasNext()) {
-            if (entityIterator.next().getLocation().distanceSquared(location) > radius * radius) {
-                entityIterator.remove();
-            }
-        }
+        entities.removeIf(entity -> entity.getLocation().distanceSquared(location) > radius * radius);
         return entities;
     }
 }

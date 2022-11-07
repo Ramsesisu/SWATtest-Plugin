@@ -14,7 +14,7 @@ import java.util.*;
 
 public class UseCommand implements CommandExecutor, TabCompleter {
 
-    public static HashMap<String, Long> cooldowns = new HashMap<String, Long>();
+    public static final HashMap<String, Long> cooldowns = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -57,24 +57,12 @@ public class UseCommand implements CommandExecutor, TabCompleter {
                             }
                             break;
                         case "marihuana":
-                            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_BURP, 100, 1);
-                            player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 20*250, 4));
-                            player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20*20, 1));
-                            break;
                         case "gras":
                             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_BURP, 100, 1);
                             player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 20*250, 4));
                             player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20*20, 1));
                             break;
                         case "methamphetamin":
-                            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_BURP, 100, 1);
-                            player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 20*220, 3));
-                            player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20*16, 1));
-                            if (!player.getActivePotionEffects().toString().contains("SLOW")) {
-                                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20 * 10, 0));
-                            }
-                            player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 20*16, 0));
-                            break;
                         case "meth":
                             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_BURP, 100, 1);
                             player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 20*220, 3));
@@ -91,19 +79,14 @@ public class UseCommand implements CommandExecutor, TabCompleter {
 
                     player.sendMessage(ChatColor.RED + "Du hast " + ChatColor.DARK_RED + args[0] + ChatColor.RED + " genommen.");
 
-                    List<Entity> nearPlayers = new ArrayList<>();
-                    getEntitiesAroundPoint(player.getLocation(), 30).forEach((Entity nearPlayer) -> {
-                        nearPlayers.add(nearPlayer);
-                    });
+                    List<Entity> nearPlayers = new ArrayList<>(getEntitiesAroundPoint(player.getLocation(), 30));
                     List<Entity> nearPlayers2 = new ArrayList<>();
                     nearPlayers.forEach((Entity playerName) -> {
                         nearPlayers2.remove(playerName);
                         nearPlayers2.add(playerName);
                     });
                     nearPlayers2.remove(player);
-                    nearPlayers2.forEach((Entity playerName2) -> {
-                        playerName2.sendMessage(ChatColor.DARK_RED + player.getName() +  ChatColor.RED + " hat " + ChatColor.DARK_RED + args[0] + ChatColor.RED + " genommen.");
-                    });
+                    nearPlayers2.forEach((Entity playerName2) -> playerName2.sendMessage(ChatColor.DARK_RED + player.getName() +  ChatColor.RED + " hat " + ChatColor.DARK_RED + args[0] + ChatColor.RED + " genommen."));
                 }
             }
         }
@@ -125,7 +108,7 @@ public class UseCommand implements CommandExecutor, TabCompleter {
     }
 
     public static List<Entity> getEntitiesAroundPoint(Location location, double radius) {
-        List<Entity> entities = new ArrayList<Entity>();
+        List<Entity> entities = new ArrayList<>();
         World world = location.getWorld();
 
         // To find chunks we use chunk coordinates (not block coordinates!)
@@ -144,12 +127,10 @@ public class UseCommand implements CommandExecutor, TabCompleter {
 
         // Remove the entities that are within the box above but not actually in the sphere we defined with the radius and location
         // This code below could probably be replaced in Java 8 with a stream -> filter
-        Iterator<Entity> entityIterator = entities.iterator(); // Create an iterator so we can loop through the list while removing entries
-        while (entityIterator.hasNext()) {
-            if (entityIterator.next().getLocation().distanceSquared(location) > radius * radius) { // If the entity is outside of the sphere...
-                entityIterator.remove(); // Remove it
-            }
-        }
+        // Create an iterator so we can loop through the list while removing entries
+        // If the entity is outside of the sphere...
+        // Remove it
+        entities.removeIf(entity -> entity.getLocation().distanceSquared(location) > radius * radius);
         return entities;
     }
 }

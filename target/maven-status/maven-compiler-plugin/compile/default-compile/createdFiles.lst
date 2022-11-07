@@ -1,6 +1,7 @@
 me\rqmses\swattest\commands\WarpCommand.class
 me\rqmses\swattest\listeners\PlayerInteractListener.class
 me\rqmses\swattest\commands\NaviCommand$1.class
+me\rqmses\swattest\commands\EquipCommand$1.class
 me\rqmses\swattest\commands\NaviCommand.class
 me\rqmses\swattest\listeners\JoinListener.class
 me\rqmses\swattest\listeners\ItemDropListener.class
@@ -14,8 +15,6 @@ me\rqmses\swattest\commands\FlyCommand.class
 me\rqmses\swattest\commands\BombeCommand.class
 me\rqmses\swattest\SWATtest.class
 me\rqmses\swattest\listeners\PlayerDamageListener.class
-me\rqmses\swattest\listeners\PlayerInteractListener$3.class
-me\rqmses\swattest\listeners\PlayerInteractListener$2.class
 me\rqmses\swattest\commands\EquipCommand.class
 me\rqmses\swattest\listeners\PlayerDeathListener$1.class
 me\rqmses\swattest\listeners\ProjectileHitListener.class
@@ -25,5 +24,7 @@ me\rqmses\swattest\commands\CoolDownCommand.class
 me\rqmses\swattest\commands\TeamCommand.class
 me\rqmses\swattest\commands\HealCommand.class
 me\rqmses\swattest\listeners\PlayerDeathListener.class
+me\rqmses\swattest\listeners\PlayerSwitchItemListener.class
+me\rqmses\swattest\variables\Items.class
 me\rqmses\swattest\commands\SpawnCommand.class
 me\rqmses\swattest\listeners\PlayerHitListener.class

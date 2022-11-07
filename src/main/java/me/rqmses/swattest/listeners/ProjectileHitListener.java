@@ -3,7 +3,6 @@ package me.rqmses.swattest.listeners;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,7 +11,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
-import java.util.Random;
+import java.util.Objects;
 
 public class ProjectileHitListener implements Listener {
 
@@ -24,7 +23,7 @@ public class ProjectileHitListener implements Listener {
 
         String bullettype = event.getEntity().getCustomName();
 
-        if (bullettype == "rpg") {
+        if (Objects.equals(bullettype, "rpg")) {
             Location loc = event.getHitBlock().getLocation();
             loc.getWorld().createExplosion(loc, 10, true);
             loc.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc, 1);

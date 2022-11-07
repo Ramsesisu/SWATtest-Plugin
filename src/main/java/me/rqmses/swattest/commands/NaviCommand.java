@@ -21,7 +21,7 @@ import static me.rqmses.swattest.SWATtest.plugin;
 
 public class NaviCommand implements CommandExecutor, TabCompleter {
 
-    public static HashMap<String, BukkitTask> navitask = new HashMap<String, BukkitTask>();
+    public static final HashMap<String, BukkitTask> navitask = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -329,7 +329,7 @@ public class NaviCommand implements CommandExecutor, TabCompleter {
                     case "flughafen-chinatown":
                         loc = new Location(Bukkit.getWorld("world"), 1256, 69, 45);
                         break;
-                    case "flughafen-LasUnicas":
+                    case "flughafen-lasunicas":
                         loc = new Location(Bukkit.getWorld("world"), 1679, 69, 475);
                         break;
                     case "urantransport":

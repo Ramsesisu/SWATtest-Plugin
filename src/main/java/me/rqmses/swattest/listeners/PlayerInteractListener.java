@@ -1,11 +1,11 @@
 package me.rqmses.swattest.listeners;
 
+import me.rqmses.swattest.SWATtest;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -23,24 +23,24 @@ import org.bukkit.util.Vector;
 
 import java.util.*;
 
-import static me.rqmses.swattest.SWATtest.plugin;
-
 public class PlayerInteractListener implements Listener {
 
-    public static HashMap<String, Long> cooldowns = new HashMap<String, Long>();
-    public static HashMap<String, Integer> cooldowntimes = new HashMap<String, Integer>();
+    public static final HashMap<String, Long> cooldowns = new HashMap<>();
+    public static final HashMap<String, Integer> cooldowntimes = new HashMap<>();
 
-    public static HashMap<String, Integer> tazerstatus = new HashMap<String, Integer>();
-    public static HashMap<String, String[]> tazerreloadmsg = new HashMap<String, String[]>();
-    public static HashMap<String, BukkitTask> tazertask = new HashMap<String, BukkitTask>();
+    public static final HashMap<String, Boolean> rpgcooldown = new HashMap<>();
 
-    public static HashMap<String, Long> flammilast = new HashMap<String, Long>();
-    public static HashMap<String, BukkitTask> flammireleasetask = new HashMap<String, BukkitTask>();
-    public static HashMap<String, BukkitTask> flammifinaltask = new HashMap<String, BukkitTask>();
-    public static HashMap<String, Boolean> flammiloading = new HashMap<String, Boolean>();
-    public static HashMap<String, Boolean> flammiloaded = new HashMap<String, Boolean>();
-    public static HashMap<String, Long> flammiloadingcounter = new HashMap<String, Long>();
-    public static HashMap<String, String> flammireloadmsg = new HashMap<String, String>();
+    public static final HashMap<String, Integer> tazerstatus = new HashMap<>();
+    public static final HashMap<String, String[]> tazerreloadmsg = new HashMap<>();
+    public static final HashMap<String, BukkitTask> tazertask = new HashMap<>();
+
+    public static final HashMap<String, Long> flammilast = new HashMap<>();
+    public static final HashMap<String, BukkitTask> flammireleasetask = new HashMap<>();
+    public static final HashMap<String, BukkitTask> flammifinaltask = new HashMap<>();
+    public static final HashMap<String, Boolean> flammiloading = new HashMap<>();
+    public static final HashMap<String, Boolean> flammiloaded = new HashMap<>();
+    public static final HashMap<String, Long> flammiloadingcounter = new HashMap<>();
+    public static final HashMap<String, String> flammireloadmsg = new HashMap<>();
 
     @EventHandler
     public static boolean onPlayerUse(PlayerInteractEvent event) {
@@ -67,6 +67,11 @@ public class PlayerInteractListener implements Listener {
                         return true;
                     }
                 }
+                if (PlayerDeathListener.spawnprotection.get(player.getName())) {
+                    PlayerDeathListener.spawnprotection.put(player.getName(), false);
+                    player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
+                }
+
                 cooldowns.put(player.getName(), System.currentTimeMillis());
                 event.setCancelled(true);
                 int ammo;
@@ -79,14 +84,14 @@ public class PlayerInteractListener implements Listener {
                 String[] ammos = strlore.split("/");
                 ammos[0] = ammos[0].substring(3, ammos[0].length() - 2).replace("§", "");
                 ammos[1] = ammos[1].substring(2, ammos[1].length() - 1).replace("§", "");
-                ammo = Integer.valueOf(ammos[0]);
-                allammo = Integer.valueOf(ammos[1]);
+                ammo = Integer.parseInt(ammos[0]);
+                allammo = Integer.parseInt(ammos[1]);
 
                 if (ammo > 0) {
                     PlayerDamageListener shooter = new PlayerDamageListener();
                     shooter.setShooter(player.getName());
 
-                    ArrayList<String> lore = new ArrayList<String>();
+                    ArrayList<String> lore = new ArrayList<>();
                     String templore = ChatColor.translateAlternateColorCodes('&', "&6" + (ammo - 1) + "&8/&6" + allammo);
                     lore.add(templore);
                     meta.setLore(lore);
@@ -102,41 +107,20 @@ public class PlayerInteractListener implements Listener {
 
                     Bukkit.getServer().getWorld(player.getWorld().getName()).getPlayers().forEach((Player nearPlayer) -> {
                         if (nearPlayer.getLocation().distance(player.getLocation()) <= 50) {
-                            nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 100, 0.54F);
+                            nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 100, 0.55F);
                             nearPlayer.playSound(player.getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 0.1F, 0);
                         } else if (nearPlayer.getLocation().distance(player.getLocation()) <= 100) {
-                            nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 50, 0.54F);
+                            nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 50, 0.55F);
                         } else if (nearPlayer.getLocation().distance(player.getLocation()) <= 150) {
-                            nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 25, 0.54F);
+                            nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 25, 0.55F);
                         } else if (nearPlayer.getLocation().distance(player.getLocation()) <= 200) {
-                            nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 5, 0.54F);
+                            nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 5, 0.55F);
                         }
                     });
 
-                    PlayerDamageListener weapontype = new PlayerDamageListener();
-
                     cooldowntimes.put(player.getName(), 400);
                 } else {
-                    player.playSound(event.getPlayer().getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 100, 0);
-
-                    int maxammo = 21;
-
-                    if (ammo + allammo >= maxammo) {
-                        allammo = allammo - (maxammo - ammo);
-                        ammo = ammo + (maxammo - ammo);
-                    } else {
-                        ammo = ammo + allammo;
-                        allammo = 0;
-                    }
-
-                    ArrayList<String> lore = new ArrayList<>();
-                    String templore = ChatColor.translateAlternateColorCodes('&', "&6" + ammo + "&8/&6" + allammo);
-                    lore.add(templore);
-                    meta.setLore(lore);
-                    gun.setItemMeta(meta);
-                    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
-
-                    cooldowntimes.put(player.getName(), 4000);
+                    reloadGun(player,4000, event.getItem(), 21);
                 }
                 return true;
             }
@@ -151,6 +135,11 @@ public class PlayerInteractListener implements Listener {
                         return true;
                     }
                 }
+                if (PlayerDeathListener.spawnprotection.get(player.getName())) {
+                    PlayerDeathListener.spawnprotection.put(player.getName(), false);
+                    player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
+                }
+
                 cooldowns.put(player.getName(), System.currentTimeMillis());
                 event.setCancelled(true);
                 int ammo;
@@ -163,14 +152,14 @@ public class PlayerInteractListener implements Listener {
                 String[] ammos = strlore.split("/");
                 ammos[0] = ammos[0].substring(3, ammos[1].length() - 1).replace("§", "");
                 ammos[1] = ammos[1].substring(2, ammos[1].length() - 1).replace("§", "");
-                ammo = Integer.valueOf(ammos[0]);
-                allammo = Integer.valueOf(ammos[1]);
+                ammo = Integer.parseInt(ammos[0]);
+                allammo = Integer.parseInt(ammos[1]);
 
                 if (ammo > 0) {
                     PlayerDamageListener shooter = new PlayerDamageListener();
                     shooter.setShooter(player.getName());
 
-                    ArrayList<String> lore = new ArrayList<String>();
+                    ArrayList<String> lore = new ArrayList<>();
                     String templore = ChatColor.translateAlternateColorCodes('&', "&6" + (ammo - 1) + "&8/&6" + allammo);
                     lore.add(templore);
                     meta.setLore(lore);
@@ -200,26 +189,7 @@ public class PlayerInteractListener implements Listener {
 
                     cooldowntimes.put(player.getName(), 5000);
                 } else {
-                    player.playSound(event.getPlayer().getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 100, 0);
-
-                    int maxammo = 5;
-
-                    if (ammo + allammo >= maxammo) {
-                        allammo = allammo - (maxammo - ammo);
-                        ammo = ammo + (maxammo - ammo);
-                    } else {
-                        ammo = ammo + allammo;
-                        allammo = 0;
-                    }
-
-                    ArrayList<String> lore = new ArrayList<>();
-                    String templore = ChatColor.translateAlternateColorCodes('&', "&6" + ammo + "&8/&6" + allammo);
-                    lore.add(templore);
-                    meta.setLore(lore);
-                    gun.setItemMeta(meta);
-                    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
-
-                    cooldowntimes.put(player.getName(), 10000);
+                    reloadGun(player,10000, event.getItem(), 5);
                 }
                 return true;
             }
@@ -234,6 +204,11 @@ public class PlayerInteractListener implements Listener {
                         return true;
                     }
                 }
+                if (PlayerDeathListener.spawnprotection.get(player.getName())) {
+                    PlayerDeathListener.spawnprotection.put(player.getName(), false);
+                    player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
+                }
+
                 cooldowns.put(player.getName(), System.currentTimeMillis());
                 event.setCancelled(true);
                 int ammo;
@@ -246,14 +221,14 @@ public class PlayerInteractListener implements Listener {
                 String[] ammos = strlore.split("/");
                 ammos[0] = ammos[0].substring(3, ammos[0].length() - 2).replace("§", "");
                 ammos[1] = ammos[1].substring(2, ammos[1].length() - 1).replace("§", "");
-                ammo = Integer.valueOf(ammos[0]);
-                allammo = Integer.valueOf(ammos[1]);
+                ammo = Integer.parseInt(ammos[0]);
+                allammo = Integer.parseInt(ammos[1]);
 
                 if (ammo > 0) {
                     PlayerDamageListener shooter = new PlayerDamageListener();
                     shooter.setShooter(player.getName());
 
-                    ArrayList<String> lore = new ArrayList<String>();
+                    ArrayList<String> lore = new ArrayList<>();
                     String templore = ChatColor.translateAlternateColorCodes('&', "&6" + (ammo - 1) + "&8/&6" + allammo);
                     lore.add(templore);
                     meta.setLore(lore);
@@ -283,26 +258,7 @@ public class PlayerInteractListener implements Listener {
 
                     cooldowntimes.put(player.getName(), 300);
                 } else {
-                    player.playSound(event.getPlayer().getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 100, 0);
-
-                    int maxammo = 25;
-
-                    if (ammo + allammo >= maxammo) {
-                        allammo = allammo - (maxammo - ammo);
-                        ammo = ammo + (maxammo - ammo);
-                    } else {
-                        ammo = ammo + allammo;
-                        allammo = 0;
-                    }
-
-                    ArrayList<String> lore = new ArrayList<>();
-                    String templore = ChatColor.translateAlternateColorCodes('&', "&6" + ammo + "&8/&6" + allammo);
-                    lore.add(templore);
-                    meta.setLore(lore);
-                    gun.setItemMeta(meta);
-                    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
-
-                    cooldowntimes.put(player.getName(), 3000);
+                    reloadGun(player,3000, event.getItem(), 25);
                 }
                 return true;
             }
@@ -317,6 +273,11 @@ public class PlayerInteractListener implements Listener {
                         return true;
                     }
                 }
+                if (PlayerDeathListener.spawnprotection.get(player.getName())) {
+                    PlayerDeathListener.spawnprotection.put(player.getName(), false);
+                    player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
+                }
+
                 cooldowns.put(player.getName(), System.currentTimeMillis());
                 event.setCancelled(true);
                 int ammo;
@@ -329,14 +290,14 @@ public class PlayerInteractListener implements Listener {
                 String[] ammos = strlore.split("/");
                 ammos[0] = ammos[0].substring(3, ammos[0].length() - 2).replace("§", "");
                 ammos[1] = ammos[1].substring(2, ammos[1].length() - 1).replace("§", "");
-                ammo = Integer.valueOf(ammos[0]);
-                allammo = Integer.valueOf(ammos[1]);
+                ammo = Integer.parseInt(ammos[0]);
+                allammo = Integer.parseInt(ammos[1]);
 
                 if (ammo > 0) {
                     PlayerDamageListener shooter = new PlayerDamageListener();
                     shooter.setShooter(player.getName());
 
-                    ArrayList<String> lore = new ArrayList<String>();
+                    ArrayList<String> lore = new ArrayList<>();
                     String templore = ChatColor.translateAlternateColorCodes('&', "&6" + (ammo - 1) + "&8/&6" + allammo);
                     lore.add(templore);
                     meta.setLore(lore);
@@ -366,26 +327,7 @@ public class PlayerInteractListener implements Listener {
 
                     cooldowntimes.put(player.getName(), 3000);
                 } else {
-                    player.playSound(event.getPlayer().getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 100, 0);
-
-                    int maxammo = 5;
-
-                    if (ammo + allammo >= maxammo) {
-                        allammo = allammo - (maxammo - ammo);
-                        ammo = ammo + (maxammo - ammo);
-                    } else {
-                        ammo = ammo + allammo;
-                        allammo = 0;
-                    }
-
-                    ArrayList<String> lore = new ArrayList<>();
-                    String templore = ChatColor.translateAlternateColorCodes('&', "&6" + ammo + "&8/&6" + allammo);
-                    lore.add(templore);
-                    meta.setLore(lore);
-                    gun.setItemMeta(meta);
-                    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
-
-                    cooldowntimes.put(player.getName(), 5000);
+                    reloadGun(player,6000, event.getItem(), 5);
                 }
                 return true;
             }
@@ -393,68 +335,58 @@ public class PlayerInteractListener implements Listener {
             // RPG
 
             if (player.getInventory().getItemInMainHand().getType() == Material.GOLD_AXE) {
-                if (cooldowns.containsKey(event.getPlayer().getName())) {
-                    long secondsLeft = ((cooldowns.get(player.getName()))) + cooldowntimes.get(player.getName()) - (System.currentTimeMillis());
-                    if (secondsLeft > 0) {
-                        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.GRAY + "Du kannst diese Waffe gerade nicht benutzen..."));
-                        return true;
+                if (rpgcooldown.get(player.getName())) {
+                    if (cooldowns.containsKey(event.getPlayer().getName())) {
+                        long secondsLeft = ((cooldowns.get(player.getName()))) + cooldowntimes.get(player.getName()) - (System.currentTimeMillis());
+                        if (secondsLeft > 0) {
+                            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.GRAY + "Du kannst diese Waffe gerade nicht benutzen..."));
+                            return true;
+                        }
                     }
-                }
-                cooldowns.put(player.getName(), System.currentTimeMillis());
-                event.setCancelled(true);
-                int ammo;
-                int allammo;
+                    if (PlayerDeathListener.spawnprotection.get(player.getName())) {
+                        PlayerDeathListener.spawnprotection.put(player.getName(), false);
+                        player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
+                    }
 
-                ItemStack gun = player.getInventory().getItemInMainHand();
-                ItemMeta meta = gun.getItemMeta();
+                    cooldowns.put(player.getName(), System.currentTimeMillis());
+                    event.setCancelled(true);
+                    int ammo;
+                    int allammo;
 
-                String strlore = String.valueOf(meta.getLore());
-                String[] ammos = strlore.split("/");
-                ammos[0] = ammos[0].substring(3, ammos[0].length() - 2).replace("§", "");
-                ammos[1] = ammos[1].substring(2, ammos[1].length() - 1).replace("§", "");
-                ammo = Integer.valueOf(ammos[0]);
-                allammo = Integer.valueOf(ammos[1]);
+                    ItemStack gun = player.getInventory().getItemInMainHand();
+                    ItemMeta meta = gun.getItemMeta();
 
-                if (ammo > 0) {
-                    PlayerDamageListener shooter = new PlayerDamageListener();
-                    shooter.setShooter(player.getName());
+                    String strlore = String.valueOf(meta.getLore());
+                    String[] ammos = strlore.split("/");
+                    ammos[0] = ammos[0].substring(3, ammos[0].length() - 2).replace("§", "");
+                    ammos[1] = ammos[1].substring(2, ammos[1].length() - 1).replace("§", "");
+                    ammo = Integer.parseInt(ammos[0]);
+                    allammo = Integer.parseInt(ammos[1]);
 
-                    ArrayList<String> lore = new ArrayList<String>();
-                    String templore = ChatColor.translateAlternateColorCodes('&', "&6" + (ammo - 1) + "&8/&6" + allammo);
-                    lore.add(templore);
-                    meta.setLore(lore);
-                    gun.setItemMeta(meta);
-                    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
+                    if (ammo > 0) {
+                        PlayerDamageListener shooter = new PlayerDamageListener();
+                        shooter.setShooter(player.getName());
 
-                    Vector playerDirection = player.getLocation().getDirection();
-                    Arrow bullet = player.launchProjectile(Arrow.class, playerDirection);
-                    bullet.setCustomName("rpg");
-                    bullet.setVelocity(bullet.getVelocity().multiply(7));
-                    bullet.setGravity(false);
-                    bullet.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
+                        ArrayList<String> lore = new ArrayList<>();
+                        String templore = ChatColor.translateAlternateColorCodes('&', "&6" + (ammo - 1) + "&8/&6" + allammo);
+                        lore.add(templore);
+                        meta.setLore(lore);
+                        gun.setItemMeta(meta);
+                        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
 
-                    cooldowntimes.put(player.getName(), 0);
-                } else {
-                    player.playSound(event.getPlayer().getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 100, 0);
+                        Vector playerDirection = player.getLocation().getDirection();
+                        Arrow bullet = player.launchProjectile(Arrow.class, playerDirection);
+                        bullet.setCustomName("rpg");
+                        bullet.setVelocity(bullet.getVelocity().multiply(7));
+                        bullet.setGravity(false);
+                        bullet.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
 
-                    int maxammo = 1;
-
-                    if (ammo + allammo >= maxammo) {
-                        allammo = allammo - (maxammo - ammo);
-                        ammo = ammo + (maxammo - ammo);
+                        cooldowntimes.put(player.getName(), 0);
                     } else {
-                        ammo = ammo + allammo;
-                        allammo = 0;
+                        reloadGun(player,80000, event.getItem(), 1);
                     }
-
-                    ArrayList<String> lore = new ArrayList<>();
-                    String templore = ChatColor.translateAlternateColorCodes('&', "&6" + ammo + "&8/&6" + allammo);
-                    lore.add(templore);
-                    meta.setLore(lore);
-                    gun.setItemMeta(meta);
-                    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
-
-                    cooldowntimes.put(player.getName(), 80000);
+                } else {
+                    player.sendMessage(ChatColor.GRAY + "Du kannst deine RPG noch nicht benutzen!");
                 }
                 return true;
             }
@@ -466,11 +398,15 @@ public class PlayerInteractListener implements Listener {
                     tazerstatus.put(player.getName(), 10);
                 }
                 if (tazerstatus.get(player.getName()) >= 10) {
+                    if (PlayerDeathListener.spawnprotection.get(player.getName())) {
+                        PlayerDeathListener.spawnprotection.put(player.getName(), false);
+                        player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
+                    }
+
                     tazerstatus.put(player.getName(), 1);
 
                     Location origin = player.getEyeLocation();
                     Vector direction = origin.getDirection();
-                    Location destination = origin.clone().add(direction);
 
                     direction.normalize();
                     for (int i = 0; i < 20.0; i++) {
@@ -479,7 +415,7 @@ public class PlayerInteractListener implements Listener {
                     }
 
                     List<Entity> nearbyE = player.getNearbyEntities(5, 5, 5);
-                    ArrayList<LivingEntity> livingE = new ArrayList<LivingEntity>();
+                    ArrayList<LivingEntity> livingE = new ArrayList<>();
 
                     for (Entity e : nearbyE) {
                         if (e instanceof LivingEntity) {
@@ -487,7 +423,7 @@ public class PlayerInteractListener implements Listener {
                         }
                     }
 
-                    LivingEntity target = null;
+                    LivingEntity target;
                     BlockIterator bItr = new BlockIterator(player, 5);
                     Block block;
                     Location loc;
@@ -510,7 +446,7 @@ public class PlayerInteractListener implements Listener {
                                 }
                                 target.setGlowing(true);
                                 LivingEntity finalTarget = target;
-                                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                Bukkit.getScheduler().runTaskLater(SWATtest.plugin, () -> {
                                     finalTarget.setGlowing(false);
                                     finalTarget.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 7, 1));
                                     finalTarget.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 16, 3));
@@ -529,17 +465,22 @@ public class PlayerInteractListener implements Listener {
             if (player.getInventory().getItemInMainHand().getType() == Material.BLAZE_POWDER && event.getAction() != Action.RIGHT_CLICK_BLOCK) {
                 int ammo;
 
-                ItemStack messer = player.getInventory().getItemInMainHand();
-                ItemMeta meta = messer.getItemMeta();
+                ItemStack flammi = player.getInventory().getItemInMainHand();
+                ItemMeta meta = flammi.getItemMeta();
 
                 String strlore = String.valueOf(meta.getLore());
                 String[] ammos = strlore.split("/");
                 ammos[0] = ammos[0].substring(3, ammos[0].length() - 2).replace("§", "");
-                ammo = Integer.valueOf(ammos[0]);
+                ammo = Integer.parseInt(ammos[0]);
 
                 if (ammo == 0) {
                     event.setCancelled(true);
                     return true;
+                }
+
+                if (PlayerDeathListener.spawnprotection.get(player.getName())) {
+                    PlayerDeathListener.spawnprotection.put(player.getName(), false);
+                    player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
                 }
 
                 flammilast.putIfAbsent(player.getName(), 1L);
@@ -557,26 +498,23 @@ public class PlayerInteractListener implements Listener {
                             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(flammireloadmsg.get(player.getName())));
                             flammiloadingcounter.put(player.getName(), flammilast.get(player.getName()));
                         } else  if (flammiloaded.get(player.getName())) {
-                            ArrayList<String> lore = new ArrayList<String>();
+                            ArrayList<String> lore = new ArrayList<>();
                             String templore = ChatColor.translateAlternateColorCodes('&', "&6" + (ammo - 1) + "&8/&6" + 500);
                             lore.add(templore);
                             meta.setLore(lore);
-                            messer.setItemMeta(meta);
+                            flammi.setItemMeta(meta);
                             flammiloadingcounter.put(player.getName(), flammilast.get(player.getName()));
                         }
                     }
 
                     if (flammifinaltask.get(player.getName()) == null) {
-                        flammifinaltask.put(player.getName(), Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(plugin, new Runnable() {
-                            @Override
-                            public void run() {
-                                if (flammiloading.get(player.getName()) && !flammiloaded.get(player.getName())) {
-                                    flammiloaded.put(player.getName(), true);
-                                    flammiloading.put(player.getName(), false);
-                                    player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', "&a⬛&a⬛&a⬛&a⬛&a⬛&a⬛&a⬛&a⬛&a⬛&a⬛")));
-                                }
-                                flammifinaltask.put(player.getName(), null);
+                        flammifinaltask.put(player.getName(), Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(SWATtest.plugin, () -> {
+                            if (flammiloading.get(player.getName()) && !flammiloaded.get(player.getName())) {
+                                flammiloaded.put(player.getName(), true);
+                                flammiloading.put(player.getName(), false);
+                                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', "&a⬛&a⬛&a⬛&a⬛&a⬛&a⬛&a⬛&a⬛&a⬛&a⬛")));
                             }
+                            flammifinaltask.put(player.getName(), null);
                         }, 200L));
                     }
 
@@ -584,16 +522,13 @@ public class PlayerInteractListener implements Listener {
                         if (flammireleasetask.get(player.getName()) != null && Bukkit.getServer().getScheduler().isQueued(flammireleasetask.get(player.getName()).getTaskId())) {
                             Bukkit.getServer().getScheduler().cancelTask(flammireleasetask.get(player.getName()).getTaskId());
                         }
-                        flammireleasetask.put(player.getName(), Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(plugin, new Runnable() {
-                            @Override
-                            public void run() {
-                                flammireloadmsg.put(player.getName(), ChatColor.translateAlternateColorCodes('&', "&8&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛"));
-                                flammiloading.put(player.getName(), false);
-                                flammiloaded.put(player.getName(), false);
-                                if (flammifinaltask.get(player.getName()) != null && Bukkit.getServer().getScheduler().isQueued(flammifinaltask.get(player.getName()).getTaskId())) {
-                                    Bukkit.getServer().getScheduler().cancelTask(flammifinaltask.get(player.getName()).getTaskId());
-                                    flammifinaltask.put(player.getName(), null);
-                                }
+                        flammireleasetask.put(player.getName(), Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(SWATtest.plugin, () -> {
+                            flammireloadmsg.put(player.getName(), ChatColor.translateAlternateColorCodes('&', "&8&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛"));
+                            flammiloading.put(player.getName(), false);
+                            flammiloaded.put(player.getName(), false);
+                            if (flammifinaltask.get(player.getName()) != null && Bukkit.getServer().getScheduler().isQueued(flammifinaltask.get(player.getName()).getTaskId())) {
+                                Bukkit.getServer().getScheduler().cancelTask(flammifinaltask.get(player.getName()).getTaskId());
+                                flammifinaltask.put(player.getName(), null);
                             }
                         }, 40L));
                     } else {
@@ -605,7 +540,6 @@ public class PlayerInteractListener implements Listener {
                 if (flammiloaded.get(player.getName())) {
                     Location origin = player.getEyeLocation().subtract(0,0.25,0);
                     Vector direction = origin.getDirection();
-                    Location destination = origin.clone().add(direction);
 
                     direction.normalize();
                     for (int i = 0; i < 20.0; i++) {
@@ -614,7 +548,7 @@ public class PlayerInteractListener implements Listener {
                     }
 
                     List<Entity> nearbyE = player.getNearbyEntities(5, 5, 5);
-                    ArrayList<LivingEntity> livingE = new ArrayList<LivingEntity>();
+                    ArrayList<LivingEntity> livingE = new ArrayList<>();
 
                     for (Entity e : nearbyE) {
                         if (e instanceof LivingEntity) {
@@ -622,7 +556,7 @@ public class PlayerInteractListener implements Listener {
                         }
                     }
 
-                    LivingEntity target = null;
+                    LivingEntity target;
                     BlockIterator bItr = new BlockIterator(player, 5);
                     Block block;
                     Location loc;
@@ -654,8 +588,8 @@ public class PlayerInteractListener implements Listener {
 
             // Sniper
 
-            if (player.getInventory().getItemInMainHand().getType() == Material.STONE_HOE && !(player.getCustomName() == "brokenleg") && player.isSneaking()) {
-                if (player.getCustomName() == "zoom") {
+            if (player.getInventory().getItemInMainHand().getType() == Material.STONE_HOE && !(Objects.equals(player.getCustomName(), "brokenleg")) && player.isSneaking()) {
+                if (Objects.equals(player.getCustomName(), "zoom")) {
                     player.removePotionEffect(PotionEffectType.SLOW);
                     player.removePotionEffect(PotionEffectType.JUMP);
                     player.setCustomName("");
@@ -682,41 +616,7 @@ public class PlayerInteractListener implements Listener {
         if (event.getItemDrop().getItemStack().getType() == Material.DIAMOND_BARDING) {
             event.setCancelled(true);
 
-            cooldowntimes.put(player.getName(), 4000);
-
-            int ammo;
-            int allammo;
-            int maxammo = 21;
-
-            ItemStack gun = event.getItemDrop().getItemStack();
-            ItemMeta meta = gun.getItemMeta();
-
-            String strlore = String.valueOf(meta.getLore());
-            String[] ammos = strlore.split("/");
-            ammos[0] = ammos[0].substring(3, ammos[0].length() - 2).replace("§", "");
-            ammos[1] = ammos[1].substring(2, ammos[1].length() - 1).replace("§", "");
-            ammo = Integer.valueOf(ammos[0]);
-            allammo = Integer.valueOf(ammos[1]);
-
-            if (!(ammo == 21)) {
-
-                if (ammo + allammo >= maxammo) {
-                    allammo = allammo - (maxammo - ammo);
-                    ammo = ammo + (maxammo - ammo);
-                } else {
-                    ammo = ammo + allammo;
-                    allammo = 0;
-                }
-
-                ArrayList<String> lore = new ArrayList<>();
-                String templore = ChatColor.translateAlternateColorCodes('&', "&6" + ammo + "&8/&6" + allammo);
-                lore.add(templore);
-                meta.setLore(lore);
-                gun.setItemMeta(meta);
-                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
-
-                player.playSound(event.getPlayer().getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 100, 0);
-            }
+            reloadGun(player,4000, event.getItemDrop().getItemStack(), 21);
         }
 
         // Sniper
@@ -724,41 +624,7 @@ public class PlayerInteractListener implements Listener {
         if (event.getItemDrop().getItemStack().getType() == Material.STONE_HOE) {
             event.setCancelled(true);
 
-            cooldowntimes.put(player.getName(), 10000);
-
-            int ammo;
-            int allammo;
-            int maxammo = 5;
-
-            ItemStack gun = event.getItemDrop().getItemStack();
-            ItemMeta meta = gun.getItemMeta();
-
-            String strlore = String.valueOf(meta.getLore());
-            String[] ammos = strlore.split("/");
-            ammos[0] = ammos[0].substring(3, ammos[0].length() - 2).replace("§", "");
-            ammos[1] = ammos[1].substring(2, ammos[1].length() - 1).replace("§", "");
-            ammo = Integer.valueOf(ammos[0]);
-            allammo = Integer.valueOf(ammos[1]);
-
-            if (!(ammo == 5)) {
-
-                if (ammo + allammo >= maxammo) {
-                    allammo = allammo - (maxammo - ammo);
-                    ammo = ammo + (maxammo - ammo);
-                } else {
-                    ammo = ammo + allammo;
-                    allammo = 0;
-                }
-
-                ArrayList<String> lore = new ArrayList<>();
-                String templore = ChatColor.translateAlternateColorCodes('&', "&6" + ammo + "&8/&6" + allammo);
-                lore.add(templore);
-                meta.setLore(lore);
-                gun.setItemMeta(meta);
-                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
-
-                player.playSound(event.getPlayer().getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 100, 0);
-            }
+            reloadGun(player,10000, event.getItemDrop().getItemStack(), 5);
         }
 
         // Mp5
@@ -766,41 +632,7 @@ public class PlayerInteractListener implements Listener {
         if (event.getItemDrop().getItemStack().getType() == Material.GOLD_BARDING) {
             event.setCancelled(true);
 
-            cooldowntimes.put(player.getName(), 3000);
-
-            int ammo;
-            int allammo;
-            int maxammo = 25;
-
-            ItemStack gun = event.getItemDrop().getItemStack();
-            ItemMeta meta = gun.getItemMeta();
-
-            String strlore = String.valueOf(meta.getLore());
-            String[] ammos = strlore.split("/");
-            ammos[0] = ammos[0].substring(3, ammos[0].length() - 2).replace("§", "");
-            ammos[1] = ammos[1].substring(2, ammos[1].length() - 1).replace("§", "");
-            ammo = Integer.valueOf(ammos[0]);
-            allammo = Integer.valueOf(ammos[1]);
-
-            if (!(ammo == 25)) {
-
-                if (ammo + allammo >= maxammo) {
-                    allammo = allammo - (maxammo - ammo);
-                    ammo = ammo + (maxammo - ammo);
-                } else {
-                    ammo = ammo + allammo;
-                    allammo = 0;
-                }
-
-                ArrayList<String> lore = new ArrayList<>();
-                String templore = ChatColor.translateAlternateColorCodes('&', "&6" + ammo + "&8/&6" + allammo);
-                lore.add(templore);
-                meta.setLore(lore);
-                gun.setItemMeta(meta);
-                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
-
-                player.playSound(event.getPlayer().getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 100, 0);
-            }
+            reloadGun(player,3000, event.getItemDrop().getItemStack(), 25);
         }
 
         // Jagdflinte
@@ -808,41 +640,7 @@ public class PlayerInteractListener implements Listener {
         if (event.getItemDrop().getItemStack().getType() == Material.GOLD_HOE) {
             event.setCancelled(true);
 
-            cooldowntimes.put(player.getName(), 5000);
-
-            int ammo;
-            int allammo;
-            int maxammo = 5;
-
-            ItemStack gun = event.getItemDrop().getItemStack();
-            ItemMeta meta = gun.getItemMeta();
-
-            String strlore = String.valueOf(meta.getLore());
-            String[] ammos = strlore.split("/");
-            ammos[0] = ammos[0].substring(3, ammos[0].length() - 2).replace("§", "");
-            ammos[1] = ammos[1].substring(2, ammos[1].length() - 1).replace("§", "");
-            ammo = Integer.valueOf(ammos[0]);
-            allammo = Integer.valueOf(ammos[1]);
-
-            if (!(ammo == 25)) {
-
-                if (ammo + allammo >= maxammo) {
-                    allammo = allammo - (maxammo - ammo);
-                    ammo = ammo + (maxammo - ammo);
-                } else {
-                    ammo = ammo + allammo;
-                    allammo = 0;
-                }
-
-                ArrayList<String> lore = new ArrayList<>();
-                String templore = ChatColor.translateAlternateColorCodes('&', "&6" + ammo + "&8/&6" + allammo);
-                lore.add(templore);
-                meta.setLore(lore);
-                gun.setItemMeta(meta);
-                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
-
-                player.playSound(event.getPlayer().getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 100, 0);
-            }
+            reloadGun(player,6000, event.getItemDrop().getItemStack(), 5);
         }
 
         // RPG
@@ -850,41 +648,7 @@ public class PlayerInteractListener implements Listener {
         if (event.getItemDrop().getItemStack().getType() == Material.GOLD_AXE) {
             event.setCancelled(true);
 
-            cooldowntimes.put(player.getName(), 120000);
-
-            int ammo;
-            int allammo;
-            int maxammo = 1;
-
-            ItemStack gun = event.getItemDrop().getItemStack();
-            ItemMeta meta = gun.getItemMeta();
-
-            String strlore = String.valueOf(meta.getLore());
-            String[] ammos = strlore.split("/");
-            ammos[0] = ammos[0].substring(3, ammos[0].length() - 2).replace("§", "");
-            ammos[1] = ammos[1].substring(2, ammos[1].length() - 1).replace("§", "");
-            ammo = Integer.valueOf(ammos[0]);
-            allammo = Integer.valueOf(ammos[1]);
-
-            if (!(ammo == 1)) {
-
-                if (ammo + allammo >= maxammo) {
-                    allammo = allammo - (maxammo - ammo);
-                    ammo = ammo + (maxammo - ammo);
-                } else {
-                    ammo = ammo + allammo;
-                    allammo = 0;
-                }
-
-                ArrayList<String> lore = new ArrayList<>();
-                String templore = ChatColor.translateAlternateColorCodes('&', "&6" + ammo + "&8/&6" + allammo);
-                lore.add(templore);
-                meta.setLore(lore);
-                gun.setItemMeta(meta);
-                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
-
-                player.playSound(event.getPlayer().getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 100, 0);
-            }
+            reloadGun(player,80000, event.getItemDrop().getItemStack(), 1);
         }
     }
 
@@ -929,7 +693,7 @@ public class PlayerInteractListener implements Listener {
                         }
                     };
 
-                    tazertask.put(player.getName(), reload.runTaskTimer(plugin, 0, 100L));
+                    tazertask.put(player.getName(), reload.runTaskTimer(SWATtest.plugin, 0, 100L));
                 }
             }
         }
@@ -943,6 +707,44 @@ public class PlayerInteractListener implements Listener {
                     }
                 }
             }
+        }
+    }
+
+
+
+    public static void reloadGun(Player player, int cooldown, ItemStack gun, int maxammo) {
+        cooldowntimes.put(player.getName(), cooldown);
+
+        int ammo;
+        int allammo;
+
+        ItemMeta meta = gun.getItemMeta();
+
+        String strlore = String.valueOf(meta.getLore());
+        String[] ammos = strlore.split("/");
+        ammos[0] = ammos[0].substring(3, ammos[0].length() - 2).replace("§", "");
+        ammos[1] = ammos[1].substring(2, ammos[1].length() - 1).replace("§", "");
+        ammo = Integer.parseInt(ammos[0]);
+        allammo = Integer.parseInt(ammos[1]);
+
+        if (!(ammo == 1)) {
+
+            if (ammo + allammo >= maxammo) {
+                allammo = allammo - (maxammo - ammo);
+                ammo = ammo + (maxammo - ammo);
+            } else {
+                ammo = ammo + allammo;
+                allammo = 0;
+            }
+
+            ArrayList<String> lore = new ArrayList<>();
+            String templore = ChatColor.translateAlternateColorCodes('&', "&6" + ammo + "&8/&6" + allammo);
+            lore.add(templore);
+            meta.setLore(lore);
+            gun.setItemMeta(meta);
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
+
+            player.playSound(player.getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 100, 0);
         }
     }
 }

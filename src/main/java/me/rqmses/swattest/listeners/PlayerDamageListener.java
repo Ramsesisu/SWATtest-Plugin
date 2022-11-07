@@ -19,9 +19,9 @@ import java.util.*;
 
 public class PlayerDamageListener implements Listener {
 
-    public static String shooter;
+    public static Player shooter;
     public void setShooter(String name) {
-        shooter = name;
+        shooter = Bukkit.getPlayer("name");
     }
 
     List<Entity> entitylist;
@@ -29,16 +29,19 @@ public class PlayerDamageListener implements Listener {
     @EventHandler
     public void onBulletHit(EntityDamageByEntityEvent event) {
         if (event.getEntity() instanceof Player) {
-            if (event.getDamager().getType() == EntityType.ARROW) {
-                EntityDamageByEntityEvent entityEvent = event;
-                Player player = (Player) entityEvent.getEntity();
+            Player player = (Player) event.getEntity();
 
-                PlayerDeathListener killer = new PlayerDeathListener();
-                killer.setKiller(shooter);
+            if (PlayerDeathListener.spawnprotection.get(player.getName())) {
+                event.setCancelled(true);
+                return;
+            }
+
+            if (event.getDamager().getType() == EntityType.ARROW) {
+                PlayerDeathListener.setKiller(shooter.getName());
 
                 String weapontype = event.getDamager().getCustomName();
 
-                if (weapontype == "m4") {
+                if (Objects.equals(weapontype, "m4")) {
                     if (player.getInventory().getChestplate() == null) {
                         event.setDamage(7);
                     } else {
@@ -61,7 +64,7 @@ public class PlayerDamageListener implements Listener {
                         }
                     }
                 }
-                if (weapontype == "sniper") {
+                if (Objects.equals(weapontype, "sniper")) {
                     if (player.getInventory().getChestplate() == null) {
                         event.setDamage(14.5);
                     } else {
@@ -84,7 +87,7 @@ public class PlayerDamageListener implements Listener {
                         }
                     }
                 }
-                if (weapontype == "mp5") {
+                if (Objects.equals(weapontype, "mp5")) {
                     if (player.getInventory().getChestplate() == null) {
                         event.setDamage(5);
                     } else {
@@ -107,7 +110,7 @@ public class PlayerDamageListener implements Listener {
                         }
                     }
                 }
-                if (weapontype == "jagdflinte") {
+                if (Objects.equals(weapontype, "jagdflinte")) {
                     if (player.getInventory().getChestplate() == null) {
                         event.setDamage(11.5);
                     } else {
@@ -130,7 +133,7 @@ public class PlayerDamageListener implements Listener {
                         }
                     }
                 }
-                if (weapontype == "rpg") {
+                if (Objects.equals(weapontype, "rpg")) {
                     event.setDamage(100);
                     Location loc = player.getLocation();
                     loc.getWorld().createExplosion(loc, 10, true);
@@ -193,7 +196,7 @@ public class PlayerDamageListener implements Listener {
     public void onPlayerSprint(PlayerToggleSprintEvent event) {
         Player player = event.getPlayer();
 
-        if (player.getCustomName() == "brokenleg" && !(player.isFlying())) {
+        if (Objects.equals(player.getCustomName(), "brokenleg") && !(player.isFlying())) {
             player.damage(1);
             event.setCancelled(true);
         }
@@ -212,7 +215,7 @@ public class PlayerDamageListener implements Listener {
             if (event.getPlayer().getLocation().getBlock().getType() != Material.LADDER && prevPlayersOnGround.contains(player.getUniqueId())) {
                 if (!player.isOnGround() && Double.compare(player.getVelocity().getY(), jumpVelocity) == 0) {
 
-                    if (player.getCustomName() == "brokenleg" && !(player.isFlying())) {
+                    if (Objects.equals(player.getCustomName(), "brokenleg") && !(player.isFlying())) {
                         player.damage(1);
                     }
                 }

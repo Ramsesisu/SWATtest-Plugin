@@ -2,7 +2,6 @@ package me.rqmses.swattest.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,7 +17,7 @@ import java.util.List;
 
 public class TeamCommand implements CommandExecutor, TabCompleter {
 
-    public HashMap<String, Long> cooldowns = new HashMap<String, Long>();
+    public final HashMap<String, Long> cooldowns = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -95,10 +94,6 @@ public class TeamCommand implements CommandExecutor, TabCompleter {
             Field ff = profile.getClass().getDeclaredField("name");
             ff.setAccessible(true);
             ff.set(profile, name);
-            for (Player players : Bukkit.getOnlinePlayers()) {
-                players.hidePlayer(player);
-                players.showPlayer(player);
-            }
         } catch (NoSuchMethodException | SecurityException
                  | IllegalAccessException | IllegalArgumentException
                  | InvocationTargetException | NoSuchFieldException e) {

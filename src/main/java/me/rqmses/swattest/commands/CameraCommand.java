@@ -7,6 +7,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Objects;
+
 public class CameraCommand implements CommandExecutor {
 
     Player player;
@@ -22,7 +24,7 @@ public class CameraCommand implements CommandExecutor {
                 player = (Player) sender;
             }
 
-            if (!(player.getCustomName() == "dead")) {
+            if (!(Objects.equals(player.getCustomName(), "dead"))) {
                 if (player.getGameMode() == GameMode.SURVIVAL) {
                     player.setGameMode(GameMode.SPECTATOR);
                 } else if (player.getGameMode() == GameMode.SPECTATOR) {

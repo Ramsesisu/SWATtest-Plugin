@@ -35,6 +35,7 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
                         loc = new Location(Bukkit.getWorld("world"), 103, 69, 157);
                         break;
                     case "uranberg":
+                    case "flug-1":
                         loc = new Location(Bukkit.getWorld("world"), -392, 194, 761);
                         break;
                     case "x3":
@@ -54,9 +55,6 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
                         break;
                     case "lu-kran":
                         loc = new Location(Bukkit.getWorld("world"), 1562, 206, 330);
-                        break;
-                    case "flug-1":
-                        loc = new Location(Bukkit.getWorld("world"), -392, 194, 761);
                         break;
                     case "flug-2":
                         loc = new Location(Bukkit.getWorld("world"), 897, 128, 21);
@@ -322,7 +320,7 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
                     case "flughafen-chinatown":
                         loc = new Location(Bukkit.getWorld("world"), 1256, 69, 45);
                         break;
-                    case "flughafen-LasUnicas":
+                    case "flughafen-lasunicas":
                         loc = new Location(Bukkit.getWorld("world"), 1679, 69, 475);
                         break;
                     case "urantransport":

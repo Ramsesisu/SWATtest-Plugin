@@ -6,7 +6,7 @@
 
     <groupId>me.rqmses</groupId>
     <artifactId>SWATtest</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
     <packaging>jar</packaging>
 
     <name>SWATtest</name>

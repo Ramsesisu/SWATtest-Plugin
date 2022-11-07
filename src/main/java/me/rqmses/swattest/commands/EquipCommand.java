@@ -1,25 +1,28 @@
 package me.rqmses.swattest.commands;
 
-import me.rqmses.swattest.listeners.PlayerDeathListener;
+import me.rqmses.swattest.listeners.JoinListener;
+import me.rqmses.swattest.listeners.PlayerInteractListener;
+import me.rqmses.swattest.variables.Items;
 import org.bukkit.*;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
-import java.io.IOException;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
+
 import java.util.*;
+
+import static me.rqmses.swattest.SWATtest.plugin;
 
 public class EquipCommand implements CommandExecutor, TabCompleter {
 
-    public static HashMap<String, Long> cooldowns = new HashMap<String, Long>();
+    public static final HashMap<String, Long> cooldowns = new HashMap<>();
+
+    public static final HashMap<String, String> playerequip = new HashMap<>();
+
+    public static final HashMap<String, BukkitTask> rpgtask = new HashMap<>();
 
     Player player;
 
@@ -54,150 +57,57 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
                     fly = ChatColor.translateAlternateColorCodes('&', "&b&l F");
                 }
 
-                ItemStack elytra = new ItemStack(Material.ELYTRA);
-                ItemMeta elytraname = elytra.getItemMeta();
-                elytraname.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&3&lFallschirm"));
-                elytra.setItemMeta(elytraname);
-
-                ItemStack kev = new ItemStack(Material.LEATHER_CHESTPLATE);
-                LeatherArmorMeta kevcolor = (LeatherArmorMeta) kev.getItemMeta();
-                kevcolor.setColor(Color.fromRGB(71, 79, 82));
-                kev.setItemMeta(kevcolor);
-                ItemMeta kevname = kev.getItemMeta();
-                kevname.setDisplayName(ChatColor.GRAY + "Kevlar");
-                kevname.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                kev.setItemMeta(kevname);
-
-                ItemStack schild = new ItemStack(Material.SHIELD);
-                schild.setDurability((short) 176);
-                ItemMeta schildname = schild.getItemMeta();
-                schildname.setDisplayName(ChatColor.GRAY + "Einsatzschild");
-                schild.setItemMeta(schildname);
-
-                ItemStack flashes = new ItemStack(Material.SLIME_BALL, 6);
-                ItemMeta flashmeta = flashes.getItemMeta();
-                flashmeta.setDisplayName(ChatColor.GRAY + "Blendgranate");
-                flashes.setItemMeta(flashmeta);
-
-                ItemStack m4 = new ItemStack(Material.DIAMOND_BARDING);
-                ItemMeta m4meta = m4.getItemMeta();
-                m4meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&8&lM4"));
-                ArrayList<String> m4lore = new ArrayList<String>();
-                m4lore.add(ChatColor.translateAlternateColorCodes('&', "&621&8/&6500"));
-                m4meta.setLore(m4lore);
-                m4.setItemMeta(m4meta);
-
-                ItemStack mp5 = new ItemStack(Material.GOLD_BARDING);
-                ItemMeta mp5meta = mp5.getItemMeta();
-                mp5meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&8&lMP5"));
-                ArrayList<String> mp5lore = new ArrayList<String>();
-                mp5lore.add(ChatColor.translateAlternateColorCodes('&', "&621&8/&6500"));
-                mp5meta.setLore(mp5lore);
-                mp5.setItemMeta(mp5meta);
-
-                ItemStack sniper = new ItemStack(Material.STONE_HOE);
-                ItemMeta snipermeta = sniper.getItemMeta();
-                snipermeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&8&lSniper"));
-                ArrayList<String> sniperlore = new ArrayList<String>();
-                sniperlore.add(ChatColor.translateAlternateColorCodes('&', "&65&8/&630"));
-                snipermeta.setLore(sniperlore);
-                snipermeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                sniper.setItemMeta(snipermeta);
-
-                ItemStack jagdflinte = new ItemStack(Material.GOLD_HOE);
-                ItemMeta jagdflintemeta = jagdflinte.getItemMeta();
-                jagdflintemeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&8&lJagdflinte"));
-                ArrayList<String> jagdflintelore = new ArrayList<String>();
-                jagdflintelore.add(ChatColor.translateAlternateColorCodes('&', "&65&8/&680"));
-                jagdflintemeta.setLore(jagdflintelore);
-                jagdflintemeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                jagdflinte.setItemMeta(jagdflintemeta);
-
-                ItemStack rpg = new ItemStack(Material.GOLD_AXE);
-                ItemMeta rpgmeta = rpg.getItemMeta();
-                rpgmeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&8&lRPG-7"));
-                ArrayList<String> rpglore = new ArrayList<String>();
-                rpglore.add(ChatColor.translateAlternateColorCodes('&', "&61&8/&610"));
-                rpgmeta.setLore(rpglore);
-                rpgmeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                rpg.setItemMeta(rpgmeta);
-
-                ItemStack messer = new ItemStack(Material.FEATHER);
-                ItemMeta messermeta = messer.getItemMeta();
-                messermeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&8Messer"));
-                ArrayList<String> messerlore = new ArrayList<String>();
-                messerlore.add(ChatColor.translateAlternateColorCodes('&', "&6100&8/&6100"));
-                messermeta.setLore(messerlore);
-                messer.setItemMeta(messermeta);
-
-                ItemStack tazer = new ItemStack(Material.WOOD_HOE);
-                ItemMeta tazermeta = tazer.getItemMeta();
-                tazermeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&eTazer"));
-                tazermeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                tazer.setItemMeta(tazermeta);
-
-                ItemStack flammenwerfer = new ItemStack(Material.BLAZE_POWDER);
-                ItemMeta flammenwerfermeta = flammenwerfer.getItemMeta();
-                flammenwerfermeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&cFlammenwerfer"));
-                ArrayList<String> flammenwerferlore = new ArrayList<String>();
-                flammenwerferlore.add(ChatColor.translateAlternateColorCodes('&', "&6500&8/&6500"));
-                flammenwerfermeta.setLore(flammenwerferlore);
-                flammenwerfermeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-                flammenwerfer.setItemMeta(flammenwerfermeta);
+                boolean invchanged = false;
 
                 switch (args[0].toLowerCase()) {
                     case "elytra":
+                        playerequip.put(player.getName(), "elytra");
                         player.getInventory().clear();
-                        player.getInventory().addItem(elytra);
+                        invchanged = true;
                         player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&3Elytra&8&l] &r") + player.getName() + fly);
                         break;
                     case "swat":
+                        playerequip.put(player.getName(), "swat");
                         player.getInventory().clear();
-                        kev.setDurability((short) 30);
-                        player.getInventory().addItem(schild);
-                        player.getInventory().addItem(kev);
-                        player.getInventory().addItem(m4);
-                        player.getInventory().addItem(sniper);
-                        player.getInventory().addItem(flashes);
+                        invchanged = true;
                         player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&1SWAT&8&l] &r") + player.getName() + fly);
                         break;
                     case "polizei":
+                        playerequip.put(player.getName(), "polizei");
                         player.getInventory().clear();
-                        kev.setDurability((short) 50);
-                        player.getInventory().addItem(kev);
-                        player.getInventory().addItem(m4);
-                        player.getInventory().addItem(mp5);
-                        player.getInventory().addItem(tazer);
+                        invchanged = true;
                         player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&9UCPD&8&l] &r") + player.getName() + fly);
                         break;
                     case "ballas":
+                        playerequip.put(player.getName(), "ballas");
                         player.getInventory().clear();
-                        kev.setDurability((short) 50);
-                        player.getInventory().addItem(kev);
-                        player.getInventory().addItem(m4);
-                        player.getInventory().addItem(jagdflinte);
-                        player.getInventory().addItem(messer);
+                        invchanged = true;
                         player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&5Ballas&8&l] &r") + player.getName() + fly);
                         break;
-                    case "terrorist":
+                    case "terror":
+                        playerequip.put(player.getName(), "terror");
                         player.getInventory().clear();
-                        kev.setDurability((short) 50);
-                        player.getInventory().addItem(kev);
-                        player.getInventory().addItem(m4);
-                        player.getInventory().addItem(rpg);
+                        invchanged = true;
+                        PlayerInteractListener.rpgcooldown.put(player.getName(), false);
                         player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&eTerror&8&l] &r") + player.getName() + fly);
+                        BukkitRunnable rpg = new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                PlayerInteractListener.rpgcooldown.put(player.getName(), true);
+                            }
+                        };
+                        rpgtask.put(player.getName(), rpg.runTaskLater(plugin, 300L));
                         break;
                     case "zivilist":
+                        playerequip.put(player.getName(), "zivilist");
                         player.getInventory().clear();
-                        player.getInventory().addItem(mp5);
-                        player.getInventory().addItem(messer);
+                        invchanged = true;
                         player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&7Zivi&8&l] &r") + player.getName() + fly);
                         break;
                     case "flammenwerfer":
+                        playerequip.put(player.getName(), "flammenwerfer");
                         player.getInventory().clear();
-                        kev.setDurability((short) 50);
-                        player.getInventory().addItem(kev);
-                        player.getInventory().addItem(flammenwerfer);
+                        invchanged = true;
                         player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&cFlammi&8&l] &r") + player.getName() + fly);
                         break;
                     case "none":
@@ -208,6 +118,59 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
                         player.sendMessage(ChatColor.DARK_GRAY + args[0] + ChatColor.GRAY + " ist kein vorgegebenes Equip!");
                         return true;
                 }
+
+                if (invchanged) {
+                    for (int i = 0; i <= 8; i++) {
+                        String itemname = (String) JoinListener.playerconfig.get(player.getUniqueId()).get(playerequip.get(player.getName())+"."+i);
+
+                        switch (itemname) {
+                            case "SHIELD":
+                                player.getInventory().setItem(i, Items.getSchild());
+                                break;
+                            case "LEATHER_CHESTPLATE":
+                                if (Objects.equals(playerequip.get(player.getName()), "swat")) {
+                                    player.getInventory().setItem(i, Items.getKev((short) 30));
+                                } else {
+                                    player.getInventory().setItem(i, Items.getKev((short) 50));
+                                }
+                                break;
+                            case "DIAMOND_BARDING":
+                                player.getInventory().setItem(i, Items.getM4());
+                                break;
+                            case "STONE_HOE":
+                                player.getInventory().setItem(i, Items.getSniper());
+                                break;
+                            case "SLIME_BALL":
+                                player.getInventory().setItem(i, Items.getFlashes());
+                                break;
+                            case "GOLD_HOE":
+                                player.getInventory().setItem(i, Items.getJagdflinte());
+                                break;
+                            case "FEATHER":
+                                player.getInventory().setItem(i, Items.getMesser());
+                                break;
+                            case "WOOD_HOE":
+                                player.getInventory().setItem(i, Items.getTazer());
+                                break;
+                            case "GOLD_AXE":
+                                player.getInventory().setItem(i, Items.getRPG());
+                                break;
+                            case "BLAZE_POWDER":
+                                player.getInventory().setItem(i, Items.getFlammenwerfer());
+                                break;
+                            case "GOLD_BARDING":
+                                player.getInventory().setItem(i, Items.getMp5());
+                                break;
+                            case "ELYTRA":
+                                player.getInventory().setItem(i, Items.getElytra());
+                                break;
+                            default:
+                                player.getInventory().setItem(i, Items.getAir());
+                                break;
+                        }
+                    }
+                }
+
                 if (player.getGameMode() == GameMode.SURVIVAL) {
                     player.sendMessage(ChatColor.GRAY + "Du hast dein Equip zu " + ChatColor.DARK_GRAY + args[0] + ChatColor.GRAY + " geändert!");
                 }
@@ -217,11 +180,10 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
         return true;
     }
 
-
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         ArrayList<String> list = new ArrayList<>();
-        String[] equip = new String[] {"Elytra", "SWAT", "Polizei", "Ballas", "Terrorist", "Zivilist", "Flammenwerfer", "None"};
+        String[] equip = new String[] {"Elytra", "SWAT", "Polizei", "Ballas", "Terror", "Zivilist", "Flammenwerfer", "None"};
         if (args.length == 1) {
             for (String items : equip) {
                 if (items.toUpperCase().startsWith(args[0].toUpperCase())) {

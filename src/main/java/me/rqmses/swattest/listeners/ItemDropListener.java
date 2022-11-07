@@ -1,5 +1,6 @@
 package me.rqmses.swattest.listeners;
 
+import me.rqmses.swattest.SWATtest;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -26,12 +27,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
-import static me.rqmses.swattest.SWATtest.plugin;
-
 public class ItemDropListener implements Listener {
 
-    public static HashMap<String, Long> cooldowns = new HashMap<>();
-    public static HashMap<String, Integer> cooldowntimes = new HashMap<>();
+    public static final HashMap<String, Long> cooldowns = new HashMap<>();
+    public static final HashMap<String, Integer> cooldowntimes = new HashMap<>();
 
     @EventHandler
     public void onItemDrop(PlayerDropItemEvent event) {
@@ -90,6 +89,7 @@ public class ItemDropListener implements Listener {
         }
     }
 
+    @SuppressWarnings("SameReturnValue")
     @EventHandler
 
     public boolean onFlashDrop(PlayerInteractEvent event) {
@@ -98,6 +98,8 @@ public class ItemDropListener implements Listener {
         if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 
             if (player.getInventory().getItemInMainHand().getType() == Material.SLIME_BALL) {
+                PlayerDeathListener.spawnprotection.put(player.getName(), false);
+
                 if (cooldowns.containsKey(event.getPlayer().getName())) {
                     long secondsLeft = ((cooldowns.get(player.getName()))) + cooldowntimes.get(player.getName()) - (System.currentTimeMillis());
                     if (secondsLeft > 0) {
@@ -133,7 +135,7 @@ public class ItemDropListener implements Listener {
     }
 
     public void FlashDelay(ItemSpawnEvent event) {
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+        Bukkit.getScheduler().runTaskLater(SWATtest.plugin, () -> {
 
             List<Entity> entitylist1 = event.getEntity().getNearbyEntities(5, 5, 5);
             for (Entity entity : entitylist1) {
@@ -143,9 +145,10 @@ public class ItemDropListener implements Listener {
 
                     Random rand = new Random();
 
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, rand.nextInt(140) + 60, 0));
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, rand.nextInt(200) + 200, 0));
-
+                    if (!PlayerDeathListener.spawnprotection.get(player.getName())) {
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, rand.nextInt(140) + 60, 0));
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, rand.nextInt(200) + 200, 0));
+                    }
                 }
             }
 
@@ -157,9 +160,10 @@ public class ItemDropListener implements Listener {
 
                     Random rand = new Random();
 
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, rand.nextInt(100), 0));
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, rand.nextInt(200), 0));
-
+                    if (!PlayerDeathListener.spawnprotection.get(player.getName())) {
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, rand.nextInt(100), 0));
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, rand.nextInt(200), 0));
+                    }
                 }
             }
 

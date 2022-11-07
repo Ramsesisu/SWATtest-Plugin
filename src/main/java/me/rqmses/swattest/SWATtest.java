@@ -3,12 +3,7 @@ package me.rqmses.swattest;
 import me.rqmses.swattest.commands.*;
 import me.rqmses.swattest.listeners.*;
 import org.bukkit.*;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.world.WorldSaveEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -51,6 +46,7 @@ public final class SWATtest extends JavaPlugin implements Listener {
         pluginManager.registerEvents(new InventoryOpenListener(), this);
         pluginManager.registerEvents(new BlockBreakListener(), this);
         pluginManager.registerEvents(new BlockPlaceListener(), this);
+        pluginManager.registerEvents(new PlayerSwitchItemListener(), this);
     }
 
     private void commandRegistration() {
@@ -67,7 +63,4 @@ public final class SWATtest extends JavaPlugin implements Listener {
         getCommand("cooldown").setExecutor(new CoolDownCommand());
     }
 
-    public static SWATtest getInstance() {
-        return plugin;
-    }
 }

@@ -30,7 +30,7 @@ public class FlyCommand implements CommandExecutor {
                 player.setAllowFlight(false);
                 player.setPlayerListName(player.getPlayerListName().substring(0, player.getPlayerListName().length()-4));
                 player.sendMessage(ChatColor.AQUA + "Flug-Modus deaktiviert!");
-            } else if (!flyingplayers.contains(player)) {
+            } else {
                 flyingplayers.add(player);
                 player.setAllowFlight(true);
                 player.setPlayerListName(player.getPlayerListName() + ChatColor.translateAlternateColorCodes('&', "&b&l F"));
