@@ -1,0 +1,40 @@
+name: SWATtest
+version: '${project.version}'
+main: me.rqmses.swattest.SWATtest
+commands:
+  fly:
+    description:  Schaltet den Flug-Modus um.
+    usage: /<command>
+  heal:
+    description:  Regeneriert den Spieler voll.
+    usage: /<command>
+  warp:
+    description: Teleportiert den Spieler an einen gewünschten Ort.
+    usage: /<command> <target>
+  equip:
+    description: Wählt ein Equip aus.
+    usage: /<command> <equip>
+  spawn:
+    description: Setzt deinen Spawnpunkt neu.
+    usage: /<command>
+  use:
+    description: Nimm die ausgewählte Droge.
+    usage: /<command> <drug>
+  team:
+    description: Wähle ein Team aus.
+    usage: /<command> <team>
+  camera:
+    description: Schalte den Kamera-Modus um.
+    usage: /<command>
+  bombe:
+    description: Platziere eine temporäre Bombe.
+    usage: /<command>
+  navi:
+    description: Zeige die Richtung deines Ziels an.
+    usage: /<command> <target>
+  cooldown:
+    description: Setzt sämtliche Reload-Zeiten zurück.
+    usage: /<command>
+  resetdata:
+    description: Setzt den Speicherstand zurück.
+    usage: /<command>
