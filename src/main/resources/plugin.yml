@@ -38,3 +38,6 @@ commands:
   resetdata:
     description: Setzt den Speicherstand zurück.
     usage: /<command>
+  trainingsbot:
+    description: Spawnt eine Trainings-KI
+    usage: /<command> <name>
