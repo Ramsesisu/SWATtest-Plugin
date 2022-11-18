@@ -40,10 +40,9 @@ public class PlayerDeathListener implements Listener {
   
   String playerdeathmessage;
   
-  List<Entity> nearPlayers = new ArrayList<>();
-  
   @EventHandler
   public void onDeath(PlayerDeathEvent event) {
+    if (event.getEntity().getName().contains("-KI")) {return;}
     System.out.println(event.getDeathMessage());
     final Player player = event.getEntity().getPlayer();
     Location deathloc = player.getLocation();
@@ -51,8 +50,8 @@ public class PlayerDeathListener implements Listener {
     player.setCustomName("dead");
     if (event.getDeathMessage().contains("fell")) {
       killer = "Fallschaden";
-      this.deathmessage = ChatColor.translateAlternateColorCodes('&', "&7" + event.getEntity().getName() + " &f&list an &7&lFallschaden&f&l gestorben.");
-      this.deathmessage = ChatColor.translateAlternateColorCodes('&', "&7&f&lDu bist an &7&lFallschaden&f&l gestorben.");
+      deathmessage = ChatColor.translateAlternateColorCodes('&', "&7" + event.getEntity().getName() + " &f&list an &7&lFallschaden&f&l gestorben.");
+      deathmessage = ChatColor.translateAlternateColorCodes('&', "&7&f&lDu bist an &7&lFallschaden&f&l gestorben.");
     } else if (event.getDeathMessage().contains("M4") || event.getDeathMessage().contains("Sniper") || event.getDeathMessage().contains("MP5") || event.getDeathMessage().contains("Jagdflinte") || event.getDeathMessage().contains("Messer")) {
       String weapon = null;
       String verb = "erschossen";
@@ -68,8 +67,8 @@ public class PlayerDeathListener implements Listener {
         weapon = "Messer";
         verb = "erstochen";
       } 
-      this.deathmessage = ChatColor.translateAlternateColorCodes('&', "&7" + event.getEntity().getName() + " &f&lwurde von &7" + killer + " &f&lmit&7&l " + weapon + " &f&l" + verb + ".");
-      this.playerdeathmessage = ChatColor.translateAlternateColorCodes('&', "&7&f&lDu wurdest von &7" + killer + " &f&lmit&7&l " + weapon + " &f&l" + verb + ".");
+      deathmessage = ChatColor.translateAlternateColorCodes('&', "&7" + event.getEntity().getName() + " &f&lwurde von &7" + killer + " &f&lmit&7&l " + weapon + " &f&l" + verb + ".");
+      playerdeathmessage = ChatColor.translateAlternateColorCodes('&', "&7&f&lDu wurdest von &7" + killer + " &f&lmit&7&l " + weapon + " &f&l" + verb + ".");
     } else {
       String killcause = String.valueOf(event.getEntity().getLastDamageCause().getCause());
       switch (killcause) {
@@ -83,8 +82,8 @@ public class PlayerDeathListener implements Listener {
           killer = "Flammenwerfer";
           break;
       } 
-      this.deathmessage = ChatColor.translateAlternateColorCodes('&', "&7" + event.getEntity().getName() + " &f&lwurde von &7" + killer + " &f&lgetötet");
-      this.playerdeathmessage = ChatColor.translateAlternateColorCodes('&', "&7&f&lDu wurdest von &7" + killer + " &f&lgetötet");
+      deathmessage = ChatColor.translateAlternateColorCodes('&', "&7" + event.getEntity().getName() + " &f&lwurde von &7" + killer + " &f&lgetötet");
+      playerdeathmessage = ChatColor.translateAlternateColorCodes('&', "&7&f&lDu wurdest von &7" + killer + " &f&lgetötet");
     } 
     player.sendTitle(ChatColor.translateAlternateColorCodes('&', "&cDu wurdest getötet"), ChatColor.translateAlternateColorCodes('&', "&cvon &7" + killer), 10, 30, 20);
     List<Entity> nearPlayers = new ArrayList<>(getEntitiesAroundPoint(deathloc, 30.0D));
@@ -94,8 +93,8 @@ public class PlayerDeathListener implements Listener {
           nearPlayers2.add(playerName);
         });
     nearPlayers2.remove(player);
-    nearPlayers2.forEach(playerName2 -> playerName2.sendMessage(this.deathmessage));
-    player.sendMessage(this.playerdeathmessage);
+    nearPlayers2.forEach(playerName2 -> playerName2.sendMessage(deathmessage));
+    player.sendMessage(playerdeathmessage);
     event.setDeathMessage("");
     event.getEntity().spigot().respawn();
     player.teleport(deathloc);
