@@ -12,17 +12,17 @@ public final class SWATtest extends JavaPlugin implements Listener {
     public static SWATtest plugin;
 
     public void onEnable() {
-        System.out.println("Plugin erfolgreich geladen.");
         plugin = this;
         listenerRegistration();
         commandRegistration();
+        System.out.println("Plugin erfolgreich geladen.");
     }
 
     public void onDisable() {
-        System.out.println("Plugin erfolgreich heruntergefahren.");
         if (BombeCommand.bombloc != null &&
                 Bukkit.getWorld("world").getBlockAt(BombeCommand.bombloc).getType() == Material.TNT)
             Bukkit.getWorld("world").getBlockAt(BombeCommand.bombloc).setType(Material.AIR);
+        System.out.println("Plugin erfolgreich heruntergefahren.");
     }
 
     private void listenerRegistration() {
