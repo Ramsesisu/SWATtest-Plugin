@@ -29,6 +29,7 @@ public class PlayerHitListener implements Listener {
     if (event.getEntity() instanceof Player && 
       event.getDamager().getType() != EntityType.ARROW && 
       event.getDamager() instanceof Player) {
+      if (event.getEntity().getName().contains("-KI")) {return true;}
       hitter = (Player)event.getDamager();
       PlayerDeathListener.setKiller(hitter.getName());
       if (((Boolean)PlayerDeathListener.spawnprotection.get(hitter.getName())).booleanValue()) {

@@ -36,6 +36,7 @@ public class PlayerDamageListener implements Listener {
   @EventHandler
   public void onBulletHit(EntityDamageByEntityEvent event) {
     if (event.getEntity() instanceof Player) {
+      if (event.getEntity().getName().contains("-KI")) {return;}
       Player player = (Player)event.getEntity();
       if (((Boolean)PlayerDeathListener.spawnprotection.get(player.getName())).booleanValue()) {
         event.setCancelled(true);
