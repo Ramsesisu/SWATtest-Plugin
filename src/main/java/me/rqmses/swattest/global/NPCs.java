@@ -5,6 +5,7 @@ import com.google.gson.JsonParser;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import me.rqmses.swattest.SWATtest;
+import net.citizensnpcs.api.event.CitizensEnableEvent;
 import net.citizensnpcs.api.npc.NPC;
 import net.minecraft.server.v1_12_R1.EntityPlayer;
 import org.bukkit.ChatColor;
@@ -12,11 +13,13 @@ import org.bukkit.GameMode;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 public class NPCs {
 
@@ -33,7 +36,9 @@ public class NPCs {
         Player npcplayer = (Player) npc.getEntity();
         ((CraftPlayer) npcplayer).getProfile().getProperties().put("textures", new Property("textures", skin[0], skin[1]));
         npcplayer.setGameMode(GameMode.SURVIVAL);
-        npc.setProtected(false);
+        ((CraftPlayer) npcplayer).getInventory().setItemInMainHand(Items.getM4());
+        ((CraftPlayer) npcplayer).setMaxHealth(40);
+        ((CraftPlayer) npcplayer).setHealth(40);
     }
 
     private static String[] getSkin(Player player, String name) {

@@ -52,6 +52,7 @@ public final class SWATtest extends JavaPlugin implements Listener {
         pluginManager.registerEvents(new BlockPlaceListener(), this);
         pluginManager.registerEvents(new PlayerSwitchItemListener(), this);
         pluginManager.registerEvents(new NPCDeathListener(), this);
+        pluginManager.registerEvents(new NPCSpawnListener(), this);
     }
 
     private void commandRegistration() {
