@@ -38,12 +38,18 @@ public class PlayerDamageListener implements Listener {
     if (event.getEntity() instanceof Player) {
       if (event.getEntity().getName().contains("-KI")) {return;}
       Player player = (Player)event.getEntity();
-      if (((Boolean)PlayerDeathListener.spawnprotection.get(player.getName())).booleanValue()) {
-        event.setCancelled(true);
-        return;
-      } 
+      if (!player.getName().contains("-KI")) {
+        if (((Boolean) PlayerDeathListener.spawnprotection.get(player.getName())).booleanValue()) {
+          event.setCancelled(true);
+          return;
+        }
+      }
       if (event.getDamager().getType() == EntityType.ARROW) {
-        PlayerDeathListener.setKiller(shooter.getName());
+        if (shooter != null) {
+          PlayerDeathListener.setKiller(shooter.getName());
+        } else {
+          PlayerDeathListener.setKiller("Bot");
+        }
         String weapontype = event.getDamager().getCustomName();
         if (Objects.equals(weapontype, "m4"))
           if (player.getInventory().getChestplate() == null) {

@@ -1,6 +1,7 @@
 package me.rqmses.swattest;
 
 import me.rqmses.swattest.commands.*;
+import me.rqmses.swattest.global.npctraits.AttackTrait;
 import me.rqmses.swattest.listeners.*;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
@@ -22,6 +23,7 @@ public final class SWATtest extends JavaPlugin implements Listener {
         commandRegistration();
 
         registry =  CitizensAPI.getNPCRegistry();
+        net.citizensnpcs.api.CitizensAPI.getTraitFactory().registerTrait(net.citizensnpcs.api.trait.TraitInfo.create(AttackTrait.class));
 
         System.out.println("Plugin erfolgreich geladen.");
     }
@@ -30,7 +32,7 @@ public final class SWATtest extends JavaPlugin implements Listener {
         if (BombeCommand.bombloc != null &&
                 Bukkit.getWorld("world").getBlockAt(BombeCommand.bombloc).getType() == Material.TNT)
             Bukkit.getWorld("world").getBlockAt(BombeCommand.bombloc).setType(Material.AIR);
-        for (NPC npc : registry) {
+        for (NPC npc : NPCCommand.getNPCs()) {
             npc.destroy();
         }
         System.out.println("Plugin erfolgreich heruntergefahren.");
@@ -51,8 +53,6 @@ public final class SWATtest extends JavaPlugin implements Listener {
         pluginManager.registerEvents(new BlockBreakListener(), this);
         pluginManager.registerEvents(new BlockPlaceListener(), this);
         pluginManager.registerEvents(new PlayerSwitchItemListener(), this);
-        pluginManager.registerEvents(new NPCDeathListener(), this);
-        pluginManager.registerEvents(new NPCSpawnListener(), this);
     }
 
     private void commandRegistration() {

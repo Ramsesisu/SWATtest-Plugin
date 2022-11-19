@@ -1,19 +1,9 @@
 package me.rqmses.swattest.listeners;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
 import me.rqmses.swattest.SWATtest;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
@@ -27,13 +17,17 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 
 public class PlayerInteractListener implements Listener {
   public static final HashMap<String, Long> cooldowns = new HashMap<>();
@@ -44,7 +38,7 @@ public class PlayerInteractListener implements Listener {
   
   public static final HashMap<String, Integer> tazerstatus = new HashMap<>();
   
-  public static final HashMap<String, String[]> tazerreloadmsg = (HashMap)new HashMap<>();
+  public static final HashMap<String, String[]> tazerreloadmsg = new HashMap<>();
   
   public static final HashMap<String, BukkitTask> tazertask = new HashMap<>();
   
@@ -71,239 +65,35 @@ public class PlayerInteractListener implements Listener {
       return false; 
     if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
       if (player.getInventory().getItemInMainHand().getType() == Material.DIAMOND_BARDING) {
-        if (cooldowns.containsKey(event.getPlayer().getName())) {
-          long secondsLeft = (Long) cooldowns.get(event.getPlayer().getName()) + (Integer) cooldowntimes.get(event.getPlayer().getName()) - System.currentTimeMillis();
-          if (secondsLeft > 0L) {
-            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.GRAY + "Du kannst diese Waffe gerade nicht benutzen..."));
-            return true;
-          } 
-        } 
-        if (((Boolean)PlayerDeathListener.spawnprotection.get(player.getName())).booleanValue()) {
-          PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.valueOf(false));
-          player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
-        } 
-        cooldowns.put(player.getName(), Long.valueOf(System.currentTimeMillis()));
-        event.setCancelled(true);
-        ItemStack gun = player.getInventory().getItemInMainHand();
-        ItemMeta meta = gun.getItemMeta();
-        String strlore = String.valueOf(meta.getLore());
-        String[] ammos = strlore.split("/");
-        ammos[0] = ammos[0].substring(3, ammos[0].length() - 2).replace("§", "");
-        ammos[1] = ammos[1].substring(2, ammos[1].length() - 1).replace("§", "");
-        int ammo = Integer.parseInt(ammos[0]);
-        int allammo = Integer.parseInt(ammos[1]);
-        if (ammo > 0) {
-          PlayerDamageListener shooter = new PlayerDamageListener();
-          shooter.setShooter(player.getName());
-          ArrayList<String> lore = new ArrayList<>();
-          String templore = ChatColor.translateAlternateColorCodes('&', "&6" + (ammo - 1) + "&8/&6" + allammo);
-          lore.add(templore);
-          meta.setLore(lore);
-          gun.setItemMeta(meta);
-          player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
-          Vector playerDirection = player.getLocation().getDirection();
-          Arrow bullet = (Arrow)player.launchProjectile(Arrow.class, playerDirection);
-          bullet.setCustomName("m4");
-          bullet.setVelocity(bullet.getVelocity().multiply(3.75D));
-          bullet.setGravity(false);
-          bullet.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
-          Bukkit.getServer().getWorld(player.getWorld().getName()).getPlayers().forEach(nearPlayer -> {
-                if (nearPlayer.getLocation().distance(player.getLocation()) <= 50.0D) {
-                  nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 100.0F, 0.55F);
-                  nearPlayer.playSound(player.getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 0.1F, 0.0F);
-                } else if (nearPlayer.getLocation().distance(player.getLocation()) <= 100.0D) {
-                  nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 50.0F, 0.55F);
-                } else if (nearPlayer.getLocation().distance(player.getLocation()) <= 150.0D) {
-                  nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 25.0F, 0.55F);
-                } else if (nearPlayer.getLocation().distance(player.getLocation()) <= 200.0D) {
-                  nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 5.0F, 0.55F);
-                } 
-              });
-          cooldowntimes.put(player.getName(), Integer.valueOf(400));
-        } else {
-          reloadGun(player, 4000, event.getItem(), 21);
-        } 
+        shootM4(player);
         return true;
       } 
       if (player.getInventory().getItemInMainHand().getType() == Material.STONE_HOE) {
-        if (cooldowns.containsKey(event.getPlayer().getName())) {
-          long secondsLeft = ((Long)cooldowns.get(player.getName())).longValue() + ((Integer)cooldowntimes.get(player.getName())).intValue() - System.currentTimeMillis();
-          if (secondsLeft > 0L) {
-            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.GRAY + "Du kannst diese Waffe gerade nicht benutzen..."));
-            return true;
-          } 
-        } 
-        if (((Boolean)PlayerDeathListener.spawnprotection.get(player.getName())).booleanValue()) {
-          PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.valueOf(false));
-          player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
-        } 
-        cooldowns.put(player.getName(), Long.valueOf(System.currentTimeMillis()));
-        event.setCancelled(true);
-        ItemStack gun = player.getInventory().getItemInMainHand();
-        ItemMeta meta = gun.getItemMeta();
-        String strlore = String.valueOf(meta.getLore());
-        String[] ammos = strlore.split("/");
-        ammos[0] = ammos[0].substring(3, ammos[0].length() - 2).replace("§", "");
-        ammos[1] = ammos[1].substring(2, ammos[1].length() - 1).replace("§", "");
-        int ammo = Integer.parseInt(ammos[0]);
-        int allammo = Integer.parseInt(ammos[1]);
-        if (ammo > 0) {
-          PlayerDamageListener shooter = new PlayerDamageListener();
-          shooter.setShooter(player.getName());
-          ArrayList<String> lore = new ArrayList<>();
-          String templore = ChatColor.translateAlternateColorCodes('&', "&6" + (ammo - 1) + "&8/&6" + allammo);
-          lore.add(templore);
-          meta.setLore(lore);
-          gun.setItemMeta(meta);
-          player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
-          Vector playerDirection = player.getLocation().getDirection();
-          Arrow bullet = (Arrow)player.launchProjectile(Arrow.class, playerDirection);
-          bullet.setCustomName("sniper");
-          bullet.setVelocity(bullet.getVelocity().multiply(6));
-          bullet.setGravity(false);
-          bullet.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
-          Bukkit.getServer().getWorld(player.getWorld().getName()).getPlayers().forEach(nearPlayer -> {
-                if (nearPlayer.getLocation().distance(player.getLocation()) <= 50.0D) {
-                  nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 100.0F, 0.0F);
-                  nearPlayer.playSound(player.getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 0.1F, 0.0F);
-                } else if (nearPlayer.getLocation().distance(player.getLocation()) <= 100.0D) {
-                  nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 50.0F, 0.0F);
-                } else if (nearPlayer.getLocation().distance(player.getLocation()) <= 150.0D) {
-                  nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 25.0F, 0.0F);
-                } 
-                if (nearPlayer.getLocation().distance(player.getLocation()) <= 200.0D)
-                  nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 5.0F, 0.0F); 
-              });
-          cooldowntimes.put(player.getName(), Integer.valueOf(5000));
-        } else {
-          reloadGun(player, 10000, event.getItem(), 5);
-        } 
+        shootSniper(player);
         return true;
       } 
       if (player.getInventory().getItemInMainHand().getType() == Material.GOLD_BARDING) {
-        if (cooldowns.containsKey(event.getPlayer().getName())) {
-          long secondsLeft = ((Long)cooldowns.get(player.getName())).longValue() + ((Integer)cooldowntimes.get(player.getName())).intValue() - System.currentTimeMillis();
-          if (secondsLeft > 0L) {
-            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.GRAY + "Du kannst diese Waffe gerade nicht benutzen..."));
-            return true;
-          } 
-        } 
-        if (((Boolean)PlayerDeathListener.spawnprotection.get(player.getName())).booleanValue()) {
-          PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.valueOf(false));
-          player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
-        } 
-        cooldowns.put(player.getName(), Long.valueOf(System.currentTimeMillis()));
-        event.setCancelled(true);
-        ItemStack gun = player.getInventory().getItemInMainHand();
-        ItemMeta meta = gun.getItemMeta();
-        String strlore = String.valueOf(meta.getLore());
-        String[] ammos = strlore.split("/");          
-        ammos[0] = ammos[0].substring(3, ammos[0].length() - 2).replace("§", "");
-        ammos[1] = ammos[1].substring(2, ammos[1].length() - 1).replace("§", "");
-        int ammo = Integer.parseInt(ammos[0]);
-        int allammo = Integer.parseInt(ammos[1]);
-        if (ammo > 0) {
-          PlayerDamageListener shooter = new PlayerDamageListener();
-          shooter.setShooter(player.getName());
-          ArrayList<String> lore = new ArrayList<>();
-          String templore = ChatColor.translateAlternateColorCodes('&', "&6" + (ammo - 1) + "&8/&6" + allammo);
-          lore.add(templore);
-          meta.setLore(lore);
-          gun.setItemMeta(meta);
-          player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
-          Vector playerDirection = player.getLocation().getDirection();
-          Arrow bullet = (Arrow)player.launchProjectile(Arrow.class, playerDirection);
-          bullet.setCustomName("mp5");
-          bullet.setVelocity(bullet.getVelocity().multiply(5));
-          bullet.setGravity(false);
-          bullet.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
-          Bukkit.getServer().getWorld(player.getWorld().getName()).getPlayers().forEach(nearPlayer -> {
-                if (nearPlayer.getLocation().distance(player.getLocation()) <= 50.0D) {
-                  nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 100.0F, 1.0F);
-                  nearPlayer.playSound(player.getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 0.1F, 0.0F);
-                } else if (nearPlayer.getLocation().distance(player.getLocation()) <= 100.0D) {
-                  nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 50.0F, 1.0F);
-                } else if (nearPlayer.getLocation().distance(player.getLocation()) <= 150.0D) {
-                  nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 25.0F, 1.0F);
-                } 
-                if (nearPlayer.getLocation().distance(player.getLocation()) <= 200.0D)
-                  nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 5.0F, 1.0F); 
-              });
-          cooldowntimes.put(player.getName(), Integer.valueOf(300));
-        } else {
-          reloadGun(player, 3000, event.getItem(), 25);
-        } 
+        shootMP5(player);
         return true;
       } 
       if (player.getInventory().getItemInMainHand().getType() == Material.GOLD_HOE) {
-        if (cooldowns.containsKey(event.getPlayer().getName())) {
-          long secondsLeft = ((Long)cooldowns.get(player.getName())).longValue() + ((Integer)cooldowntimes.get(player.getName())).intValue() - System.currentTimeMillis();
-          if (secondsLeft > 0L) {
-            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.GRAY + "Du kannst diese Waffe gerade nicht benutzen..."));
-            return true;
-          } 
-        } 
-        if (((Boolean)PlayerDeathListener.spawnprotection.get(player.getName())).booleanValue()) {
-          PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.valueOf(false));
-          player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
-        } 
-        cooldowns.put(player.getName(), Long.valueOf(System.currentTimeMillis()));
-        event.setCancelled(true);
-        ItemStack gun = player.getInventory().getItemInMainHand();
-        ItemMeta meta = gun.getItemMeta();
-        String strlore = String.valueOf(meta.getLore());
-        String[] ammos = strlore.split("/");
-        ammos[0] = ammos[0].substring(3, ammos[0].length() - 2).replace("§", "");
-        ammos[1] = ammos[1].substring(2, ammos[1].length() - 1).replace("§", "");
-        int ammo = Integer.parseInt(ammos[0]);
-        int allammo = Integer.parseInt(ammos[1]);
-        if (ammo > 0) {
-          PlayerDamageListener shooter = new PlayerDamageListener();
-          shooter.setShooter(player.getName());
-          ArrayList<String> lore = new ArrayList<>();
-          String templore = ChatColor.translateAlternateColorCodes('&', "&6" + (ammo - 1) + "&8/&6" + allammo);
-          lore.add(templore);
-          meta.setLore(lore);
-          gun.setItemMeta(meta);
-          player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
-          Vector playerDirection = player.getLocation().getDirection();
-          Arrow bullet = (Arrow)player.launchProjectile(Arrow.class, playerDirection);
-          bullet.setCustomName("jagdflinte");
-          bullet.setVelocity(bullet.getVelocity().multiply(3));
-          bullet.setGravity(false);
-          bullet.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
-          Bukkit.getServer().getWorld(player.getWorld().getName()).getPlayers().forEach(nearPlayer -> {
-                if (nearPlayer.getLocation().distance(player.getLocation()) <= 50.0D) {
-                  nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 100.0F, -0.5F);
-                  nearPlayer.playSound(player.getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 0.1F, 0.0F);
-                } else if (nearPlayer.getLocation().distance(player.getLocation()) <= 100.0D) {
-                  nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 50.0F, -0.5F);
-                } else if (nearPlayer.getLocation().distance(player.getLocation()) <= 150.0D) {
-                  nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 25.0F, -0.5F);
-                } 
-                if (nearPlayer.getLocation().distance(player.getLocation()) <= 200.0D)
-                  nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 5.0F, -0.5F); 
-              });
-          cooldowntimes.put(player.getName(), Integer.valueOf(3000));
-        } else {
-          reloadGun(player, 6000, event.getItem(), 5);
-        } 
+        shootJagdflinte(player);
         return true;
       } 
       if (player.getInventory().getItemInMainHand().getType() == Material.GOLD_AXE) {
-        if (((Boolean)rpgcooldown.get(player.getName())).booleanValue()) {
+        if (rpgcooldown.get(player.getName())) {
           if (cooldowns.containsKey(event.getPlayer().getName())) {
-            long secondsLeft = ((Long)cooldowns.get(player.getName())).longValue() + ((Integer)cooldowntimes.get(player.getName())).intValue() - System.currentTimeMillis();
+            long secondsLeft = cooldowns.get(player.getName()) + cooldowntimes.get(player.getName()) - System.currentTimeMillis();
             if (secondsLeft > 0L) {
               player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.GRAY + "Du kannst diese Waffe gerade nicht benutzen..."));
               return true;
             } 
           } 
-          if (((Boolean)PlayerDeathListener.spawnprotection.get(player.getName())).booleanValue()) {
-            PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.valueOf(false));
+          if (PlayerDeathListener.spawnprotection.get(player.getName())) {
+            PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.FALSE);
             player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
           } 
-          cooldowns.put(player.getName(), Long.valueOf(System.currentTimeMillis()));
+          cooldowns.put(player.getName(), System.currentTimeMillis());
           event.setCancelled(true);
           ItemStack gun = player.getInventory().getItemInMainHand();
           ItemMeta meta = gun.getItemMeta();
@@ -323,12 +113,12 @@ public class PlayerInteractListener implements Listener {
             gun.setItemMeta(meta);
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
             Vector playerDirection = player.getLocation().getDirection();
-            Arrow bullet = (Arrow)player.launchProjectile(Arrow.class, playerDirection);
+            Arrow bullet = player.launchProjectile(Arrow.class, playerDirection);
             bullet.setCustomName("rpg");
             bullet.setVelocity(bullet.getVelocity().multiply(7));
             bullet.setGravity(false);
             bullet.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
-            cooldowntimes.put(player.getName(), Integer.valueOf(0));
+            cooldowntimes.put(player.getName(), 0);
           } else {
             reloadGun(player, 80000, event.getItem(), 1);
           } 
@@ -339,13 +129,13 @@ public class PlayerInteractListener implements Listener {
       } 
       if (player.getInventory().getItemInMainHand().getType() == Material.WOOD_HOE) {
         if (!tazerstatus.containsKey(player.getName()))
-          tazerstatus.put(player.getName(), Integer.valueOf(10)); 
-        if (((Integer)tazerstatus.get(player.getName())).intValue() >= 10) {
-          if (((Boolean)PlayerDeathListener.spawnprotection.get(player.getName())).booleanValue()) {
-            PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.valueOf(false));
+          tazerstatus.put(player.getName(), 10);
+        if (tazerstatus.get(player.getName()) >= 10) {
+          if (PlayerDeathListener.spawnprotection.get(player.getName())) {
+            PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.FALSE);
             player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
           } 
-          tazerstatus.put(player.getName(), Integer.valueOf(1));
+          tazerstatus.put(player.getName(), 1);
           Location origin = player.getEyeLocation();
           Vector direction = origin.getDirection();
           direction.normalize();
@@ -359,7 +149,7 @@ public class PlayerInteractListener implements Listener {
             if (e instanceof LivingEntity)
               livingE.add((LivingEntity)e); 
           } 
-          BlockIterator bItr = new BlockIterator((LivingEntity)player, 5);
+          BlockIterator bItr = new BlockIterator(player, 5);
           while (bItr.hasNext()) {
             Block block = bItr.next();
             int bx = block.getX();
@@ -371,16 +161,14 @@ public class PlayerInteractListener implements Listener {
               double ey = loc.getY();
               double ez = loc.getZ();
               if (bx - 0.75D <= ex && ex <= bx + 1.75D && bz - 0.75D <= ez && ez <= bz + 1.75D && (by - 1) <= ey && ey <= by + 2.5D) {
-                LivingEntity target = e;
-                if (target.getHealth() >= 1.0D)
-                  target.damage(1.0D); 
-                target.setGlowing(true);
-                LivingEntity finalTarget = target;
-                BukkitTask bukkitTask = Bukkit.getScheduler().runTaskLater((Plugin) SWATtest.plugin, () -> {
-                  finalTarget.setGlowing(false);
-                  finalTarget.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 7, 1));
-                  finalTarget.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 16, 3));
-                  finalTarget.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 16, 255));
+                if (e.getHealth() >= 1.0D)
+                  e.damage(1.0D);
+                e.setGlowing(true);
+                Bukkit.getScheduler().runTaskLater(SWATtest.plugin, () -> {
+                  e.setGlowing(false);
+                  e.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 7, 1));
+                  e.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 16, 3));
+                  e.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 16, 255));
                 }, 10L);
                 return true;
               } 
@@ -400,24 +188,24 @@ public class PlayerInteractListener implements Listener {
           event.setCancelled(true);
           return true;
         } 
-        if (((Boolean)PlayerDeathListener.spawnprotection.get(player.getName())).booleanValue()) {
-          PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.valueOf(false));
+        if (PlayerDeathListener.spawnprotection.get(player.getName())) {
+          PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.FALSE);
           player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
         } 
-        flammilast.putIfAbsent(player.getName(), Long.valueOf(1L));
-        flammiloaded.putIfAbsent(player.getName(), Boolean.valueOf(false));
-        flammiloading.putIfAbsent(player.getName(), Boolean.valueOf(false));
-        flammiloadingcounter.putIfAbsent(player.getName(), Long.valueOf(100L));
+        flammilast.putIfAbsent(player.getName(), 1L);
+        flammiloaded.putIfAbsent(player.getName(), Boolean.FALSE);
+        flammiloading.putIfAbsent(player.getName(), Boolean.FALSE);
+        flammiloadingcounter.putIfAbsent(player.getName(), 100L);
         flammireleasetask.putIfAbsent(player.getName(), null);
         flammifinaltask.putIfAbsent(player.getName(), null);
         flammireloadmsg.putIfAbsent(player.getName(), ChatColor.translateAlternateColorCodes('&', "&8&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛"));
-        if (((Long)flammilast.get(player.getName())).longValue() > 0L) {
-          if (System.currentTimeMillis() - ((Long)flammiloadingcounter.get(player.getName())).longValue() >= 1050L)
-            if (((Boolean)flammiloading.get(player.getName())).booleanValue()) {
-              flammireloadmsg.put(player.getName(), ((String)flammireloadmsg.get(player.getName())).replaceFirst("8", "a"));
+        if (flammilast.get(player.getName()) > 0L) {
+          if (System.currentTimeMillis() - flammiloadingcounter.get(player.getName()) >= 1050L)
+            if (flammiloading.get(player.getName())) {
+              flammireloadmsg.put(player.getName(), flammireloadmsg.get(player.getName()).replaceFirst("8", "a"));
               player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(flammireloadmsg.get(player.getName())));
               flammiloadingcounter.put(player.getName(), flammilast.get(player.getName()));
-            } else if (((Boolean)flammiloaded.get(player.getName())).booleanValue()) {
+            } else if (flammiloaded.get(player.getName())) {
               ArrayList<String> lore = new ArrayList<>();
               String templore = ChatColor.translateAlternateColorCodes('&', "&6" + (ammo - 1) + "&8/&6" + 500);
               lore.add(templore);
@@ -426,32 +214,32 @@ public class PlayerInteractListener implements Listener {
               flammiloadingcounter.put(player.getName(), flammilast.get(player.getName()));
             }  
           if (flammifinaltask.get(player.getName()) == null)
-            flammifinaltask.put(player.getName(), Bukkit.getServer().getScheduler().runTaskLaterAsynchronously((Plugin)SWATtest.plugin, () -> {
-                    if (((Boolean)flammiloading.get(player.getName())).booleanValue() && !((Boolean)flammiloaded.get(player.getName())).booleanValue()) {
-                      flammiloaded.put(player.getName(), Boolean.valueOf(true));
-                      flammiloading.put(player.getName(), Boolean.valueOf(false));
+            flammifinaltask.put(player.getName(), Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(SWATtest.plugin, () -> {
+                    if (flammiloading.get(player.getName()) && !(Boolean) flammiloaded.get(player.getName())) {
+                      flammiloaded.put(player.getName(), Boolean.TRUE);
+                      flammiloading.put(player.getName(), Boolean.FALSE);
                       player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', "&a⬛&a⬛&a⬛&a⬛&a⬛&a⬛&a⬛&a⬛&a⬛&a⬛")));
                     } 
                     flammifinaltask.put(player.getName(), null);
                   }, 200L));
-          if (System.currentTimeMillis() - ((Long)flammilast.get(player.getName())).longValue() <= 250L) {
-            if (flammireleasetask.get(player.getName()) != null && Bukkit.getServer().getScheduler().isQueued(((BukkitTask)flammireleasetask.get(player.getName())).getTaskId()))
-              Bukkit.getServer().getScheduler().cancelTask(((BukkitTask)flammireleasetask.get(player.getName())).getTaskId()); 
-            flammireleasetask.put(player.getName(), Bukkit.getServer().getScheduler().runTaskLaterAsynchronously((Plugin)SWATtest.plugin, () -> {
+          if (System.currentTimeMillis() - flammilast.get(player.getName()) <= 250L) {
+            if (flammireleasetask.get(player.getName()) != null && Bukkit.getServer().getScheduler().isQueued(flammireleasetask.get(player.getName()).getTaskId()))
+              Bukkit.getServer().getScheduler().cancelTask(flammireleasetask.get(player.getName()).getTaskId());
+            flammireleasetask.put(player.getName(), Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(SWATtest.plugin, () -> {
                     flammireloadmsg.put(player.getName(), ChatColor.translateAlternateColorCodes('&', "&8&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛"));
-                    flammiloading.put(player.getName(), Boolean.valueOf(false));
-                    flammiloaded.put(player.getName(), Boolean.valueOf(false));
-                    if (flammifinaltask.get(player.getName()) != null && Bukkit.getServer().getScheduler().isQueued(((BukkitTask)flammifinaltask.get(player.getName())).getTaskId())) {
-                      Bukkit.getServer().getScheduler().cancelTask(((BukkitTask)flammifinaltask.get(player.getName())).getTaskId());
+                    flammiloading.put(player.getName(), Boolean.FALSE);
+                    flammiloaded.put(player.getName(), Boolean.FALSE);
+                    if (flammifinaltask.get(player.getName()) != null && Bukkit.getServer().getScheduler().isQueued(flammifinaltask.get(player.getName()).getTaskId())) {
+                      Bukkit.getServer().getScheduler().cancelTask(flammifinaltask.get(player.getName()).getTaskId());
                       flammifinaltask.put(player.getName(), null);
                     } 
                   }, 40L));
           } else {
-            flammiloading.put(player.getName(), Boolean.valueOf(true));
+            flammiloading.put(player.getName(), Boolean.TRUE);
           } 
         } 
-        flammilast.put(player.getName(), Long.valueOf(System.currentTimeMillis()));
-        if (((Boolean)flammiloaded.get(player.getName())).booleanValue()) {
+        flammilast.put(player.getName(), System.currentTimeMillis());
+        if (flammiloaded.get(player.getName())) {
           Location origin = player.getEyeLocation().subtract(0.0D, 0.25D, 0.0D);
           Vector direction = origin.getDirection();
           direction.normalize();
@@ -465,7 +253,7 @@ public class PlayerInteractListener implements Listener {
             if (e instanceof LivingEntity)
               livingE.add((LivingEntity)e); 
           } 
-          BlockIterator bItr = new BlockIterator((LivingEntity)player, 5);
+          BlockIterator bItr = new BlockIterator(player, 5);
           while (bItr.hasNext()) {
             Block block = bItr.next();
             int bx = block.getX();
@@ -477,9 +265,8 @@ public class PlayerInteractListener implements Listener {
               double ey = loc.getY();
               double ez = loc.getZ();
               if (bx - 0.75D <= ex && ex <= bx + 1.75D && bz - 0.75D <= ez && ez <= bz + 1.75D && (by - 1) <= ey && ey <= by + 2.5D) {
-                LivingEntity target = e;
-                target.damage(1.0D);
-                target.setFireTicks(100);
+                e.damage(1.0D);
+                e.setFireTicks(100);
               } 
             } 
           } 
@@ -536,10 +323,10 @@ public class PlayerInteractListener implements Listener {
     if (stack1 != null && 
       player.getInventory().getItem(event.getNewSlot()).getType() == Material.WOOD_HOE) {
       if (!tazerstatus.containsKey(player.getName()))
-        tazerstatus.put(player.getName(), Integer.valueOf(10)); 
+        tazerstatus.put(player.getName(), 10);
       tazerreloadmsg.put(player.getName(), new String[]{(ChatColor.translateAlternateColorCodes('&', "&eRecharge... &7» &8&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛"))});
-      if (((Integer)tazerstatus.get(player.getName())).intValue() < 10) {
-        final int[] temptazerstatus = { ((Integer)tazerstatus.get(player.getName())).intValue() };
+      if (tazerstatus.get(player.getName()) < 10) {
+        final int[] temptazerstatus = {tazerstatus.get(player.getName())};
         for (int i = 0; i < 10 && 
           i < temptazerstatus[0] - 1; i++) {
           tazerreloadmsg.put(player.getName(), new String[] { ((String[])tazerreloadmsg.get(player.getName()))[0].replaceFirst("8", "a") });
@@ -549,27 +336,27 @@ public class PlayerInteractListener implements Listener {
               temptazerstatus[0] = temptazerstatus[0] + 1;
               PlayerInteractListener.tazerreloadmsg.put(player.getName(), new String[] { ((String[])PlayerInteractListener.tazerreloadmsg.get(player.getName()))[0].replaceFirst("8", "a") });
               player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(((String[])PlayerInteractListener.tazerreloadmsg.get(player.getName()))[0]));
-              PlayerInteractListener.tazerstatus.put(player.getName(), Integer.valueOf(temptazerstatus[0]));
+              PlayerInteractListener.tazerstatus.put(player.getName(), temptazerstatus[0]);
               if (temptazerstatus[0] >= 10) {
                 player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', "&eRecharge... &7&aComplete")));
                 cancel();
               } 
             }
           };
-        tazertask.put(player.getName(), reload.runTaskTimer((Plugin)SWATtest.plugin, 0L, 100L));
+        tazertask.put(player.getName(), reload.runTaskTimer(SWATtest.plugin, 0L, 100L));
       } 
     } 
     if (stack2 != null && 
       player.getInventory().getItem(event.getPreviousSlot()).getType() == Material.WOOD_HOE && 
       tazertask.get(player.getName()) != null) {
-      ((BukkitTask)tazertask.get(player.getName())).cancel();
-      if (((Integer)tazerstatus.get(player.getName())).intValue() < 10)
-        tazerstatus.put(player.getName(), Integer.valueOf(((Integer)tazerstatus.get(player.getName())).intValue() - 1)); 
+      tazertask.get(player.getName()).cancel();
+      if (tazerstatus.get(player.getName()) < 10)
+        tazerstatus.put(player.getName(), tazerstatus.get(player.getName()) - 1);
     } 
   }
   
   public static void reloadGun(Player player, int cooldown, ItemStack gun, int maxammo) {
-    cooldowntimes.put(player.getName(), Integer.valueOf(cooldown));
+    cooldowntimes.put(player.getName(), cooldown);
     ItemMeta meta = gun.getItemMeta();
     String strlore = String.valueOf(meta.getLore());
     String[] ammos = strlore.split("/");
@@ -593,5 +380,234 @@ public class PlayerInteractListener implements Listener {
       player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
       player.playSound(player.getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 100.0F, 0.0F);
     } 
+  }
+
+  public static void shootM4(Player player) {
+    if (cooldowns.containsKey(player.getName())) {
+      long secondsLeft = cooldowns.get(player.getName()) + cooldowntimes.get(player.getName()) - System.currentTimeMillis();
+      if (secondsLeft > 0L) {
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.GRAY + "Du kannst diese Waffe gerade nicht benutzen..."));
+        return;
+      }
+    }
+    if (!player.getName().contains("-KI")) {
+      if (PlayerDeathListener.spawnprotection.get(player.getName())) {
+        PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.FALSE);
+        player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
+      }
+    } else {
+      if (!(player.getInventory().getItemInMainHand().getType() == Material.DIAMOND_BARDING)) {return;}
+    }
+    cooldowns.put(player.getName(), System.currentTimeMillis());
+    ItemStack gun = player.getInventory().getItemInMainHand();
+    ItemMeta meta = gun.getItemMeta();
+    String strlore = String.valueOf(meta.getLore());
+    String[] ammos = strlore.split("/");
+    ammos[0] = ammos[0].substring(3, ammos[0].length() - 2).replace("§", "");
+    ammos[1] = ammos[1].substring(2, ammos[1].length() - 1).replace("§", "");
+    int ammo = Integer.parseInt(ammos[0]);
+    int allammo = Integer.parseInt(ammos[1]);
+    if (ammo > 0) {
+      PlayerDamageListener shooter = new PlayerDamageListener();
+      shooter.setShooter(player.getName());
+      ArrayList<String> lore = new ArrayList<>();
+      String templore = ChatColor.translateAlternateColorCodes('&', "&6" + (ammo - 1) + "&8/&6" + allammo);
+      lore.add(templore);
+      meta.setLore(lore);
+      gun.setItemMeta(meta);
+      player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
+      Vector playerDirection = player.getLocation().getDirection();
+      Arrow bullet = player.launchProjectile(Arrow.class, playerDirection);
+      bullet.setCustomName("m4");
+      bullet.setVelocity(bullet.getVelocity().multiply(3.75D));
+      bullet.setGravity(false);
+      bullet.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
+      Bukkit.getServer().getWorld(player.getWorld().getName()).getPlayers().forEach(nearPlayer -> {
+        if (nearPlayer.getLocation().distance(player.getLocation()) <= 50.0D) {
+          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 100.0F, 0.55F);
+          nearPlayer.playSound(player.getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 0.1F, 0.0F);
+        } else if (nearPlayer.getLocation().distance(player.getLocation()) <= 100.0D) {
+          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 50.0F, 0.55F);
+        } else if (nearPlayer.getLocation().distance(player.getLocation()) <= 150.0D) {
+          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 25.0F, 0.55F);
+        } else if (nearPlayer.getLocation().distance(player.getLocation()) <= 200.0D) {
+          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 5.0F, 0.55F);
+        }
+      });
+      cooldowntimes.put(player.getName(), 400);
+    } else {
+      reloadGun(player, 4000, gun, 21);
+    }
+  }
+
+  public static void shootSniper(Player player) {
+
+    if (cooldowns.containsKey(player.getName())) {
+      long secondsLeft = cooldowns.get(player.getName()) + cooldowntimes.get(player.getName()) - System.currentTimeMillis();
+      if (secondsLeft > 0L) {
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.GRAY + "Du kannst diese Waffe gerade nicht benutzen..."));
+        return;
+      }
+    }
+    if (!player.getName().contains("-KI")) {
+      if (PlayerDeathListener.spawnprotection.get(player.getName())) {
+        PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.FALSE);
+        player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
+      }
+    }
+    cooldowns.put(player.getName(), System.currentTimeMillis());
+    ItemStack gun = player.getInventory().getItemInMainHand();
+    ItemMeta meta = gun.getItemMeta();
+    String strlore = String.valueOf(meta.getLore());
+    String[] ammos = strlore.split("/");
+    ammos[0] = ammos[0].substring(3, ammos[0].length() - 2).replace("§", "");
+    ammos[1] = ammos[1].substring(2, ammos[1].length() - 1).replace("§", "");
+    int ammo = Integer.parseInt(ammos[0]);
+    int allammo = Integer.parseInt(ammos[1]);
+    if (ammo > 0) {
+      PlayerDamageListener shooter = new PlayerDamageListener();
+      shooter.setShooter(player.getName());
+      ArrayList<String> lore = new ArrayList<>();
+      String templore = ChatColor.translateAlternateColorCodes('&', "&6" + (ammo - 1) + "&8/&6" + allammo);
+      lore.add(templore);
+      meta.setLore(lore);
+      gun.setItemMeta(meta);
+      player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
+      Vector playerDirection = player.getLocation().getDirection();
+      Arrow bullet = player.launchProjectile(Arrow.class, playerDirection);
+      bullet.setCustomName("sniper");
+      bullet.setVelocity(bullet.getVelocity().multiply(6));
+      bullet.setGravity(false);
+      bullet.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
+      Bukkit.getServer().getWorld(player.getWorld().getName()).getPlayers().forEach(nearPlayer -> {
+        if (nearPlayer.getLocation().distance(player.getLocation()) <= 50.0D) {
+          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 100.0F, 0.0F);
+          nearPlayer.playSound(player.getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 0.1F, 0.0F);
+        } else if (nearPlayer.getLocation().distance(player.getLocation()) <= 100.0D) {
+          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 50.0F, 0.0F);
+        } else if (nearPlayer.getLocation().distance(player.getLocation()) <= 150.0D) {
+          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 25.0F, 0.0F);
+        }
+        if (nearPlayer.getLocation().distance(player.getLocation()) <= 200.0D)
+          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 5.0F, 0.0F);
+      });
+      cooldowntimes.put(player.getName(), 5000);
+    } else {
+      reloadGun(player, 10000, gun, 5);
+    }
+  }
+
+  public static void shootMP5(Player player) {
+
+    if (cooldowns.containsKey(player.getName())) {
+      long secondsLeft = cooldowns.get(player.getName()) + cooldowntimes.get(player.getName()) - System.currentTimeMillis();
+      if (secondsLeft > 0L) {
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.GRAY + "Du kannst diese Waffe gerade nicht benutzen..."));
+        return;
+      }
+    }
+    if (!player.getName().contains("-KI")) {
+      if (PlayerDeathListener.spawnprotection.get(player.getName())) {
+        PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.FALSE);
+        player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
+      }
+    }
+    cooldowns.put(player.getName(), System.currentTimeMillis());
+    ItemStack gun = player.getInventory().getItemInMainHand();
+    ItemMeta meta = gun.getItemMeta();
+    String strlore = String.valueOf(meta.getLore());
+    String[] ammos = strlore.split("/");
+    ammos[0] = ammos[0].substring(3, ammos[0].length() - 2).replace("§", "");
+    ammos[1] = ammos[1].substring(2, ammos[1].length() - 1).replace("§", "");
+    int ammo = Integer.parseInt(ammos[0]);
+    int allammo = Integer.parseInt(ammos[1]);
+    if (ammo > 0) {
+      PlayerDamageListener shooter = new PlayerDamageListener();
+      shooter.setShooter(player.getName());
+      ArrayList<String> lore = new ArrayList<>();
+      String templore = ChatColor.translateAlternateColorCodes('&', "&6" + (ammo - 1) + "&8/&6" + allammo);
+      lore.add(templore);
+      meta.setLore(lore);
+      gun.setItemMeta(meta);
+      player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
+      Vector playerDirection = player.getLocation().getDirection();
+      Arrow bullet = player.launchProjectile(Arrow.class, playerDirection);
+      bullet.setCustomName("mp5");
+      bullet.setVelocity(bullet.getVelocity().multiply(5));
+      bullet.setGravity(false);
+      bullet.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
+      Bukkit.getServer().getWorld(player.getWorld().getName()).getPlayers().forEach(nearPlayer -> {
+        if (nearPlayer.getLocation().distance(player.getLocation()) <= 50.0D) {
+          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 100.0F, 1.0F);
+          nearPlayer.playSound(player.getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 0.1F, 0.0F);
+        } else if (nearPlayer.getLocation().distance(player.getLocation()) <= 100.0D) {
+          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 50.0F, 1.0F);
+        } else if (nearPlayer.getLocation().distance(player.getLocation()) <= 150.0D) {
+          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 25.0F, 1.0F);
+        }
+        if (nearPlayer.getLocation().distance(player.getLocation()) <= 200.0D)
+          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 5.0F, 1.0F);
+      });
+      cooldowntimes.put(player.getName(), 300);
+    } else {
+      reloadGun(player, 3000, gun, 25);
+    }
+  }
+
+  public static void shootJagdflinte(Player player) {
+
+    if (cooldowns.containsKey(player.getName())) {
+      long secondsLeft = cooldowns.get(player.getName()) + cooldowntimes.get(player.getName()) - System.currentTimeMillis();
+      if (secondsLeft > 0L) {
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.GRAY + "Du kannst diese Waffe gerade nicht benutzen..."));
+        return;
+      }
+    }
+    if (!player.getName().contains("-KI")) {
+      if (PlayerDeathListener.spawnprotection.get(player.getName())) {
+        PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.FALSE);
+        player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
+      }
+    }
+    cooldowns.put(player.getName(), System.currentTimeMillis());
+    ItemStack gun = player.getInventory().getItemInMainHand();
+    ItemMeta meta = gun.getItemMeta();
+    String strlore = String.valueOf(meta.getLore());
+    String[] ammos = strlore.split("/");
+    ammos[0] = ammos[0].substring(3, ammos[0].length() - 2).replace("§", "");
+    ammos[1] = ammos[1].substring(2, ammos[1].length() - 1).replace("§", "");
+    int ammo = Integer.parseInt(ammos[0]);
+    int allammo = Integer.parseInt(ammos[1]);
+    if (ammo > 0) {
+      PlayerDamageListener shooter = new PlayerDamageListener();
+      shooter.setShooter(player.getName());
+      ArrayList<String> lore = new ArrayList<>();
+      String templore = ChatColor.translateAlternateColorCodes('&', "&6" + (ammo - 1) + "&8/&6" + allammo);
+      lore.add(templore);
+      meta.setLore(lore);
+      gun.setItemMeta(meta);
+      player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
+      Vector playerDirection = player.getLocation().getDirection();
+      Arrow bullet = player.launchProjectile(Arrow.class, playerDirection);
+      bullet.setCustomName("jagdflinte");
+      bullet.setVelocity(bullet.getVelocity().multiply(3));
+      bullet.setGravity(false);
+      bullet.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
+      Bukkit.getServer().getWorld(player.getWorld().getName()).getPlayers().forEach(nearPlayer -> {
+        if (nearPlayer.getLocation().distance(player.getLocation()) <= 50.0D) {
+          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 100.0F, -0.5F);
+          nearPlayer.playSound(player.getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 0.1F, 0.0F);
+        } else if (nearPlayer.getLocation().distance(player.getLocation()) <= 100.0D) {
+          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 50.0F, -0.5F);
+        } else if (nearPlayer.getLocation().distance(player.getLocation()) <= 150.0D) {
+          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 25.0F, -0.5F);
+        }
+        if (nearPlayer.getLocation().distance(player.getLocation()) <= 200.0D)
+          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 5.0F, -0.5F);
+      });
+      cooldowntimes.put(player.getName(), 3000);
+    } else {
+      reloadGun(player, 6000, gun, 5);
+    }
   }
 }

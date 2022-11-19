@@ -32,10 +32,12 @@ public class PlayerHitListener implements Listener {
       if (event.getEntity().getName().contains("-KI")) {return true;}
       hitter = (Player)event.getDamager();
       PlayerDeathListener.setKiller(hitter.getName());
-      if (((Boolean)PlayerDeathListener.spawnprotection.get(hitter.getName())).booleanValue()) {
-        PlayerDeathListener.spawnprotection.put(hitter.getName(), Boolean.valueOf(false));
-        hitter.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
-      } 
+      if (!hitter.getName().contains("-KI")) {
+        if (((Boolean) PlayerDeathListener.spawnprotection.get(hitter.getName())).booleanValue()) {
+          PlayerDeathListener.spawnprotection.put(hitter.getName(), Boolean.valueOf(false));
+          hitter.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
+        }
+      }
       Player player = (Player)event.getEntity();
       ItemStack messer = ((Player)event.getDamager()).getPlayer().getInventory().getItemInMainHand();
       ItemMeta meta = messer.getItemMeta();
