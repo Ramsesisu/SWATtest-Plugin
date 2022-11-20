@@ -132,7 +132,6 @@ public class ItemDropListener implements Listener {
                 } else if (nearPlayer.hasMetadata("NPC")) {
                     this.nextplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, rand.nextInt(140) + 60, 0));
                     this.nextplayer.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, rand.nextInt(200) + 200, 0));
-                    ((NPC) this.nextplayer).getNavigator().setTarget(((NPC) this.nextplayer).getNavigator().getTargetAsLocation().add(5, 0 ,5));
                 }
               } 
             } 

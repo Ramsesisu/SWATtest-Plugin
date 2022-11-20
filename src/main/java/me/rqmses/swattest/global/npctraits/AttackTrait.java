@@ -41,6 +41,7 @@ public class AttackTrait extends Trait {
 
         taskID1.put(npc.getUniqueId(), Bukkit.getScheduler().scheduleSyncRepeatingTask(SWATtest.plugin, () -> {
             double lastDistance = Double.MAX_VALUE;
+            result = null;
             for (Player p : npcplayer.getWorld().getPlayers()) {
                 if (!((Player) npc.getEntity()).hasLineOfSight(p)) {
                     continue;
@@ -72,17 +73,15 @@ public class AttackTrait extends Trait {
         }, 60L, 60L));
 
         taskID2.put(npc.getUniqueId(), Bukkit.getScheduler().scheduleSyncRepeatingTask(SWATtest.plugin, () -> {
-            Bukkit.broadcastMessage(npc.getNavigator().getTargetType().toString());
+            boolean sight = true;
             if (((CraftPlayer) npc.getEntity()).hasPotionEffect(PotionEffectType.BLINDNESS) || ((CraftPlayer) npc.getEntity()).hasPotionEffect(PotionEffectType.CONFUSION)) {
-                npc.faceLocation(npc.getNavigator().getTargetAsLocation().add(5,0,5));
-                if (npc.getNavigator().getTargetType().equals(TargetType.ENTITY)) {
-                    npc.getNavigator().setTarget(npc.getNavigator().getTargetAsLocation().add(5, 0, 5));
-                }
+                npc.getNavigator().setTarget(result.getLocation());
             } else {
-                npc.faceLocation(npc.getNavigator().getTargetAsLocation());
+                npc.faceLocation(result.getLocation());
+                sight = ((Player) npc.getEntity()).hasLineOfSight(result);
             }
             if (result != null) {
-                if (((Player) npc.getEntity()).hasLineOfSight(result)) {
+                if (sight) {
                     PlayerInteractListener.shootM4((Player) npc.getEntity());
                 }
                 if (((Player) npc.getEntity()).getHealth() < 30) {

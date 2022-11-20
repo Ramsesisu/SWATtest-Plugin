@@ -50,7 +50,7 @@ public class PlayerDeathListener implements Listener {
     if (event.getDeathMessage().contains("fell")) {
       killer = "Fallschaden";
       deathmessage = ChatColor.translateAlternateColorCodes('&', "&7" + event.getEntity().getName() + " &f&list an &7&lFallschaden&f&l gestorben.");
-      deathmessage = ChatColor.translateAlternateColorCodes('&', "&7&f&lDu bist an &7&lFallschaden&f&l gestorben.");
+      playerdeathmessage = ChatColor.translateAlternateColorCodes('&', "&7&f&lDu bist an &7&lFallschaden&f&l gestorben.");
     } else if (event.getDeathMessage().contains("M4") || event.getDeathMessage().contains("Sniper") || event.getDeathMessage().contains("MP5") || event.getDeathMessage().contains("Jagdflinte") || event.getDeathMessage().contains("Messer")) {
       String weapon = null;
       String verb = "erschossen";
