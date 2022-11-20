@@ -41,7 +41,7 @@ public class AttackTrait extends Trait {
         taskID1.put(npcplayer.getUniqueId(), Bukkit.getScheduler().scheduleSyncRepeatingTask(SWATtest.plugin, () -> {
             double lastDistance = Double.MAX_VALUE;
             result = null;
-            for (Player p : ((Player) npcplayer.getEntity()).getWorld().getPlayers()) {
+            for (Player p : npcplayer.getEntity().getWorld().getPlayers()) {
                 if (!((Player) npcplayer.getEntity()).hasLineOfSight(p)) {
                     continue;
                 }
