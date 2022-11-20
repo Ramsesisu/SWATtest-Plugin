@@ -73,19 +73,21 @@ public class AttackTrait extends Trait {
         }, 60L, 60L));
 
         taskID2.put(npc.getUniqueId(), Bukkit.getScheduler().scheduleSyncRepeatingTask(SWATtest.plugin, () -> {
-            boolean sight = true;
-            if (((CraftPlayer) npc.getEntity()).hasPotionEffect(PotionEffectType.BLINDNESS) || ((CraftPlayer) npc.getEntity()).hasPotionEffect(PotionEffectType.CONFUSION)) {
-                npc.getNavigator().setTarget(result.getLocation());
-            } else {
-                npc.faceLocation(result.getLocation());
-                sight = ((Player) npc.getEntity()).hasLineOfSight(result);
-            }
             if (result != null) {
-                if (sight) {
-                    PlayerInteractListener.shootM4((Player) npc.getEntity());
+                boolean sight = true;
+                if (((CraftPlayer) npc.getEntity()).hasPotionEffect(PotionEffectType.BLINDNESS) || ((CraftPlayer) npc.getEntity()).hasPotionEffect(PotionEffectType.CONFUSION)) {
+                    npc.getNavigator().setTarget(result.getLocation());
+                } else {
+                    npc.faceLocation(result.getLocation());
+                    sight = ((Player) npc.getEntity()).hasLineOfSight(result);
                 }
-                if (((Player) npc.getEntity()).getHealth() < 30) {
-                    ((Player) npc.getEntity()).chat("/use Kokain");
+                if (result != null) {
+                    if (sight) {
+                        PlayerInteractListener.shootM4((Player) npc.getEntity());
+                    }
+                    if (((Player) npc.getEntity()).getHealth() < 30) {
+                        ((Player) npc.getEntity()).chat("/use Kokain");
+                    }
                 }
             }
         }, 60L, 10L));
