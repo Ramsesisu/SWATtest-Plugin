@@ -35,8 +35,6 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
                         loc = new Location(Bukkit.getWorld("world"), 103, 69, 157);
                         break;
                     case "uranberg":
-                        loc = new Location(Bukkit.getWorld("world"), -392, 194, 761);
-                        break;
                     case "flug-1":
                         loc = new Location(Bukkit.getWorld("world"), -392, 194, 761);
                         break;

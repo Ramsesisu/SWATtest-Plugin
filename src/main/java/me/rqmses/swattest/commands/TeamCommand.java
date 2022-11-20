@@ -26,13 +26,13 @@ public class TeamCommand implements CommandExecutor, TabCompleter {
     } else {
       int cooldownTime = 60;
       if (this.cooldowns.containsKey(player.getName())) {
-        long secondsLeft = ((Long)this.cooldowns.get(player.getName())).longValue() / 1000L + cooldownTime - System.currentTimeMillis() / 1000L;
+        long secondsLeft = this.cooldowns.get(player.getName()) / 1000L + cooldownTime - System.currentTimeMillis() / 1000L;
         if (secondsLeft > 0L) {
           player.sendMessage(ChatColor.AQUA + "Du kannst dein Team erst in " + ChatColor.DARK_AQUA + secondsLeft + " Sekunden" + ChatColor.AQUA + " wieder wechseln.");
           return true;
         } 
       } 
-      this.cooldowns.put(player.getName(), Long.valueOf(System.currentTimeMillis()));
+      this.cooldowns.put(player.getName(), System.currentTimeMillis());
       switch (args[0].toLowerCase()) {
         case "1":
           player.setCustomName(ChatColor.RED + player.getDisplayName());
@@ -73,13 +73,14 @@ public class TeamCommand implements CommandExecutor, TabCompleter {
   
   public static void changeName(String name, Player player) {
     try {
+      //noinspection rawtypes
       Method getHandle = player.getClass().getMethod("getHandle", (Class[])null);
       try {
         Class.forName("com.mojang.authlib.GameProfile");
       } catch (ClassNotFoundException e) {
         return;
       } 
-      Object profile = getHandle.invoke(player, new Object[0]).getClass().getMethod("getProfile", new Class[0]).invoke(getHandle.invoke(player, new Object[0]), new Object[0]);
+      Object profile = getHandle.invoke(player).getClass().getMethod("getProfile").invoke(getHandle.invoke(player));
       Field ff = profile.getClass().getDeclaredField("name");
       ff.setAccessible(true);
       ff.set(profile, name);

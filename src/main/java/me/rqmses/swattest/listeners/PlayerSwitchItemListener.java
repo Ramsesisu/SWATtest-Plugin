@@ -2,8 +2,8 @@ package me.rqmses.swattest.listeners;
 
 import java.io.IOException;
 import me.rqmses.swattest.commands.EquipCommand;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,12 +22,14 @@ public class PlayerSwitchItemListener implements Listener {
       } else {
         this.item = event.getCursor();
       } 
-      ((FileConfiguration) PlayerJoinListener.playerconfig.get(player.getUniqueId())).set((String)EquipCommand.playerequip.get(player.getName()) + "." + event.getSlot(), this.item.getType().toString());
+      PlayerJoinListener.playerconfig.get(player.getUniqueId()).set(EquipCommand.playerequip.get(player.getName()) + "." + event.getSlot(), this.item.getType().toString());
       try {
-        ((FileConfiguration) PlayerJoinListener.playerconfig.get(player.getUniqueId())).save(PlayerJoinListener.playersafe.get(player.getUniqueId()));
+        PlayerJoinListener.playerconfig.get(player.getUniqueId()).save(PlayerJoinListener.playersafe.get(player.getUniqueId()));
       } catch (IOException e) {
         throw new RuntimeException(e);
       } 
-    } 
+    } else {
+      if (!(event.getSlot() == 38)) event.setCancelled(true);
+    }
   }
 }

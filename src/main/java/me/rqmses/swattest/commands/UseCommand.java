@@ -29,11 +29,11 @@ public class UseCommand implements CommandExecutor, TabCompleter {
       if (player.getGameMode() == GameMode.SURVIVAL) {
         int cooldownTime = 10;
         if (cooldowns.containsKey(player.getName())) {
-          long secondsLeft = ((Long)cooldowns.get(player.getName())).longValue() / 1000L + cooldownTime - System.currentTimeMillis() / 1000L;
+          long secondsLeft = cooldowns.get(player.getName()) / 1000L + cooldownTime - System.currentTimeMillis() / 1000L;
           if (secondsLeft > 0L)
             return true; 
         } 
-        cooldowns.put(player.getName(), Long.valueOf(System.currentTimeMillis()));
+        cooldowns.put(player.getName(), System.currentTimeMillis());
         if (args.length == 0) {
           player.sendMessage(ChatColor.RED + "Du hast keine Droge angeben!");
         } else {

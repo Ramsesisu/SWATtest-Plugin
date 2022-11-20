@@ -31,11 +31,11 @@ public class PlayerJoinListener implements Listener {
     player.setCustomName("");
     player.getActivePotionEffects().clear();
     player.getInventory().clear();
-    PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.valueOf(false));
+    PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.FALSE);
     Functions.equipPlayer(player);
     playersafe.put(player.getUniqueId(), new File("data" + File.separator + event.getPlayer().getUniqueId() + ".yml"));
     playerconfig.put(player.getUniqueId(), YamlConfiguration.loadConfiguration(playersafe.get(player.getUniqueId())));
-    if (!((File)playersafe.get(player.getUniqueId())).exists()) {
+    if (!playersafe.get(player.getUniqueId()).exists()) {
       Functions.createFile(player);
       player.setBedSpawnLocation(new Location(Bukkit.getWorld("world"), 103.0D, 70.0D, 157.0D), true);
       player.teleport(new Location(Bukkit.getWorld("world"), 103.0D, 70.0D, 157.0D));

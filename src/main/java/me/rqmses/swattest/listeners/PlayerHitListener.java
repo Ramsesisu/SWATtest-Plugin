@@ -33,8 +33,8 @@ public class PlayerHitListener implements Listener {
       hitter = (Player)event.getDamager();
       PlayerDeathListener.setKiller(hitter.getName());
       if (!hitter.getName().contains("-KI")) {
-        if (((Boolean) PlayerDeathListener.spawnprotection.get(hitter.getName())).booleanValue()) {
-          PlayerDeathListener.spawnprotection.put(hitter.getName(), Boolean.valueOf(false));
+        if (PlayerDeathListener.spawnprotection.get(hitter.getName())) {
+          PlayerDeathListener.spawnprotection.put(hitter.getName(), Boolean.FALSE);
           hitter.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
         }
       }
@@ -58,13 +58,13 @@ public class PlayerHitListener implements Listener {
         }  
       if (hitter.getInventory().getItemInMainHand().getType() == Material.FEATHER) {
         if (this.cooldowns.containsKey(hitter.getName())) {
-          long secondsLeft = ((Long)this.cooldowns.get(hitter.getName())).longValue() + cooldownTime - System.currentTimeMillis();
+          long secondsLeft = this.cooldowns.get(hitter.getName()) + cooldownTime - System.currentTimeMillis();
           if (secondsLeft > 0L) {
             event.setCancelled(true);
             return true;
           } 
         } 
-        this.cooldowns.put(hitter.getName(), Long.valueOf(System.currentTimeMillis()));
+        this.cooldowns.put(hitter.getName(), System.currentTimeMillis());
         event.setDamage(7.0D);
         ArrayList<String> lore = new ArrayList<>();
         String templore = ChatColor.translateAlternateColorCodes('&', "&6" + (ammo - 1) + "&8/&6" + 'd');
@@ -99,7 +99,7 @@ public class PlayerHitListener implements Listener {
     if ((event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) && 
       player.getInventory().getItemInMainHand().getType() == Material.FEATHER) {
       hitter = player;
-      PlayerDeathListener.spawnprotection.put(hitter.getName(), Boolean.valueOf(false));
+      PlayerDeathListener.spawnprotection.put(hitter.getName(), Boolean.FALSE);
     } 
   }
 }

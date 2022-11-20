@@ -1,6 +1,5 @@
 package me.rqmses.swattest.commands;
 
-import java.io.File;
 import me.rqmses.swattest.global.Functions;
 import me.rqmses.swattest.listeners.PlayerJoinListener;
 import org.bukkit.Bukkit;
@@ -20,8 +19,9 @@ public class ResetDataCommand implements CommandExecutor {
           this.player = Bukkit.getPlayer(args[0]); 
       } else {
         this.player = (Player)sender;
-      } 
-      ((File) PlayerJoinListener.playersafe.get(this.player.getUniqueId())).delete();
+      }
+      //noinspection ResultOfMethodCallIgnored
+      PlayerJoinListener.playersafe.get(this.player.getUniqueId()).delete();
       Functions.createFile(this.player);
       this.player.sendMessage(ChatColor.GRAY + "Dein Speicherstand wurde zurückgesetzt!");
     } 

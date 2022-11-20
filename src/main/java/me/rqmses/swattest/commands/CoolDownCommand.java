@@ -15,12 +15,12 @@ public class CoolDownCommand implements CommandExecutor {
       if (player.isOp()) {
         if (args.length != 0)
           player = Bukkit.getPlayer(args[0]); 
-        PlayerInteractListener.cooldowntimes.put(player.getUniqueId(), Integer.valueOf(0));
-        PlayerInteractListener.cooldowns.put(player.getUniqueId(), Long.valueOf(0L));
-        PlayerInteractListener.tazerstatus.put(player.getName(), Integer.valueOf(10));
-        PlayerInteractListener.rpgcooldown.put(player.getName(), Boolean.valueOf(true));
-        UseCommand.cooldowns.put(player.getName(), Long.valueOf(0L));
-        EquipCommand.cooldowns.put(player.getName(), Long.valueOf(0L));
+        PlayerInteractListener.cooldowntimes.put(player.getUniqueId(), 0);
+        PlayerInteractListener.cooldowns.put(player.getUniqueId(), 0L);
+        PlayerInteractListener.tazerstatus.put(player.getName(), 10);
+        PlayerInteractListener.rpgcooldown.put(player.getName(), Boolean.TRUE);
+        UseCommand.cooldowns.put(player.getName(), 0L);
+        EquipCommand.cooldowns.put(player.getName(), 0L);
         player.sendMessage(ChatColor.GRAY + "Deine Cooldowns wurden zurückgesetzt!");
       } 
     } 

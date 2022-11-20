@@ -79,8 +79,8 @@ public class PlayerInteractListener implements Listener {
       } 
       if (player.getInventory().getItemInMainHand().getType() == Material.GOLD_AXE) {
         if (rpgcooldown.get(player.getName())) {
-          if (cooldowns.containsKey(event.getPlayer().getName())) {
-            long secondsLeft = cooldowns.get(player.getName()) + cooldowntimes.get(player.getName()) - System.currentTimeMillis();
+          if (cooldowns.containsKey(event.getPlayer().getUniqueId())) {
+            long secondsLeft = cooldowns.get(player.getUniqueId()) + cooldowntimes.get(player.getUniqueId()) - System.currentTimeMillis();
             if (secondsLeft > 0L) {
               player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.GRAY + "Du kannst diese Waffe gerade nicht benutzen..."));
               return true;
@@ -380,8 +380,8 @@ public class PlayerInteractListener implements Listener {
   }
 
   public static void shootM4(Player player) {
-    if (cooldowns.containsKey(player.getName())) {
-      long secondsLeft = cooldowns.get(player.getName()) + cooldowntimes.get(player.getName()) - System.currentTimeMillis();
+    if (cooldowns.containsKey(player.getUniqueId())) {
+      long secondsLeft = cooldowns.get(player.getUniqueId()) + cooldowntimes.get(player.getUniqueId()) - System.currentTimeMillis();
       if (secondsLeft > 0L) {
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.GRAY + "Du kannst diese Waffe gerade nicht benutzen..."));
         return;
@@ -439,8 +439,8 @@ public class PlayerInteractListener implements Listener {
 
   public static void shootSniper(Player player) {
 
-    if (cooldowns.containsKey(player.getName())) {
-      long secondsLeft = cooldowns.get(player.getName()) + cooldowntimes.get(player.getName()) - System.currentTimeMillis();
+    if (cooldowns.containsKey(player.getUniqueId())) {
+      long secondsLeft = cooldowns.get(player.getUniqueId()) + cooldowntimes.get(player.getUniqueId()) - System.currentTimeMillis();
       if (secondsLeft > 0L) {
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.GRAY + "Du kannst diese Waffe gerade nicht benutzen..."));
         return;
@@ -496,8 +496,8 @@ public class PlayerInteractListener implements Listener {
 
   public static void shootMP5(Player player) {
 
-    if (cooldowns.containsKey(player.getName())) {
-      long secondsLeft = cooldowns.get(player.getName()) + cooldowntimes.get(player.getName()) - System.currentTimeMillis();
+    if (cooldowns.containsKey(player.getUniqueId())) {
+      long secondsLeft = cooldowns.get(player.getUniqueId()) + cooldowntimes.get(player.getUniqueId()) - System.currentTimeMillis();
       if (secondsLeft > 0L) {
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.GRAY + "Du kannst diese Waffe gerade nicht benutzen..."));
         return;
@@ -553,8 +553,8 @@ public class PlayerInteractListener implements Listener {
 
   public static void shootJagdflinte(Player player) {
 
-    if (cooldowns.containsKey(player.getName())) {
-      long secondsLeft = cooldowns.get(player.getName()) + cooldowntimes.get(player.getName()) - System.currentTimeMillis();
+    if (cooldowns.containsKey(player.getUniqueId())) {
+      long secondsLeft = cooldowns.get(player.getUniqueId()) + cooldowntimes.get(player.getUniqueId()) - System.currentTimeMillis();
       if (secondsLeft > 0L) {
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.GRAY + "Du kannst diese Waffe gerade nicht benutzen..."));
         return;

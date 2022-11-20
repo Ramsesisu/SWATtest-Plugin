@@ -19,7 +19,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -99,21 +98,21 @@ public class PlayerDeathListener implements Listener {
     event.getEntity().spigot().respawn();
     player.teleport(deathloc);
     player.setGameMode(GameMode.SPECTATOR);
-    spawnprotection.put(player.getName(), Boolean.valueOf(true));
-    Bukkit.getScheduler().runTaskLater((Plugin)SWATtest.plugin, () -> {
+    spawnprotection.put(player.getName(), Boolean.TRUE);
+    Bukkit.getScheduler().runTaskLater(SWATtest.plugin, () -> {
           player.teleport(new Location(Bukkit.getWorld(player.getWorld().getName()), player.getBedSpawnLocation().getBlockX(), (player.getBedSpawnLocation().getBlockY() + 1), player.getBedSpawnLocation().getBlockZ()));
           player.sendTitle(ChatColor.GREEN + "Du lebst nun wieder!", "", 10, 30, 20);
           player.setCustomName(player.getDisplayName());
           EquipCommand.playerequip.putIfAbsent(player.getName(), "none");
           Functions.equipPlayer(player);
-          ((BukkitTask)deathtask.get(player.getName())).cancel();
-          PlayerInteractListener.cooldowntimes.put(player.getUniqueId(), Integer.valueOf(0));
-          PlayerInteractListener.cooldowns.put(player.getUniqueId(), Long.valueOf(0L));
+          deathtask.get(player.getName()).cancel();
+          PlayerInteractListener.cooldowntimes.put(player.getUniqueId(), 0);
+          PlayerInteractListener.cooldowns.put(player.getUniqueId(), 0L);
           player.setGameMode(GameMode.SURVIVAL);
         }, 300L);
-    Bukkit.getScheduler().runTaskLater((Plugin)SWATtest.plugin, () -> {
-          if (((Boolean)spawnprotection.get(player.getName())).booleanValue()) {
-            spawnprotection.put(player.getName(), Boolean.valueOf(false));
+    Bukkit.getScheduler().runTaskLater(SWATtest.plugin, () -> {
+          if (spawnprotection.get(player.getName())) {
+            spawnprotection.put(player.getName(), Boolean.FALSE);
             player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
           } 
         }, 400L);
@@ -126,11 +125,11 @@ public class PlayerDeathListener implements Listener {
             i[0] = 0;
             cancel();
           } 
-          PlayerDeathListener.deathloadmsg.put(player.getName(), ((String)PlayerDeathListener.deathloadmsg.get(player.getName())).replaceFirst("8", "a"));
+          PlayerDeathListener.deathloadmsg.put(player.getName(), PlayerDeathListener.deathloadmsg.get(player.getName()).replaceFirst("8", "a"));
           player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(PlayerDeathListener.deathloadmsg.get(player.getName())));
         }
       };
-    deathtask.put(player.getName(), death.runTaskTimer((Plugin)SWATtest.plugin, 0L, 20L));
+    deathtask.put(player.getName(), death.runTaskTimer(SWATtest.plugin, 0L, 20L));
   }
   
   public static List<Entity> getEntitiesAroundPoint(Location location, double radius) {

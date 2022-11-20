@@ -1,13 +1,9 @@
 package me.rqmses.swattest.commands;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
 import me.rqmses.swattest.SWATtest;
 import me.rqmses.swattest.global.Items;
-import me.rqmses.swattest.listeners.PlayerJoinListener;
 import me.rqmses.swattest.listeners.PlayerInteractListener;
+import me.rqmses.swattest.listeners.PlayerJoinListener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -15,11 +11,14 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 
 public class EquipCommand implements CommandExecutor, TabCompleter {
   public static final HashMap<String, Long> cooldowns = new HashMap<>();
@@ -39,13 +38,13 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
         this.player = (Player)sender;
         int cooldownTime = 30;
         if (cooldowns.containsKey(this.player.getName())) {
-          long secondsLeft = ((Long)cooldowns.get(this.player.getName())).longValue() / 1000L + cooldownTime - System.currentTimeMillis() / 1000L;
+          long secondsLeft = cooldowns.get(this.player.getName()) / 1000L + cooldownTime - System.currentTimeMillis() / 1000L;
           if (secondsLeft > 0L) {
             this.player.sendMessage(ChatColor.GRAY + "Du kannst dein Equip erst in " + ChatColor.DARK_GRAY + secondsLeft + " Sekunden" + ChatColor.GRAY + " wieder ändern.");
             return true;
           } 
         } 
-        cooldowns.put(this.player.getName(), Long.valueOf(System.currentTimeMillis()));
+        cooldowns.put(this.player.getName(), System.currentTimeMillis());
       } 
       if (args.length == 0) {
         this.player.sendMessage(ChatColor.GRAY + "Du musst ein Equip angeben!");
@@ -84,15 +83,15 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
             playerequip.put(this.player.getName(), "terror");
             this.player.getInventory().clear();
             invchanged = true;
-            PlayerInteractListener.rpgcooldown.put(this.player.getName(), Boolean.valueOf(false));
+            PlayerInteractListener.rpgcooldown.put(this.player.getName(), Boolean.FALSE);
             this.player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&eTerror&8&l] &r") + this.player.getName() + fly);
             rpg = new BukkitRunnable() {
                 public void run() {
-                  PlayerInteractListener.rpgcooldown.put(EquipCommand.this.player.getName(), Boolean.valueOf(true));
+                  PlayerInteractListener.rpgcooldown.put(EquipCommand.this.player.getName(), Boolean.TRUE);
                   EquipCommand.this.player.sendMessage(ChatColor.GRAY + "Du kannst deine RPG nun benutzen!");
                 }
               };
-            rpgtask.put(this.player.getName(), rpg.runTaskLater((Plugin)SWATtest.plugin, 600L));
+            rpgtask.put(this.player.getName(), rpg.runTaskLater(SWATtest.plugin, 600L));
             break;
           case "zivilist":
             playerequip.put(this.player.getName(), "zivilist");
@@ -116,7 +115,7 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
         } 
         if (invchanged)
           for (int i = 0; i <= 8; i++) {
-            String itemname = (String)((FileConfiguration) PlayerJoinListener.playerconfig.get(this.player.getUniqueId())).get((String)playerequip.get(this.player.getName()) + "." + i);
+            String itemname = (String) PlayerJoinListener.playerconfig.get(this.player.getUniqueId()).get(playerequip.get(this.player.getName()) + "." + i);
             switch (itemname) {
               case "SHIELD":
                 this.player.getInventory().setItem(i, Items.getSchild());

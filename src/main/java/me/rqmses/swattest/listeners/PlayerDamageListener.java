@@ -39,7 +39,7 @@ public class PlayerDamageListener implements Listener {
       if (event.getEntity().hasMetadata("NPC")) {return;}
       Player player = (Player)event.getEntity();
       if (!player.hasMetadata("NPC")) {
-        if (((Boolean) PlayerDeathListener.spawnprotection.get(player.getName())).booleanValue()) {
+        if (PlayerDeathListener.spawnprotection.get(player.getName())) {
           event.setCancelled(true);
           return;
         }

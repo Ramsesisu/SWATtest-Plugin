@@ -26,10 +26,10 @@ public class Items {
     ItemStack kev = new ItemStack(Material.LEATHER_CHESTPLATE);
     LeatherArmorMeta kevcolor = (LeatherArmorMeta)kev.getItemMeta();
     kevcolor.setColor(Color.fromRGB(71, 79, 82));
-    kev.setItemMeta((ItemMeta)kevcolor);
+    kev.setItemMeta(kevcolor);
     ItemMeta kevname = kev.getItemMeta();
     kevname.setDisplayName(ChatColor.GRAY + "Kevlar");
-    kevname.addItemFlags(new ItemFlag[] { ItemFlag.HIDE_ATTRIBUTES });
+    kevname.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
     kev.setItemMeta(kevname);
     kev.setDurability(durability);
     return kev;
@@ -81,7 +81,7 @@ public class Items {
     ArrayList<String> sniperlore = new ArrayList<>();
     sniperlore.add(ChatColor.translateAlternateColorCodes('&', "&65&8/&630"));
     snipermeta.setLore(sniperlore);
-    snipermeta.addItemFlags(new ItemFlag[] { ItemFlag.HIDE_ATTRIBUTES });
+    snipermeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
     sniper.setItemMeta(snipermeta);
     return sniper;
   }
@@ -93,7 +93,7 @@ public class Items {
     ArrayList<String> jagdflintelore = new ArrayList<>();
     jagdflintelore.add(ChatColor.translateAlternateColorCodes('&', "&65&8/&680"));
     jagdflintemeta.setLore(jagdflintelore);
-    jagdflintemeta.addItemFlags(new ItemFlag[] { ItemFlag.HIDE_ATTRIBUTES });
+    jagdflintemeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
     jagdflinte.setItemMeta(jagdflintemeta);
     return jagdflinte;
   }
@@ -105,7 +105,7 @@ public class Items {
     ArrayList<String> rpglore = new ArrayList<>();
     rpglore.add(ChatColor.translateAlternateColorCodes('&', "&61&8/&610"));
     rpgmeta.setLore(rpglore);
-    rpgmeta.addItemFlags(new ItemFlag[] { ItemFlag.HIDE_ATTRIBUTES });
+    rpgmeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
     rpg.setItemMeta(rpgmeta);
     return rpg;
   }
@@ -125,7 +125,7 @@ public class Items {
     ItemStack tazer = new ItemStack(Material.WOOD_HOE);
     ItemMeta tazermeta = tazer.getItemMeta();
     tazermeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&eTazer"));
-    tazermeta.addItemFlags(new ItemFlag[] { ItemFlag.HIDE_ATTRIBUTES });
+    tazermeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
     tazer.setItemMeta(tazermeta);
     return tazer;
   }
@@ -137,7 +137,7 @@ public class Items {
     ArrayList<String> flammenwerferlore = new ArrayList<>();
     flammenwerferlore.add(ChatColor.translateAlternateColorCodes('&', "&6500&8/&6500"));
     flammenwerfermeta.setLore(flammenwerferlore);
-    flammenwerfermeta.addItemFlags(new ItemFlag[] { ItemFlag.HIDE_ATTRIBUTES });
+    flammenwerfermeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
     flammenwerfer.setItemMeta(flammenwerfermeta);
     return flammenwerfer;
   }
