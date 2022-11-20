@@ -29,7 +29,11 @@ public class PlayerSwitchItemListener implements Listener {
         throw new RuntimeException(e);
       } 
     } else {
-      if (!(event.getSlot() == 38)) event.setCancelled(true);
+      if (!(event.getSlot() == 38) && !(event.getSlot() == 40)) {
+        if (event.getCursor().getType() != Material.WOOD_SPADE) {
+          event.setCancelled(true);
+        }
+      }
     }
   }
 }
