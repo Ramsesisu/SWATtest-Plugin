@@ -42,7 +42,7 @@ public class PlayerDeathListener implements Listener {
   
   @EventHandler
   public void onDeath(PlayerDeathEvent event) {
-    if (event.getEntity().getName().contains("-KI")) {return;}
+    if (event.getEntity().hasMetadata("NPC")) {return;}
     System.out.println(event.getDeathMessage());
     final Player player = event.getEntity().getPlayer();
     Location deathloc = player.getLocation();
@@ -107,8 +107,8 @@ public class PlayerDeathListener implements Listener {
           EquipCommand.playerequip.putIfAbsent(player.getName(), "none");
           Functions.equipPlayer(player);
           ((BukkitTask)deathtask.get(player.getName())).cancel();
-          PlayerInteractListener.cooldowntimes.put(player.getName(), Integer.valueOf(0));
-          PlayerInteractListener.cooldowns.put(player.getName(), Long.valueOf(0L));
+          PlayerInteractListener.cooldowntimes.put(player.getUniqueId(), Integer.valueOf(0));
+          PlayerInteractListener.cooldowns.put(player.getUniqueId(), Long.valueOf(0L));
           player.setGameMode(GameMode.SURVIVAL);
         }, 300L);
     Bukkit.getScheduler().runTaskLater((Plugin)SWATtest.plugin, () -> {

@@ -38,6 +38,7 @@ public class PlayerJoinListener implements Listener {
     if (!((File)playersafe.get(player.getUniqueId())).exists()) {
       Functions.createFile(player);
       player.setBedSpawnLocation(new Location(Bukkit.getWorld("world"), 103.0D, 70.0D, 157.0D), true);
+      player.teleport(new Location(Bukkit.getWorld("world"), 103.0D, 70.0D, 157.0D));
     } 
     System.out.println(playersafe + " wurde erfolgreich geladen.");
   }

@@ -8,7 +8,7 @@ import org.bukkit.event.inventory.InventoryType;
 public class InventoryOpenListener implements Listener {
   @EventHandler
   public void onOpenInventory(InventoryOpenEvent event) {
-    if (event.getInventory().getType() != InventoryType.PLAYER)
+    if (event.getInventory().getType() != InventoryType.PLAYER && event.getInventory().getType() != InventoryType.WORKBENCH)
       event.setCancelled(true); 
   }
 }

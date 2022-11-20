@@ -24,15 +24,12 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class PlayerInteractListener implements Listener {
-  public static final HashMap<String, Long> cooldowns = new HashMap<>();
+  public static final HashMap<UUID, Long> cooldowns = new HashMap<>();
   
-  public static final HashMap<String, Integer> cooldowntimes = new HashMap<>();
+  public static final HashMap<UUID, Integer> cooldowntimes = new HashMap<>();
   
   public static final HashMap<String, Boolean> rpgcooldown = new HashMap<>();
   
@@ -93,7 +90,7 @@ public class PlayerInteractListener implements Listener {
             PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.FALSE);
             player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
           } 
-          cooldowns.put(player.getName(), System.currentTimeMillis());
+          cooldowns.put(player.getUniqueId(), System.currentTimeMillis());
           event.setCancelled(true);
           ItemStack gun = player.getInventory().getItemInMainHand();
           ItemMeta meta = gun.getItemMeta();
@@ -118,7 +115,7 @@ public class PlayerInteractListener implements Listener {
             bullet.setVelocity(bullet.getVelocity().multiply(7));
             bullet.setGravity(false);
             bullet.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
-            cooldowntimes.put(player.getName(), 0);
+            cooldowntimes.put(player.getUniqueId(), 0);
           } else {
             reloadGun(player, 80000, event.getItem(), 1);
           } 
@@ -356,7 +353,7 @@ public class PlayerInteractListener implements Listener {
   }
   
   public static void reloadGun(Player player, int cooldown, ItemStack gun, int maxammo) {
-    cooldowntimes.put(player.getName(), cooldown);
+    cooldowntimes.put(player.getUniqueId(), cooldown);
     ItemMeta meta = gun.getItemMeta();
     String strlore = String.valueOf(meta.getLore());
     String[] ammos = strlore.split("/");
@@ -390,7 +387,7 @@ public class PlayerInteractListener implements Listener {
         return;
       }
     }
-    if (!player.getName().contains("-KI")) {
+    if (!player.hasMetadata("NPC")) {
       if (PlayerDeathListener.spawnprotection.get(player.getName())) {
         PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.FALSE);
         player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
@@ -398,7 +395,7 @@ public class PlayerInteractListener implements Listener {
     } else {
       if (!(player.getInventory().getItemInMainHand().getType() == Material.DIAMOND_BARDING)) {return;}
     }
-    cooldowns.put(player.getName(), System.currentTimeMillis());
+    cooldowns.put(player.getUniqueId(), System.currentTimeMillis());
     ItemStack gun = player.getInventory().getItemInMainHand();
     ItemMeta meta = gun.getItemMeta();
     String strlore = String.valueOf(meta.getLore());
@@ -434,7 +431,7 @@ public class PlayerInteractListener implements Listener {
           nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 5.0F, 0.55F);
         }
       });
-      cooldowntimes.put(player.getName(), 400);
+      cooldowntimes.put(player.getUniqueId(), 400);
     } else {
       reloadGun(player, 4000, gun, 21);
     }
@@ -449,13 +446,13 @@ public class PlayerInteractListener implements Listener {
         return;
       }
     }
-    if (!player.getName().contains("-KI")) {
+    if (!player.hasMetadata("NPC")) {
       if (PlayerDeathListener.spawnprotection.get(player.getName())) {
         PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.FALSE);
         player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
       }
     }
-    cooldowns.put(player.getName(), System.currentTimeMillis());
+    cooldowns.put(player.getUniqueId(), System.currentTimeMillis());
     ItemStack gun = player.getInventory().getItemInMainHand();
     ItemMeta meta = gun.getItemMeta();
     String strlore = String.valueOf(meta.getLore());
@@ -491,7 +488,7 @@ public class PlayerInteractListener implements Listener {
         if (nearPlayer.getLocation().distance(player.getLocation()) <= 200.0D)
           nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 5.0F, 0.0F);
       });
-      cooldowntimes.put(player.getName(), 5000);
+      cooldowntimes.put(player.getUniqueId(), 5000);
     } else {
       reloadGun(player, 10000, gun, 5);
     }
@@ -506,13 +503,13 @@ public class PlayerInteractListener implements Listener {
         return;
       }
     }
-    if (!player.getName().contains("-KI")) {
+    if (!player.hasMetadata("NPC")) {
       if (PlayerDeathListener.spawnprotection.get(player.getName())) {
         PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.FALSE);
         player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
       }
     }
-    cooldowns.put(player.getName(), System.currentTimeMillis());
+    cooldowns.put(player.getUniqueId(), System.currentTimeMillis());
     ItemStack gun = player.getInventory().getItemInMainHand();
     ItemMeta meta = gun.getItemMeta();
     String strlore = String.valueOf(meta.getLore());
@@ -548,7 +545,7 @@ public class PlayerInteractListener implements Listener {
         if (nearPlayer.getLocation().distance(player.getLocation()) <= 200.0D)
           nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 5.0F, 1.0F);
       });
-      cooldowntimes.put(player.getName(), 300);
+      cooldowntimes.put(player.getUniqueId(), 300);
     } else {
       reloadGun(player, 3000, gun, 25);
     }
@@ -563,13 +560,13 @@ public class PlayerInteractListener implements Listener {
         return;
       }
     }
-    if (!player.getName().contains("-KI")) {
+    if (!player.hasMetadata("NPC")) {
       if (PlayerDeathListener.spawnprotection.get(player.getName())) {
         PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.FALSE);
         player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
       }
     }
-    cooldowns.put(player.getName(), System.currentTimeMillis());
+    cooldowns.put(player.getUniqueId(), System.currentTimeMillis());
     ItemStack gun = player.getInventory().getItemInMainHand();
     ItemMeta meta = gun.getItemMeta();
     String strlore = String.valueOf(meta.getLore());
@@ -605,7 +602,7 @@ public class PlayerInteractListener implements Listener {
         if (nearPlayer.getLocation().distance(player.getLocation()) <= 200.0D)
           nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 5.0F, -0.5F);
       });
-      cooldowntimes.put(player.getName(), 3000);
+      cooldowntimes.put(player.getUniqueId(), 3000);
     } else {
       reloadGun(player, 6000, gun, 5);
     }

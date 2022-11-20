@@ -385,11 +385,11 @@ public class NaviCommand implements CommandExecutor, TabCompleter {
                 BukkitRunnable navi = new BukkitRunnable() {
                     @Override
                     public void run() {
-                        Location origin = player.getLocation();
+                        Location origin = player.getLocation().add(0,1,0);
                         Vector direction = loc.clone().subtract(player.getLocation()).toVector();
 
                         direction.normalize();
-                        for (int i = 0; i < 20 * 20; i++) {
+                        for (int i = 0; i < 20 * 2 /* 20 mal Länge des Navis */; i++) {
                             Location temploc = origin.add(direction);
                             player.spawnParticle(Particle.REDSTONE, temploc.subtract(direction.clone().multiply(0.75)), 1, 0.05, 0.05, 0.05, 0);
                         }

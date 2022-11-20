@@ -1,35 +1,18 @@
 package me.rqmses.swattest.global.npctraits;
 
-import com.mojang.authlib.properties.Property;
 import me.rqmses.swattest.SWATtest;
-import me.rqmses.swattest.global.Functions;
 import me.rqmses.swattest.global.Items;
-import me.rqmses.swattest.listeners.PlayerDeathListener;
 import me.rqmses.swattest.listeners.PlayerInteractListener;
-import net.citizensnpcs.api.ai.AttackStrategy;
 import net.citizensnpcs.api.event.NPCDeathEvent;
-import net.citizensnpcs.api.npc.NPC;
-import net.citizensnpcs.api.persistence.Persist;
 import net.citizensnpcs.api.trait.Trait;
 import net.citizensnpcs.api.trait.TraitName;
-import net.citizensnpcs.api.util.DataKey;
-import net.minecraft.server.v1_12_R1.PathfinderGoalArrowAttack;
 import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.ProjectileLaunchEvent;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @TraitName("attacktrait")
 public class AttackTrait extends Trait {
@@ -37,14 +20,10 @@ public class AttackTrait extends Trait {
         super("attacktrait");
     }
 
-    public static final HashMap<String, BukkitTask> NPCtargetPlayer = new HashMap<String, org.bukkit.scheduler.BukkitTask>();
-    public static final HashMap<String, BukkitTask> NPCfacePlayer = new HashMap<>();
-    public static final HashMap<String, BukkitTask> NPCnpcShoot = new HashMap<>();
+    public static final HashMap<UUID, Integer> taskID1 = new HashMap<>();
+    public static final HashMap<UUID, Integer> taskID2 = new HashMap<>();
 
     Player result = null;
-
-    int taskID1;
-    int taskID2;
 
     @Override
     public void onSpawn() {
@@ -55,13 +34,16 @@ public class AttackTrait extends Trait {
 
         npc.setProtected(false);
 
-        taskID1 = Bukkit.getScheduler().scheduleSyncRepeatingTask(SWATtest.plugin, new Runnable() {
+        taskID1.put(npc.getUniqueId(), Bukkit.getScheduler().scheduleSyncRepeatingTask(SWATtest.plugin, new Runnable() {
             @Override
             public void run() {
                 result = null;
                 double lastDistance = Double.MAX_VALUE;
                 for (Player p : npcplayer.getWorld().getPlayers()) {
-                    if (p.getName().contains("-KI")) {
+                    if (!((Player) npc.getEntity()).hasLineOfSight(p)) {
+                        continue;
+                    }
+                    if (p.hasMetadata("NPC")) {
                         continue;
                     }
                     if (p.getGameMode() == GameMode.SURVIVAL) {
@@ -86,9 +68,9 @@ public class AttackTrait extends Trait {
                     npc.getNavigator().cancelNavigation();
                 }
             }
-        }, 60L, 60L);
+        }, 60L, 60L));
 
-        taskID2 = Bukkit.getScheduler().scheduleSyncRepeatingTask(SWATtest.plugin, new Runnable() {
+        taskID2.put(npc.getUniqueId(), Bukkit.getScheduler().scheduleSyncRepeatingTask(SWATtest.plugin, new Runnable() {
             @Override
             public void run() {
                 npc.faceLocation(npc.getNavigator().getTargetAsLocation());
@@ -101,27 +83,13 @@ public class AttackTrait extends Trait {
                     }
                 }
             }
-        }, 60L, 8L);
+        }, 60L, 8L));
     }
-
-    String deathmessage;
 
     @EventHandler
     public void onDeath(NPCDeathEvent event) {
-        Bukkit.getScheduler().cancelTask(taskID1);
-        Bukkit.getScheduler().cancelTask(taskID2);
-
-        deathmessage = ChatColor.translateAlternateColorCodes('&', "&7" + event.getNPC().getName() + " &f&lwurde getötet.");
-
-        List<Entity> nearPlayers = new ArrayList<>(getEntitiesAroundPoint(event.getNPC().getEntity().getLocation(), 30.0D));
-        List<Entity> nearPlayers2 = new ArrayList<>();
-        nearPlayers.forEach(playerName -> {
-            nearPlayers2.remove(playerName);
-            nearPlayers2.add(playerName);
-        });
-        nearPlayers2.forEach(playerName2 -> playerName2.sendMessage(deathmessage));
-
-        npc.destroy();
+        Bukkit.getScheduler().cancelTask(taskID1.get(event.getNPC().getUniqueId()));
+        Bukkit.getScheduler().cancelTask(taskID2.get(event.getNPC().getUniqueId()));
     }
 
     public static List<Entity> getEntitiesAroundPoint(Location location, double radius) {

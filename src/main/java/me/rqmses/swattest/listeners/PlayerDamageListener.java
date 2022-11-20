@@ -36,9 +36,9 @@ public class PlayerDamageListener implements Listener {
   @EventHandler
   public void onBulletHit(EntityDamageByEntityEvent event) {
     if (event.getEntity() instanceof Player) {
-      if (event.getEntity().getName().contains("-KI")) {return;}
+      if (event.getEntity().hasMetadata("NPC")) {return;}
       Player player = (Player)event.getEntity();
-      if (!player.getName().contains("-KI")) {
+      if (!player.hasMetadata("NPC")) {
         if (((Boolean) PlayerDeathListener.spawnprotection.get(player.getName())).booleanValue()) {
           event.setCancelled(true);
           return;
@@ -160,7 +160,9 @@ public class PlayerDamageListener implements Listener {
             nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40, 1));
           } 
           this.entitylist.clear();
-        } 
+        }
+
+        event.getDamager().remove();
       } 
     } 
   }

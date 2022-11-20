@@ -8,7 +8,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 public class BlockPlaceListener implements Listener {
   @EventHandler
   public void onBlockBuild(BlockPlaceEvent event) {
-    if (!event.getPlayer().getInventory().contains(Material.WOOD_SPADE))
+    if (!event.getPlayer().getInventory().getItemInOffHand().getType().equals(Material.WOOD_SPADE))
       event.setCancelled(true); 
   }
 }
