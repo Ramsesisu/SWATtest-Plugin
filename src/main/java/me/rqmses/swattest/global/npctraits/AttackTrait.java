@@ -8,6 +8,7 @@ import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.Trait;
 import net.citizensnpcs.api.trait.TraitName;
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,8 +31,7 @@ public class AttackTrait extends Trait {
     public void onSpawn() {
         NPC npcplayer = getNPC();
         ((Player) npcplayer.getEntity()).setGameMode(GameMode.SURVIVAL);
-        //noinspection deprecation
-        ((Player) npcplayer.getEntity()).setMaxHealth(40);
+        ((Player) npcplayer.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(40.0D);
         ((Player) npcplayer.getEntity()).setHealth(40);
 
         npcplayer.setProtected(false);
