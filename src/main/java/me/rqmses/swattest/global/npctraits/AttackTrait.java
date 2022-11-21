@@ -1,6 +1,7 @@
 package me.rqmses.swattest.global.npctraits;
 
 import me.rqmses.swattest.SWATtest;
+import me.rqmses.swattest.commands.NPCCommand;
 import me.rqmses.swattest.global.Items;
 import me.rqmses.swattest.listeners.PlayerInteractListener;
 import net.citizensnpcs.api.event.NPCDeathEvent;
@@ -100,6 +101,7 @@ public class AttackTrait extends Trait {
 
     @EventHandler
     public void onDeath(NPCDeathEvent event) {
+        NPCCommand.NPCList.remove(npc);
         event.getNPC().despawn();
     }
 }

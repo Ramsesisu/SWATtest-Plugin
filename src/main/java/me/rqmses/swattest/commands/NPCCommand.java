@@ -30,6 +30,14 @@ public class NPCCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
+            if (NPCList.size() >= 5) {
+                if (args.length != 2) {
+                    if (!sender.isOp()) {
+                        ((Player) sender).getPlayer().sendMessage(ChatColor.AQUA + "Das Limt an Bots wurde erreicht!");
+                        return true;
+                    }
+                }
+            }
             if (Objects.equals(((Player) sender).getCustomName(), "dead")) { return true; }
             String name;
             String ki = "-KI";
