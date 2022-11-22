@@ -1,14 +1,6 @@
 package me.rqmses.swattest.commands;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Sound;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,8 +10,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.*;
+
 public class UseCommand implements CommandExecutor, TabCompleter {
-  public static final HashMap<String, Long> cooldowns = new HashMap<>();
+  public static final HashMap<UUID, Long> cooldowns = new HashMap<>();
   
   List<Entity> nearPlayers = new ArrayList<>();
   
@@ -28,12 +22,12 @@ public class UseCommand implements CommandExecutor, TabCompleter {
       Player player = (Player)sender;
       if (player.getGameMode() == GameMode.SURVIVAL) {
         int cooldownTime = 10;
-        if (cooldowns.containsKey(player.getName())) {
-          long secondsLeft = cooldowns.get(player.getName()) / 1000L + cooldownTime - System.currentTimeMillis() / 1000L;
+        if (cooldowns.containsKey(player.getUniqueId())) {
+          long secondsLeft = cooldowns.get(player.getUniqueId()) / 1000L + cooldownTime - System.currentTimeMillis() / 1000L;
           if (secondsLeft > 0L)
             return true; 
         } 
-        cooldowns.put(player.getName(), System.currentTimeMillis());
+        cooldowns.put(player.getUniqueId(), System.currentTimeMillis());
         if (args.length == 0) {
           player.sendMessage(ChatColor.RED + "Du hast keine Droge angeben!");
         } else {

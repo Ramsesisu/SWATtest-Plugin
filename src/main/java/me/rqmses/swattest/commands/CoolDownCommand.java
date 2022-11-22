@@ -19,7 +19,7 @@ public class CoolDownCommand implements CommandExecutor {
         PlayerInteractListener.cooldowns.put(player.getUniqueId(), 0L);
         PlayerInteractListener.tazerstatus.put(player.getName(), 10);
         PlayerInteractListener.rpgcooldown.put(player.getName(), Boolean.TRUE);
-        UseCommand.cooldowns.put(player.getName(), 0L);
+        UseCommand.cooldowns.put(player.getUniqueId(), 0L);
         EquipCommand.cooldowns.put(player.getName(), 0L);
         player.sendMessage(ChatColor.GRAY + "Deine Cooldowns wurden zurückgesetzt!");
       } 

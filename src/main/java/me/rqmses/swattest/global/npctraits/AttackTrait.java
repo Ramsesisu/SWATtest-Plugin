@@ -102,6 +102,7 @@ public class AttackTrait extends Trait {
     @EventHandler
     public void onDeath(NPCDeathEvent event) {
         NPCCommand.NPCList.remove(npc);
+        NPCCommand.NPCListPlayer.put(event.getNPC().data().get("origin"), NPCCommand.NPCListPlayer.get(event.getNPC().data().get("origin")) - 1);
         event.getNPC().despawn();
     }
 }

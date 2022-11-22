@@ -14,6 +14,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,18 +28,24 @@ public class NPCCommand implements CommandExecutor {
         return NPCList;
     }
 
+    public static HashMap<String, Integer> NPCListPlayer = new HashMap<>();
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
-            if (NPCList.size() >= 5) {
-                if (args.length <= 1) {
-                    if (!sender.isOp()) {
-                        ((Player) sender).getPlayer().sendMessage(ChatColor.AQUA + "Das Limt an Bots wurde erreicht!");
-                        return true;
-                    }
+            NPCListPlayer.putIfAbsent(sender.getName(), 0);
+            if ((NPCListPlayer.get(sender.getName()) >= 3)) {
+                if (!sender.isOp()) {
+                    sender.sendMessage(ChatColor.AQUA + "Dein Limit an Bots wurde bereits erreicht.");
+                    return true;
+                } else if (args.length <= 1) {
+                    sender.sendMessage(ChatColor.AQUA + "Dein Limit an Bots wurde bereits erreicht.");
+                    return true;
                 }
             }
-            if (Objects.equals(((Player) sender).getCustomName(), "dead")) { return true; }
+            if (Objects.equals(((Player) sender).getCustomName(), "dead")) {
+                return true;
+            }
             String name;
             String ki = "-KI";
             if (args.length == 0) {
@@ -54,8 +61,11 @@ public class NPCCommand implements CommandExecutor {
             }
             Player player = (Player) sender;
 
-            npc = SWATtest.registry.createNPC(EntityType.PLAYER, name+ki);
+            npc = SWATtest.registry.createNPC(EntityType.PLAYER, name + ki);
             NPCList.add(npc);
+
+            npc.data().set("origin", player.getName());
+            NPCListPlayer.put(player.getName(), NPCListPlayer.get(player.getName()) + 1);
 
             npc.addTrait(new AttackTrait());
 
