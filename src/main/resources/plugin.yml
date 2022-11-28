@@ -41,3 +41,6 @@ commands:
   trainingsbot:
     description: Spawnt eine Trainings-KI
     usage: /<command> <name>
+  abaimbot:
+    description: Spawnt eine Abaim-KI
+    usage: /<command> <name>

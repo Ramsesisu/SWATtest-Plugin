@@ -432,6 +432,12 @@ public class PlayerInteractListener implements Listener {
         }
       });
       cooldowntimes.put(player.getUniqueId(), 400);
+      Bukkit.getScheduler().runTaskLater(SWATtest.plugin, new Runnable() {
+        @Override
+        public void run() {
+          bullet.remove();
+        }
+      }, 60L);
     } else {
       reloadGun(player, 4000, gun, 21);
     }
@@ -489,6 +495,12 @@ public class PlayerInteractListener implements Listener {
           nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 5.0F, 0.0F);
       });
       cooldowntimes.put(player.getUniqueId(), 5000);
+      Bukkit.getScheduler().runTaskLater(SWATtest.plugin, new Runnable() {
+        @Override
+        public void run() {
+          bullet.remove();
+        }
+      }, 60L);
     } else {
       reloadGun(player, 10000, gun, 5);
     }
@@ -546,6 +558,12 @@ public class PlayerInteractListener implements Listener {
           nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 5.0F, 1.0F);
       });
       cooldowntimes.put(player.getUniqueId(), 300);
+      Bukkit.getScheduler().runTaskLater(SWATtest.plugin, new Runnable() {
+        @Override
+        public void run() {
+          bullet.remove();
+        }
+      }, 60L);
     } else {
       reloadGun(player, 3000, gun, 25);
     }
@@ -603,6 +621,12 @@ public class PlayerInteractListener implements Listener {
           nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 5.0F, -0.5F);
       });
       cooldowntimes.put(player.getUniqueId(), 3000);
+      Bukkit.getScheduler().runTaskLater(SWATtest.plugin, new Runnable() {
+        @Override
+        public void run() {
+          bullet.remove();
+        }
+      }, 60L);
     } else {
       reloadGun(player, 6000, gun, 5);
     }

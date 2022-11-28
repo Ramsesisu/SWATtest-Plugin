@@ -1,7 +1,5 @@
 package me.rqmses.swattest.listeners;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -16,6 +14,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class PlayerHitListener implements Listener {
   public final HashMap<String, Long> cooldowns = new HashMap<>();
@@ -38,24 +39,6 @@ public class PlayerHitListener implements Listener {
           hitter.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
         }
       }
-      Player player = (Player)event.getEntity();
-      ItemStack messer = ((Player)event.getDamager()).getPlayer().getInventory().getItemInMainHand();
-      ItemMeta meta = messer.getItemMeta();
-      String strlore = meta.getLore().toString();
-      String[] ammos = strlore.split("/");
-      ammos[0] = ammos[0].substring(3, ammos[0].length() - 2).replace("§", "");
-      int ammo = Integer.parseInt(ammos[0]);
-      if (ammo == 0) {
-        event.setCancelled(true);
-        return true;
-      } 
-      if (player.getInventory().getChestplate() != null)
-        if (((Player)event.getEntity()).getInventory().getChestplate().getDurability() < 79) {
-          ((Player)event.getEntity()).getInventory().getChestplate().setDurability((short)(((Player)event.getEntity()).getInventory().getChestplate().getDurability() + 1));
-        } else {
-          player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 1.0F);
-          ((Player)event.getEntity()).getInventory().setChestplate(null);
-        }  
       if (hitter.getInventory().getItemInMainHand().getType() == Material.FEATHER) {
         if (this.cooldowns.containsKey(hitter.getName())) {
           long secondsLeft = this.cooldowns.get(hitter.getName()) + cooldownTime - System.currentTimeMillis();
@@ -63,11 +46,29 @@ public class PlayerHitListener implements Listener {
             event.setCancelled(true);
             return true;
           } 
-        } 
+        }
+        Player player = (Player)event.getEntity();
+        ItemStack messer = ((Player)event.getDamager()).getPlayer().getInventory().getItemInMainHand();
+        ItemMeta meta = messer.getItemMeta();
+        String strlore = meta.getLore().toString();
+        String[] ammos = strlore.split("/");
+        ammos[0] = ammos[0].substring(3, ammos[0].length() - 2).replace("§", "");
+        int ammo = Integer.parseInt(ammos[0]);
+        if (ammo == 0) {
+          event.setCancelled(true);
+          return true;
+        }
+        if (player.getInventory().getChestplate() != null)
+          if (((Player)event.getEntity()).getInventory().getChestplate().getDurability() < 79) {
+            ((Player)event.getEntity()).getInventory().getChestplate().setDurability((short)(((Player)event.getEntity()).getInventory().getChestplate().getDurability() + 1));
+          } else {
+            player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 1.0F);
+            ((Player)event.getEntity()).getInventory().setChestplate(null);
+          }
         this.cooldowns.put(hitter.getName(), System.currentTimeMillis());
         event.setDamage(7.0D);
         ArrayList<String> lore = new ArrayList<>();
-        String templore = ChatColor.translateAlternateColorCodes('&', "&6" + (ammo - 1) + "&8/&6" + 'd');
+        String templore = ChatColor.translateAlternateColorCodes('&', "&6" + (ammo - 1) + "&8/&6" + "100");
         lore.add(templore);
         meta.setLore(lore);
         messer.setItemMeta(meta);

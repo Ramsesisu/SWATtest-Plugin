@@ -60,16 +60,19 @@ public class NaviCommand implements CommandExecutor, TabCompleter {
                         loc = new Location(Bukkit.getWorld("world"), 1562, 206, 330);
                         break;
                     case "flug-1":
-                        loc = new Location(Bukkit.getWorld("world"), 1562, 206, 330);
-                        break;
-                    case "flug-2":
-                        loc = new Location(Bukkit.getWorld("world"), 1154, 80, -199);
+                        loc = new Location(Bukkit.getWorld("world"), 1556, 146, 310);
                         break;
                     case "flug-3":
-                        loc = new Location(Bukkit.getWorld("world"), 70, 95, -448);
+                        loc = new Location(Bukkit.getWorld("world"), 1154, 80, -199);
+                        break;
+                    case "flug-2":
+                        loc = new Location(Bukkit.getWorld("world"), 897, 128, 21);
                         break;
                     case "flug-4":
                         loc = new Location(Bukkit.getWorld("world"), -274, 76, -397);
+                        break;
+                    case "musikladen":
+                        loc = new Location(Bukkit.getWorld("world"), -38, 117, 234);
                         break;
                     case "psychiatrie":
                         loc = new Location(Bukkit.getWorld("world"), 1631, 68, -413);
@@ -424,7 +427,7 @@ public class NaviCommand implements CommandExecutor, TabCompleter {
                 "Tankstelle-Chinatown", "Windrad-Chinatown", "Fischerhütte", "Westside-Ballas", "Mechaniker", "Waffenladen-Ballas",
                 "Basketball", "CFK", "Kran-Uran", "Neulingshotel", "Flughafen-Unica", "Flughafen-Chinatown", "Flughafen-LasUnicas",
                 "Urantransport", "Deathmatch-Arena", "Gefängnis", "Hochseefischer", "Feuerwerksladen", "Angelschein", "Terroristen",
-                "Sägewerk", "200", "363", "531", "Bäckerei", "Shop", "Windrad-FBI", "UCM", "Anwaltskanzelei"};
+                "Sägewerk", "200", "363", "531", "Bäckerei", "Shop", "Windrad-FBI", "UCM", "Anwaltskanzelei", "Musikladen"};
         if (args.length == 1) {
             for (String target : targets) {
                 if (target.toUpperCase().startsWith(args[0].toUpperCase())) {

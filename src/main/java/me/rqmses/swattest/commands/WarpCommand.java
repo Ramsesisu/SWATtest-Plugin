@@ -53,14 +53,17 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
                     case "lu-kran":
                         loc = new Location(Bukkit.getWorld("world"), 1562, 206, 330);
                         break;
-                    case "flug-2":
+                    case "flug-3":
                         loc = new Location(Bukkit.getWorld("world"), 897, 128, 21);
                         break;
-                    case "flug-3":
-                        loc = new Location(Bukkit.getWorld("world"), 70, 95, -448);
+                    case "flug-2":
+                        loc = new Location(Bukkit.getWorld("world"), 1556, 146, 310);
                         break;
                     case "flug-4":
                         loc = new Location(Bukkit.getWorld("world"), 35, 135, -197);
+                        break;
+                    case "musikladen":
+                        loc = new Location(Bukkit.getWorld("world"), -38, 117, 234);
                         break;
                     case "psychiatrie":
                         loc = new Location(Bukkit.getWorld("world"), 1631, 68, -413);
@@ -408,7 +411,7 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
                 "Basketball", "CFK", "Kran-Uran", "Neulingshotel", "Flughafen-Unica", "Flughafen-Chinatown", "Flughafen-LasUnicas",
                 "Urantransport", "Deathmatch-Arena", "Gefängnis", "Hochseefischer", "Feuerwerksladen", "Angelschein", "Terroristen",
                 "Sägewerk", "200", "363", "531", "Bäckerei", "Shop", "Windrad-FBI", "UCM", "Altes-Gefängnis", "Hölle",
-                "Himmel", "Checkpoint-Gefängnis", "Anwaltskanzelei"};
+                "Himmel", "Checkpoint-Gefängnis", "Anwaltskanzelei", "Musikladen"};
         if (args.length == 1) {
             for (String target : targets) {
                 if (target.toUpperCase().startsWith(args[0].toUpperCase())) {

@@ -8,19 +8,22 @@ import net.citizensnpcs.api.event.NPCDeathEvent;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.Trait;
 import net.citizensnpcs.api.trait.TraitName;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.UUID;
 
-@TraitName("attacktrait")
-public class AttackTrait extends Trait {
-    public AttackTrait() {
-        super("attacktrait");
+@TraitName("abaimtrait")
+public class AbaimTrait extends Trait {
+    public AbaimTrait() {
+        super("abaimtrait");
     }
 
     public static final HashMap<UUID, Integer> taskID1 = new HashMap<>();
@@ -38,8 +41,6 @@ public class AttackTrait extends Trait {
 
         npcplayer.setProtected(false);
 
-        npcplayer.getNavigator().setTarget(npcplayer.getEntity().getLocation());
-
         result = null;
         found = false;
 
@@ -52,7 +53,7 @@ public class AttackTrait extends Trait {
                 }
                 if (p.getGameMode() == GameMode.SURVIVAL) {
                     double distance = npcplayer.getEntity().getLocation().distance(p.getLocation());
-                    if (distance > 25) {
+                    if (distance > 50) {
                         continue;
                     }
                     if (distance < lastDistance) {
@@ -61,10 +62,6 @@ public class AttackTrait extends Trait {
                         if (!((Player) npcplayer.getEntity()).getInventory().contains(Material.DIAMOND_BARDING)) {
                             ((Player) npcplayer.getEntity()).getInventory().setItemInMainHand(Items.getM4());
                         }
-                        npcplayer.getNavigator().setTarget(result, true);
-                        npcplayer.getNavigator().getDefaultParameters().useNewPathfinder(true);
-                        npcplayer.getNavigator().getDefaultParameters().avoidWater(true);
-                        ((Player) npcplayer.getEntity()).setSprinting(true);
 
                         found = true;
                     }
@@ -72,32 +69,26 @@ public class AttackTrait extends Trait {
             }
             if (!found) {
                 result = null;
-                npcplayer.getNavigator().cancelNavigation();
             }
         }, 60L, 10L));
 
         taskID2.put(npcplayer.getUniqueId(), Bukkit.getScheduler().scheduleSyncRepeatingTask(SWATtest.plugin, () -> {
             if (result != null) {
-                if (npcplayer.getNavigator().isNavigating()) {
-                    if (npcplayer.getEntity().getLocation().distance(npcplayer.getNavigator().getTargetAsLocation()) >= 25) {
-                        npcplayer.getNavigator().cancelNavigation();
-                    }
-                }
                 boolean sight = true;
                 if (((CraftPlayer) npcplayer.getEntity()).hasPotionEffect(PotionEffectType.BLINDNESS) || ((CraftPlayer) npcplayer.getEntity()).hasPotionEffect(PotionEffectType.CONFUSION)) {
-                    npcplayer.getNavigator().setTarget(result.getLocation());
+                    npcplayer.faceLocation(result.getLocation());
                 } else {
                     npcplayer.faceLocation(result.getLocation());
                     sight = ((Player) npcplayer.getEntity()).hasLineOfSight(result);
                 }
                 if (sight) {
                     PlayerInteractListener.shootM4((Player) npcplayer.getEntity());
+                    if (result.getCustomName().equals("dead")) {
+                        result = null;
+                    }
                 }
                 if (((Player) npcplayer.getEntity()).getHealth() < 30) {
                     ((Player) npcplayer.getEntity()).chat("/use Kokain");
-                }
-                if (result.getCustomName().equals("dead")) {
-                    result = null;
                 }
             }
         }, 60L, 10L));

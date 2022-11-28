@@ -1,16 +1,7 @@
 package me.rqmses.swattest.listeners;
 
 import com.google.common.collect.Sets;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -23,6 +14,11 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleSprintEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 
 public class PlayerDamageListener implements Listener {
   public static Player shooter;
@@ -163,8 +159,8 @@ public class PlayerDamageListener implements Listener {
         }
 
         event.getDamager().remove();
-      } 
-    } 
+      }
+    }
   }
   
   @EventHandler

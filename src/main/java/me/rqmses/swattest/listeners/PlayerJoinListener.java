@@ -1,8 +1,5 @@
 package me.rqmses.swattest.listeners;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.UUID;
 import me.rqmses.swattest.global.Functions;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,6 +12,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.UUID;
 
 public class PlayerJoinListener implements Listener {
   public static final HashMap<UUID, File> playersafe = new HashMap<>();
@@ -37,8 +38,8 @@ public class PlayerJoinListener implements Listener {
     playerconfig.put(player.getUniqueId(), YamlConfiguration.loadConfiguration(playersafe.get(player.getUniqueId())));
     if (!playersafe.get(player.getUniqueId()).exists()) {
       Functions.createFile(player);
-      player.setBedSpawnLocation(new Location(Bukkit.getWorld("world"), 103.0D, 70.0D, 157.0D), true);
-      player.teleport(new Location(Bukkit.getWorld("world"), 103.0D, 70.0D, 157.0D));
+      player.setBedSpawnLocation(new Location(Bukkit.getWorld("world"), 103, 70, 157), true);
+      player.teleport(new Location(Bukkit.getWorld("world"), 103, 70, 157));
     } 
     System.out.println(playersafe + " wurde erfolgreich geladen.");
   }

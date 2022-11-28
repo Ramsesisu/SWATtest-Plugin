@@ -1,12 +1,14 @@
 package me.rqmses.swattest.commands;
 
 import me.rqmses.swattest.SWATtest;
+import me.rqmses.swattest.global.Functions;
 import me.rqmses.swattest.global.Items;
 import me.rqmses.swattest.listeners.PlayerInteractListener;
 import me.rqmses.swattest.listeners.PlayerJoinListener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -113,57 +115,134 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
             this.player.sendMessage(ChatColor.DARK_GRAY + args[0] + ChatColor.GRAY + " ist kein vorgegebenes Equip!");
             return true;
         } 
-        if (invchanged)
+        if (invchanged) {
+          int itemamount = 0;
+
           for (int i = 0; i <= 8; i++) {
             String itemname = (String) PlayerJoinListener.playerconfig.get(this.player.getUniqueId()).get(playerequip.get(this.player.getName()) + "." + i);
             switch (itemname) {
               case "SHIELD":
+                itemamount++;
                 this.player.getInventory().setItem(i, Items.getSchild());
                 break;
               case "LEATHER_CHESTPLATE":
+                itemamount++;
                 if (Objects.equals(playerequip.get(this.player.getName()), "swat")) {
-                  this.player.getInventory().setItem(i, Items.getKev((short)30));
+                  this.player.getInventory().setItem(i, Items.getKev((short) 30));
                   break;
-                } 
-                this.player.getInventory().setItem(i, Items.getKev((short)50));
+                }
+                this.player.getInventory().setItem(i, Items.getKev((short) 50));
                 break;
               case "DIAMOND_BARDING":
+                itemamount++;
                 this.player.getInventory().setItem(i, Items.getM4());
                 break;
               case "STONE_HOE":
+                itemamount++;
                 this.player.getInventory().setItem(i, Items.getSniper());
                 break;
               case "SLIME_BALL":
-                this.player.getInventory().setItem(i, Items.getFlashes());
+                itemamount++;
+                if (!player.getInventory().contains(Material.SLIME_BALL)) {
+                  this.player.getInventory().setItem(i, Items.getFlashes());
+                }
                 break;
               case "GOLD_HOE":
+                itemamount++;
                 this.player.getInventory().setItem(i, Items.getJagdflinte());
                 break;
               case "FEATHER":
+                itemamount++;
                 this.player.getInventory().setItem(i, Items.getMesser());
                 break;
               case "WOOD_HOE":
+                itemamount++;
                 this.player.getInventory().setItem(i, Items.getTazer());
                 break;
               case "GOLD_AXE":
+                itemamount++;
                 this.player.getInventory().setItem(i, Items.getRPG());
                 break;
               case "BLAZE_POWDER":
+                itemamount++;
                 this.player.getInventory().setItem(i, Items.getFlammenwerfer());
                 break;
               case "GOLD_BARDING":
+                itemamount++;
                 this.player.getInventory().setItem(i, Items.getMp5());
                 break;
               case "ELYTRA":
+                itemamount++;
                 this.player.getInventory().setItem(i, Items.getElytra());
                 break;
               default:
                 this.player.getInventory().setItem(i, Items.getAir());
                 break;
-            } 
-          }  
-        if (this.player.getGameMode() == GameMode.SURVIVAL)
-          this.player.sendMessage(ChatColor.GRAY + "Du hast dein Equip zu " + ChatColor.DARK_GRAY + args[0] + ChatColor.GRAY + " geändert!"); 
+            }
+          }
+
+          if (Objects.equals(playerequip.get(player.getName()), "swat")) {
+            if (itemamount != 5) {
+              PlayerJoinListener.playersafe.get(player.getUniqueId()).delete();
+              Functions.createFile(player);
+              Functions.equipPlayer(player);
+              cooldowns.put(player.getName(), 600L);
+            }
+          }
+          if (Objects.equals(playerequip.get(player.getName()), "elytra")) {
+            if (itemamount != 1) {
+              PlayerJoinListener.playersafe.get(player.getUniqueId()).delete();
+              Functions.createFile(player);
+              Functions.equipPlayer(player);
+              cooldowns.put(player.getName(), 600L);
+            }
+          }
+          if (Objects.equals(playerequip.get(player.getName()), "ballas")) {
+            if (itemamount != 4) {
+              PlayerJoinListener.playersafe.get(player.getUniqueId()).delete();
+              Functions.createFile(player);
+              Functions.equipPlayer(player);
+              cooldowns.put(player.getName(), 600L);
+            }
+          }
+          if (Objects.equals(playerequip.get(player.getName()), "polizei")) {
+            if (itemamount != 4) {
+              PlayerJoinListener.playersafe.get(player.getUniqueId()).delete();
+              Functions.createFile(player);
+              Functions.equipPlayer(player);
+              cooldowns.put(player.getName(), 600L);
+            }
+          }
+          if (Objects.equals(playerequip.get(player.getName()), "zivilist")) {
+            if (itemamount != 2) {
+              PlayerJoinListener.playersafe.get(player.getUniqueId()).delete();
+              Functions.createFile(player);
+              Functions.equipPlayer(player);
+              cooldowns.put(player.getName(), 600L);
+            }
+          }
+          if (Objects.equals(playerequip.get(player.getName()), "flammenwerfer")) {
+            if (itemamount != 2) {
+              PlayerJoinListener.playersafe.get(player.getUniqueId()).delete();
+              Functions.createFile(player);
+              Functions.equipPlayer(player);
+              cooldowns.put(player.getName(), 600L);
+            }
+          }
+          if (Objects.equals(playerequip.get(player.getName()), "terror")) {
+            if (itemamount != 3) {
+              PlayerJoinListener.playersafe.get(player.getUniqueId()).delete();
+              Functions.createFile(player);
+              Functions.equipPlayer(player);
+              cooldowns.put(player.getName(), 600L);
+            }
+          }
+        }
+        if (this.player.getGameMode() == GameMode.SURVIVAL) {
+          if (args.length != 3) {
+            this.player.sendMessage(ChatColor.GRAY + "Du hast dein Equip zu " + ChatColor.DARK_GRAY + args[0] + ChatColor.GRAY + " geändert!");
+          }
+        }
       } 
       return true;
     } 

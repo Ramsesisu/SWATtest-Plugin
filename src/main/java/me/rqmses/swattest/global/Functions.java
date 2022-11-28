@@ -1,10 +1,5 @@
 package me.rqmses.swattest.global;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.Objects;
-
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.authlib.GameProfile;
@@ -15,6 +10,11 @@ import net.minecraft.server.v1_12_R1.EntityPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.Objects;
 
 public class Functions {
   public static void createFile(Player player) {
@@ -98,31 +98,31 @@ public class Functions {
     EquipCommand.cooldowns.put(player.getName(), 0L);
     if (Objects.equals(EquipCommand.playerequip.get(player.getName()), "elytra")) {
       player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&3Elytra&8&l] &r") + player.getName());
-      player.chat("/equip Elytra");
+      player.chat("/equip Elytra " + player.getName() + " f");
     } 
     if (Objects.equals(EquipCommand.playerequip.get(player.getName()), "swat")) {
       player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&1SWAT&8&l] &r") + player.getName());
-      player.chat("/equip SWAT");
+      player.chat("/equip SWAT " + player.getName() + " f");
     } 
     if (Objects.equals(EquipCommand.playerequip.get(player.getName()), "polizei")) {
       player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&9UCPD&8&l] &r") + player.getName());
-      player.chat("/equip Polizei");
+      player.chat("/equip Polizei " + player.getName() + " f");
     } 
     if (Objects.equals(EquipCommand.playerequip.get(player.getName()), "ballas")) {
       player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&5Ballas&8&l] &r") + player.getName());
-      player.chat("/equip Ballas");
+      player.chat("/equip Ballas " + player.getName() + " f");
     } 
     if (Objects.equals(EquipCommand.playerequip.get(player.getName()), "terror")) {
       player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&eTerror&8&l] &r") + player.getName());
-      player.chat("/equip Terror");
+      player.chat("/equip Terror " + player.getName() + " f");
     } 
     if (Objects.equals(EquipCommand.playerequip.get(player.getName()), "zivilist")) {
       player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&7Zivi&8&l] &r") + player.getName());
-      player.chat("/equip Zivilist");
+      player.chat("/equip Zivilist " + player.getName() + " f");
     } 
     if (Objects.equals(EquipCommand.playerequip.get(player.getName()), "flammenwerfer")) {
       player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&cFlammi&8&l] &r") + player.getName());
-      player.chat("/equip Flammenwerfer");
+      player.chat("/equip Flammenwerfer " + player.getName() + " f");
     } 
     EquipCommand.cooldowns.put(player.getName(), 0L);
   }

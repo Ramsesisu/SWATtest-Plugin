@@ -18,11 +18,11 @@ public class PlayerSwitchItemListener implements Listener {
     Player player = ((Player)event.getWhoClicked()).getPlayer();
     if (event.getSlot() <= 8 && event.getSlot() >= 0) {
       if (event.getCursor() == null) {
-        this.item = new ItemStack(Material.AIR);
+        item = new ItemStack(Material.AIR);
       } else {
-        this.item = event.getCursor();
+        item = event.getCursor();
       } 
-      PlayerJoinListener.playerconfig.get(player.getUniqueId()).set(EquipCommand.playerequip.get(player.getName()) + "." + event.getSlot(), this.item.getType().toString());
+      PlayerJoinListener.playerconfig.get(player.getUniqueId()).set(EquipCommand.playerequip.get(player.getName()) + "." + event.getSlot(), item.getType().toString());
       try {
         PlayerJoinListener.playerconfig.get(player.getUniqueId()).save(PlayerJoinListener.playersafe.get(player.getUniqueId()));
       } catch (IOException e) {
@@ -30,7 +30,7 @@ public class PlayerSwitchItemListener implements Listener {
       } 
     } else {
       if (!(event.getSlot() == 38) && !(event.getSlot() == 40)) {
-        if (event.getCursor().getType() != Material.WOOD_SPADE) {
+        if (event.getCursor().getType() == Material.WOOD_SPADE || event.getCursor().getType() == Material.ELYTRA) {
           event.setCancelled(true);
         }
       }

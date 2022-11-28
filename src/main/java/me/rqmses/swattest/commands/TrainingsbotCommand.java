@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-public class NPCCommand implements CommandExecutor {
+public class TrainingsbotCommand implements CommandExecutor {
 
     public static net.citizensnpcs.api.npc.NPC npc;
 

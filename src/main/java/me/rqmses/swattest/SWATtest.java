@@ -1,9 +1,11 @@
 package me.rqmses.swattest;
 
 import me.rqmses.swattest.commands.*;
+import me.rqmses.swattest.global.npctraits.AbaimTrait;
 import me.rqmses.swattest.global.npctraits.AttackTrait;
 import me.rqmses.swattest.listeners.*;
 import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.event.DespawnReason;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
 import org.bukkit.Bukkit;
@@ -23,21 +25,26 @@ public final class SWATtest extends JavaPlugin implements Listener {
         listenerRegistration();
         commandRegistration();
 
-        registry =  CitizensAPI.getNPCRegistry();
-        net.citizensnpcs.api.CitizensAPI.getTraitFactory().registerTrait(net.citizensnpcs.api.trait.TraitInfo.create(AttackTrait.class));
-
-        System.out.println("Plugin erfolgreich geladen.");
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&c&lDas SWATtest-Plugin wurde reloaded! &7&l- &c&lVersion 1.4"));
+            Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&c&lDas SWATtest-Plugin wurde reloaded! &7&l- &c&lVersion 1.5"));
             Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&7➝ Bei Bugs muss der Spieler rejoinen."));
         }, 20L);
+
+        registry = CitizensAPI.getNPCRegistry();
+
+        net.citizensnpcs.api.CitizensAPI.getTraitFactory().registerTrait(net.citizensnpcs.api.trait.TraitInfo.create(AttackTrait.class));
+        net.citizensnpcs.api.CitizensAPI.getTraitFactory().registerTrait(net.citizensnpcs.api.trait.TraitInfo.create(AbaimTrait.class));
+
+        System.out.println("Plugin erfolgreich geladen.");
     }
 
     public void onDisable() {
         if (BombeCommand.bombloc != null &&
                 Bukkit.getWorld("world").getBlockAt(BombeCommand.bombloc).getType() == Material.TNT)
             Bukkit.getWorld("world").getBlockAt(BombeCommand.bombloc).setType(Material.AIR);
-        for (NPC npc : NPCCommand.getNPCs()) {
+
+        for (NPC npc : registry.sorted()) {
+            npc.despawn(DespawnReason.RELOAD);
             npc.destroy();
         }
         System.out.println("Plugin erfolgreich heruntergefahren.");
@@ -73,6 +80,7 @@ public final class SWATtest extends JavaPlugin implements Listener {
         getCommand("navi").setExecutor(new NaviCommand());
         getCommand("cooldown").setExecutor(new CoolDownCommand());
         getCommand("resetdata").setExecutor(new ResetDataCommand());
-        getCommand("trainingsbot").setExecutor(new NPCCommand());
+        getCommand("trainingsbot").setExecutor(new TrainingsbotCommand());
+        getCommand("abaimbot").setExecutor(new AbaimbotCommand());
     }
 }

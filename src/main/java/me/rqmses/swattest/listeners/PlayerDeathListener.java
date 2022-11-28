@@ -1,19 +1,11 @@
 package me.rqmses.swattest.listeners;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 import me.rqmses.swattest.SWATtest;
 import me.rqmses.swattest.commands.EquipCommand;
 import me.rqmses.swattest.global.Functions;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,6 +13,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 public class PlayerDeathListener implements Listener {
   public static String killer = "Unbekannt";
@@ -100,6 +97,9 @@ public class PlayerDeathListener implements Listener {
     player.setGameMode(GameMode.SPECTATOR);
     spawnprotection.put(player.getName(), Boolean.TRUE);
     Bukkit.getScheduler().runTaskLater(SWATtest.plugin, () -> {
+      if (player.getBedSpawnLocation() == null) {
+        player.setBedSpawnLocation(new Location(Bukkit.getWorld("world"), 103, 70, 157), true);
+      }
           player.teleport(new Location(Bukkit.getWorld(player.getWorld().getName()), player.getBedSpawnLocation().getBlockX(), (player.getBedSpawnLocation().getBlockY() + 1), player.getBedSpawnLocation().getBlockZ()));
           player.sendTitle(ChatColor.GREEN + "Du lebst nun wieder!", "", 10, 30, 20);
           player.setCustomName(player.getDisplayName());
