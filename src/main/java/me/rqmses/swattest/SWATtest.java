@@ -62,15 +62,19 @@ public final class SWATtest extends JavaPlugin implements Listener {
             public void run() {
                 if (team1.getSize() == 0) {
                     kills1 = 0;
+                    teamname1 = "Team-1";
                 }
                 if (team2.getSize() == 0) {
                     kills2 = 0;
+                    teamname2 = "Team-2";
                 }
                 if (team3.getSize() == 0) {
                     kills3 = 0;
+                    teamname3 = "Team-3";
                 }
                 if (team4.getSize() == 0) {
                     kills4 = 0;
+                    teamname4 = "Team-4";
                 }
             }
         };
