@@ -31,7 +31,7 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
   
   Player player;
   
-  @SuppressWarnings({"deprecation", "ResultOfMethodCallIgnored"})
+  @SuppressWarnings({"ResultOfMethodCallIgnored"})
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
     if (sender instanceof Player) {
       if (args.length == 2) {

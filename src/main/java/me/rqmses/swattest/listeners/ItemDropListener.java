@@ -1,23 +1,12 @@
 package me.rqmses.swattest.listeners;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
 import me.rqmses.swattest.SWATtest;
-import net.citizensnpcs.api.npc.NPC;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -30,6 +19,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
+
+import java.util.*;
 
 public class ItemDropListener implements Listener {
   public static final HashMap<String, Long> cooldowns = new HashMap<>();
@@ -67,7 +58,7 @@ public class ItemDropListener implements Listener {
   }
   
   @EventHandler
-  public boolean onFlashRightClick(PlayerInteractEvent event) {
+  public void onFlashRightClick(PlayerInteractEvent event) {
     Player player = event.getPlayer();
     if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
       if (player.getInventory().getItemInMainHand().getType() == Material.SLIME_BALL) {
@@ -75,7 +66,6 @@ public class ItemDropListener implements Listener {
         dropFlash(player);
       }
     }
-    return true;
   }
 
   public void dropFlash(Player player) {

@@ -15,20 +15,15 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
 
 public class TrainingsbotCommand implements CommandExecutor {
 
     public static net.citizensnpcs.api.npc.NPC npc;
 
-    public static ArrayList<NPC> NPCList = new ArrayList<>();
+    public static final ArrayList<NPC> NPCList = new ArrayList<>();
 
-    public static List<NPC> getNPCs() {
-        return NPCList;
-    }
-
-    public static HashMap<String, Integer> NPCListPlayer = new HashMap<>();
+    public static final HashMap<String, Integer> NPCListPlayer = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

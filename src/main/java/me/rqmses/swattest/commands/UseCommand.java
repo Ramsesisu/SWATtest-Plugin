@@ -15,7 +15,7 @@ import java.util.*;
 public class UseCommand implements CommandExecutor, TabCompleter {
   public static final HashMap<UUID, Long> cooldowns = new HashMap<>();
   
-  List<Entity> nearPlayers = new ArrayList<>();
+  final List<Entity> nearPlayers = new ArrayList<>();
   
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
     if (sender instanceof Player) {

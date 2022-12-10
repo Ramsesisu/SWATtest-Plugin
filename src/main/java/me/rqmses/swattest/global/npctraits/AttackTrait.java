@@ -111,6 +111,7 @@ public class AttackTrait extends Trait {
         npc.destroy();
     }
 
+    @SuppressWarnings("SuspiciousMethodCalls")
     @EventHandler
     public void onDeath(NPCDeathEvent event) {
         TrainingsbotCommand.NPCList.remove(npc);
