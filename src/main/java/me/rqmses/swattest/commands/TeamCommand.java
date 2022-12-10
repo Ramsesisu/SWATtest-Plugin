@@ -65,7 +65,7 @@ public class TeamCommand implements CommandExecutor, TabCompleter {
           }
         }
       };
-      if (args[0].toLowerCase().equals(teamname1.toLowerCase())) {
+      if (args[0].equalsIgnoreCase(teamname1)) {
         player.setCustomName(ChatColor.RED + player.getDisplayName());
         player.setPlayerListName(player.getPlayerListName().replace(player.getDisplayName(), ChatColor.RED + player.getDisplayName()));
         team1.addEntry(player.getName());
@@ -73,7 +73,7 @@ public class TeamCommand implements CommandExecutor, TabCompleter {
         NickAPI.refreshPlayer(player);
         scoreboardRunnable.runTaskTimer(plugin, 20L, 0L);
         player.sendMessage(ChatColor.AQUA + "Du bist zu " + ChatColor.RED + args[0] + ChatColor.AQUA + " gewechselt.");
-      } else if (args[0].toLowerCase().equals(teamname2.toLowerCase())) {
+      } else if (args[0].equalsIgnoreCase(teamname2)) {
         player.setCustomName(ChatColor.BLUE + player.getDisplayName());
         player.setPlayerListName(player.getPlayerListName().replace(player.getDisplayName(), ChatColor.BLUE + player.getDisplayName()));
         team2.addEntry(player.getName());
@@ -81,7 +81,7 @@ public class TeamCommand implements CommandExecutor, TabCompleter {
         NickAPI.refreshPlayer(player);
         scoreboardRunnable.runTaskTimer(plugin, 20L, 0L);
         player.sendMessage(ChatColor.AQUA + "Du bist zu " + ChatColor.BLUE + args[0] + ChatColor.AQUA + " gewechselt.");
-      } else if (args[0].toLowerCase().equals(teamname3.toLowerCase())) {
+      } else if (args[0].equalsIgnoreCase(teamname3)) {
         player.setCustomName(ChatColor.GREEN + player.getDisplayName());
         player.setPlayerListName(player.getPlayerListName().replace(player.getDisplayName(), ChatColor.GREEN + player.getDisplayName()));
         team3.addEntry(player.getName());
@@ -89,7 +89,7 @@ public class TeamCommand implements CommandExecutor, TabCompleter {
         NickAPI.refreshPlayer(player);
         scoreboardRunnable.runTaskTimer(plugin, 20L, 0L);
         player.sendMessage(ChatColor.AQUA + "Du bist zu " + ChatColor.GREEN + args[0] + ChatColor.AQUA + " gewechselt.");
-      } else if (args[0].toLowerCase().equals(teamname4.toLowerCase())) {
+      } else if (args[0].equalsIgnoreCase(teamname4)) {
         player.setCustomName(ChatColor.GOLD + player.getDisplayName());
         player.setPlayerListName(player.getPlayerListName().replace(player.getDisplayName(), ChatColor.GOLD + player.getDisplayName()));
         team4.addEntry(player.getName());
@@ -97,7 +97,7 @@ public class TeamCommand implements CommandExecutor, TabCompleter {
         NickAPI.refreshPlayer(player);
         scoreboardRunnable.runTaskTimer(plugin, 20L, 0L);
         player.sendMessage(ChatColor.AQUA + "Du bist zu " + ChatColor.GOLD + args[0] + ChatColor.AQUA + " gewechselt.");
-      } else if (args[0].toLowerCase().equals("none")) {
+      } else if (args[0].equalsIgnoreCase("none")) {
         player.setCustomName(player.getDisplayName());
         player.setPlayerListName(player.getPlayerListName().replace(player.getDisplayName(), ChatColor.WHITE + player.getDisplayName()));
         team0.addEntry(player.getName());

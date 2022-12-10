@@ -21,16 +21,16 @@ public class TeamnameCommand implements CommandExecutor, TabCompleter {
         player.sendMessage(ChatColor.AQUA + "Du musst ein Team angeben!");
         return true;
       }
-      if (args[0].toLowerCase().equals(teamname1.toLowerCase())) {
+      if (args[0].equalsIgnoreCase(teamname1)) {
         teamname1 = args[1];
         player.sendMessage(ChatColor.AQUA + "Du hast den Namen von " + ChatColor.RED + args[0] + ChatColor.AQUA + " zu " + ChatColor.RED + args[1] + ChatColor.AQUA + " gewechselt.");
-      } else if (args[0].toLowerCase().equals(teamname2.toLowerCase())) {
+      } else if (args[0].equalsIgnoreCase(teamname2)) {
         teamname2 = args[1];
         player.sendMessage(ChatColor.AQUA + "Du hast den Namen von " + ChatColor.BLUE + args[0] + ChatColor.AQUA + " zu " + ChatColor.BLUE + args[1] + ChatColor.AQUA + " gewechselt.");
-      } else if (args[0].toLowerCase().equals(teamname3.toLowerCase())) {
+      } else if (args[0].equalsIgnoreCase(teamname3)) {
         teamname3 = args[1];
         player.sendMessage(ChatColor.AQUA + "Du hast den Namen von " + ChatColor.GREEN + args[0] + ChatColor.AQUA + " zu " + ChatColor.GREEN + args[1] + ChatColor.AQUA + " gewechselt.");
-      } else if (args[0].toLowerCase().equals(teamname4.toLowerCase())) {
+      } else if (args[0].equalsIgnoreCase(teamname4)) {
         teamname4 = args[1];
         player.sendMessage(ChatColor.AQUA + "Du hast den Namen von " + ChatColor.GOLD + args[0] + ChatColor.AQUA + " zu " + ChatColor.GOLD + args[1] + ChatColor.AQUA + " gewechselt.");
       } else {
