@@ -1,6 +1,7 @@
 package me.rqmses.swattest.listeners;
 
 import com.google.common.collect.Sets;
+import me.rqmses.swattest.global.Functions;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -20,20 +21,25 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
+import static me.rqmses.swattest.SWATtest.team0;
+
 public class PlayerDamageListener implements Listener {
   public static Player shooter;
-  
+
   List<Entity> entitylist;
-  
-  public void setShooter(String name) {
-    shooter = Bukkit.getPlayer(name);
-  }
   
   @EventHandler
   public void onBulletHit(EntityDamageByEntityEvent event) {
     if (event.getEntity() instanceof Player) {
+
       if (event.getEntity().hasMetadata("NPC")) {return;}
-      Player player = (Player)event.getEntity();
+      Player player = (Player) event.getEntity();
+
+      if (event.getDamager() instanceof Player) {
+        if (Functions.getTeam(player) == Functions.getTeam((Player) event.getDamager()) && Functions.getTeam(player) != team0) {
+          event.setCancelled(true);
+        }
+      }
       if (!player.hasMetadata("NPC")) {
         if (PlayerDeathListener.spawnprotection.get(player.getName())) {
           event.setCancelled(true);
@@ -41,12 +47,18 @@ public class PlayerDamageListener implements Listener {
         }
       }
       if (event.getDamager().getType() == EntityType.ARROW) {
+        String[] bulletinfo = event.getDamager().getCustomName().split("-");
+        String weapontype = bulletinfo[0];
+        shooter = Bukkit.getPlayer(bulletinfo[1]);
         if (shooter != null) {
           PlayerDeathListener.setKiller(shooter.getName());
         } else {
           PlayerDeathListener.setKiller("Bot");
         }
-        String weapontype = event.getDamager().getCustomName();
+
+        if (Functions.getTeam(player) == Functions.getTeam(shooter) && Functions.getTeam(player) != team0) {
+          event.setCancelled(true);
+        }
         if (Objects.equals(weapontype, "m4"))
           if (player.getInventory().getChestplate() == null) {
             event.setDamage(7.0D);

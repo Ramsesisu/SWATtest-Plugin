@@ -19,6 +19,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import static me.rqmses.swattest.SWATtest.*;
+import static me.rqmses.swattest.commands.TeamCommand.*;
+
 public class PlayerDeathListener implements Listener {
   public static String killer = "Unbekannt";
   
@@ -80,7 +83,25 @@ public class PlayerDeathListener implements Listener {
       } 
       deathmessage = ChatColor.translateAlternateColorCodes('&', "&7" + event.getEntity().getName() + " &f&lwurde von &7" + killer + " &f&lgetötet");
       playerdeathmessage = ChatColor.translateAlternateColorCodes('&', "&7&f&lDu wurdest von &7" + killer + " &f&lgetötet");
-    } 
+    }
+
+    if (Bukkit.getServer().getPlayer(killer) != null) {
+      if (Functions.getTeam(Bukkit.getServer().getPlayer(killer)) != team0) {
+        if (team1.equals(Functions.getTeam(Bukkit.getServer().getPlayer(killer)))) {
+          kills1++;
+        }
+        if (team2.equals(Functions.getTeam(Bukkit.getServer().getPlayer(killer)))) {
+          kills2++;
+        }
+        if (team3.equals(Functions.getTeam(Bukkit.getServer().getPlayer(killer)))) {
+          kills3++;
+        }
+        if (team4.equals(Functions.getTeam(Bukkit.getServer().getPlayer(killer)))) {
+          kills4++;
+        }
+      }
+    }
+
     player.sendTitle(ChatColor.translateAlternateColorCodes('&', "&cDu wurdest getötet"), ChatColor.translateAlternateColorCodes('&', "&cvon &7" + killer), 10, 30, 20);
     List<Entity> nearPlayers = new ArrayList<>(getEntitiesAroundPoint(deathloc, 30.0D));
     List<Entity> nearPlayers2 = new ArrayList<>();

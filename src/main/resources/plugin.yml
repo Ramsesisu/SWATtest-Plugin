@@ -23,6 +23,9 @@ commands:
   team:
     description: Wähle ein Team aus.
     usage: /<command> <team>
+  teamname:
+    description: Ändert den Namen eines Teams.
+    usage: /<command> <teamname1> <teamname2>
   camera:
     description: Schalte den Kamera-Modus um.
     usage: /<command>

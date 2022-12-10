@@ -31,6 +31,7 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
   
   Player player;
   
+  @SuppressWarnings({"deprecation", "ResultOfMethodCallIgnored"})
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
     if (sender instanceof Player) {
       if (args.length == 2) {
@@ -51,6 +52,7 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
       if (args.length == 0) {
         this.player.sendMessage(ChatColor.GRAY + "Du musst ein Equip angeben!");
       } else {
+        String playername = Functions.getTeam(player).getColor() + player.getName();
         BukkitRunnable rpg;
         String fly = "";
         if (this.player.getPlayerListName().endsWith(" F"))
@@ -61,32 +63,32 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
             playerequip.put(this.player.getName(), "elytra");
             this.player.getInventory().clear();
             invchanged = true;
-            this.player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&3Elytra&8&l] &r") + this.player.getName() + fly);
+            this.player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&3Elytra&8&l] &r") + playername + fly);
             break;
           case "swat":
             playerequip.put(this.player.getName(), "swat");
             this.player.getInventory().clear();
             invchanged = true;
-            this.player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&1SWAT&8&l] &r") + this.player.getName() + fly);
+            this.player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&1SWAT&8&l] &r") + playername + fly);
             break;
           case "polizei":
             playerequip.put(this.player.getName(), "polizei");
             this.player.getInventory().clear();
             invchanged = true;
-            this.player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&9UCPD&8&l] &r") + this.player.getName() + fly);
+            this.player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&9UCPD&8&l] &r") + playername + fly);
             break;
           case "ballas":
             playerequip.put(this.player.getName(), "ballas");
             this.player.getInventory().clear();
             invchanged = true;
-            this.player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&5Ballas&8&l] &r") + this.player.getName() + fly);
+            this.player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&5Ballas&8&l] &r") + playername + fly);
             break;
           case "terror":
             playerequip.put(this.player.getName(), "terror");
             this.player.getInventory().clear();
             invchanged = true;
             PlayerInteractListener.rpgcooldown.put(this.player.getName(), Boolean.FALSE);
-            this.player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&eTerror&8&l] &r") + this.player.getName() + fly);
+            this.player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&eTerror&8&l] &r") + playername + fly);
             rpg = new BukkitRunnable() {
                 public void run() {
                   PlayerInteractListener.rpgcooldown.put(EquipCommand.this.player.getName(), Boolean.TRUE);
@@ -99,17 +101,17 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
             playerequip.put(this.player.getName(), "zivilist");
             this.player.getInventory().clear();
             invchanged = true;
-            this.player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&7Zivi&8&l] &r") + this.player.getName() + fly);
+            this.player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&7Zivi&8&l] &r") + playername + fly);
             break;
           case "flammenwerfer":
             playerequip.put(this.player.getName(), "flammenwerfer");
             this.player.getInventory().clear();
             invchanged = true;
-            this.player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&cFlammi&8&l] &r") + this.player.getName() + fly);
+            this.player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&cFlammi&8&l] &r") + playername + fly);
             break;
           case "none":
             this.player.getInventory().clear();
-            this.player.setPlayerListName(this.player.getName() + fly);
+            this.player.setPlayerListName(playername + fly);
             break;
           default:
             this.player.sendMessage(ChatColor.DARK_GRAY + args[0] + ChatColor.GRAY + " ist kein vorgegebenes Equip!");

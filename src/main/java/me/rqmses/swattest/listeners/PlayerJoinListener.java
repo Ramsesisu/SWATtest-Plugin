@@ -17,6 +17,8 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.UUID;
 
+import static me.rqmses.swattest.SWATtest.team0;
+
 public class PlayerJoinListener implements Listener {
   public static final HashMap<UUID, File> playersafe = new HashMap<>();
   
@@ -29,7 +31,7 @@ public class PlayerJoinListener implements Listener {
     player.setGameMode(GameMode.SURVIVAL);
     player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(40.0D);
     player.setHealth(40.0D);
-    player.setCustomName("");
+    player.setCustomName(" ");
     player.getActivePotionEffects().clear();
     player.getInventory().clear();
     PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.FALSE);
@@ -40,7 +42,8 @@ public class PlayerJoinListener implements Listener {
       Functions.createFile(player);
       player.setBedSpawnLocation(new Location(Bukkit.getWorld("world"), 103, 70, 157), true);
       player.teleport(new Location(Bukkit.getWorld("world"), 103, 70, 157));
-    } 
+    }
+    team0.addEntry(player.getName());
     System.out.println(playersafe + " wurde erfolgreich geladen.");
   }
 }

@@ -102,7 +102,6 @@ public class PlayerInteractListener implements Listener {
           int allammo = Integer.parseInt(ammos[1]);
           if (ammo > 0) {
             PlayerDamageListener shooter = new PlayerDamageListener();
-            shooter.setShooter(player.getName());
             ArrayList<String> lore = new ArrayList<>();
             String templore = ChatColor.translateAlternateColorCodes('&', "&6" + (ammo - 1) + "&8/&6" + allammo);
             lore.add(templore);
@@ -111,7 +110,7 @@ public class PlayerInteractListener implements Listener {
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
             Vector playerDirection = player.getLocation().getDirection();
             Arrow bullet = player.launchProjectile(Arrow.class, playerDirection);
-            bullet.setCustomName("rpg");
+            bullet.setCustomName("rpg-"+player.getName());
             bullet.setVelocity(bullet.getVelocity().multiply(7));
             bullet.setGravity(false);
             bullet.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
@@ -163,9 +162,9 @@ public class PlayerInteractListener implements Listener {
                 e.setGlowing(true);
                 Bukkit.getScheduler().runTaskLater(SWATtest.plugin, () -> {
                   e.setGlowing(false);
-                  e.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 7, 1));
-                  e.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 16, 3));
-                  e.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 16, 255));
+                  e.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 7*10, 1));
+                  e.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 16*20, 3));
+                  e.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 16*20, 200));
                 }, 10L);
                 return true;
               } 
@@ -406,7 +405,6 @@ public class PlayerInteractListener implements Listener {
     int allammo = Integer.parseInt(ammos[1]);
     if (ammo > 0) {
       PlayerDamageListener shooter = new PlayerDamageListener();
-      shooter.setShooter(player.getName());
       ArrayList<String> lore = new ArrayList<>();
       String templore = ChatColor.translateAlternateColorCodes('&', "&6" + (ammo - 1) + "&8/&6" + allammo);
       lore.add(templore);
@@ -415,8 +413,8 @@ public class PlayerInteractListener implements Listener {
       player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
       Vector playerDirection = player.getLocation().getDirection();
       Arrow bullet = player.launchProjectile(Arrow.class, playerDirection);
-      bullet.setCustomName("m4");
-      bullet.setVelocity(bullet.getVelocity().multiply(3.75D));
+      bullet.setCustomName("m4-"+player.getName());
+      bullet.setVelocity(bullet.getVelocity().multiply(4.5D));
       bullet.setGravity(false);
       bullet.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
       Bukkit.getServer().getWorld(player.getWorld().getName()).getPlayers().forEach(nearPlayer -> {
@@ -469,7 +467,6 @@ public class PlayerInteractListener implements Listener {
     int allammo = Integer.parseInt(ammos[1]);
     if (ammo > 0) {
       PlayerDamageListener shooter = new PlayerDamageListener();
-      shooter.setShooter(player.getName());
       ArrayList<String> lore = new ArrayList<>();
       String templore = ChatColor.translateAlternateColorCodes('&', "&6" + (ammo - 1) + "&8/&6" + allammo);
       lore.add(templore);
@@ -478,7 +475,7 @@ public class PlayerInteractListener implements Listener {
       player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
       Vector playerDirection = player.getLocation().getDirection();
       Arrow bullet = player.launchProjectile(Arrow.class, playerDirection);
-      bullet.setCustomName("sniper");
+      bullet.setCustomName("sniper-"+player.getName());
       bullet.setVelocity(bullet.getVelocity().multiply(6));
       bullet.setGravity(false);
       bullet.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
@@ -532,7 +529,6 @@ public class PlayerInteractListener implements Listener {
     int allammo = Integer.parseInt(ammos[1]);
     if (ammo > 0) {
       PlayerDamageListener shooter = new PlayerDamageListener();
-      shooter.setShooter(player.getName());
       ArrayList<String> lore = new ArrayList<>();
       String templore = ChatColor.translateAlternateColorCodes('&', "&6" + (ammo - 1) + "&8/&6" + allammo);
       lore.add(templore);
@@ -541,8 +537,8 @@ public class PlayerInteractListener implements Listener {
       player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
       Vector playerDirection = player.getLocation().getDirection();
       Arrow bullet = player.launchProjectile(Arrow.class, playerDirection);
-      bullet.setCustomName("mp5");
-      bullet.setVelocity(bullet.getVelocity().multiply(5));
+      bullet.setCustomName("mp5-"+player.getName());
+      bullet.setVelocity(bullet.getVelocity().multiply(5.25));
       bullet.setGravity(false);
       bullet.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
       Bukkit.getServer().getWorld(player.getWorld().getName()).getPlayers().forEach(nearPlayer -> {
@@ -595,7 +591,6 @@ public class PlayerInteractListener implements Listener {
     int allammo = Integer.parseInt(ammos[1]);
     if (ammo > 0) {
       PlayerDamageListener shooter = new PlayerDamageListener();
-      shooter.setShooter(player.getName());
       ArrayList<String> lore = new ArrayList<>();
       String templore = ChatColor.translateAlternateColorCodes('&', "&6" + (ammo - 1) + "&8/&6" + allammo);
       lore.add(templore);
@@ -604,8 +599,8 @@ public class PlayerInteractListener implements Listener {
       player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
       Vector playerDirection = player.getLocation().getDirection();
       Arrow bullet = player.launchProjectile(Arrow.class, playerDirection);
-      bullet.setCustomName("jagdflinte");
-      bullet.setVelocity(bullet.getVelocity().multiply(3));
+      bullet.setCustomName("jagdflinte-"+player.getName());
+      bullet.setVelocity(bullet.getVelocity().multiply(4));
       bullet.setGravity(false);
       bullet.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
       Bukkit.getServer().getWorld(player.getWorld().getName()).getPlayers().forEach(nearPlayer -> {

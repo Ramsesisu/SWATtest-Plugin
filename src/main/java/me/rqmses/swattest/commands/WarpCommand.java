@@ -10,6 +10,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class WarpCommand implements CommandExecutor, TabCompleter {
@@ -384,8 +385,15 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
                         loc = new Location(Bukkit.getWorld("world"), -134, 71, -500);
                         break;
                     default:
-                        player.sendMessage(ChatColor.GOLD + args[0] + ChatColor.YELLOW + " ist kein gültiges Ziel!");
-                        return true;
+                        String[] coords = args[0].split("/");
+                        if (coords.length == 3) {
+                            loc = new Location(Bukkit.getWorld("world"), Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2]));
+                        } else if (Bukkit.getServer().getPlayer(args[0]) != null) {
+                            loc = Bukkit.getServer().getPlayer(args[0]).getLocation();
+                        } else {
+                            player.sendMessage(ChatColor.GOLD + args[0] + ChatColor.YELLOW + " ist kein gültiges Ziel!");
+                            return true;
+                        }
                 }
                 player.teleport(loc);
                 player.sendMessage(ChatColor.YELLOW + "Du wurdest zu " + ChatColor.GOLD + args[0] + ChatColor.YELLOW + " teleportiert!");
@@ -412,6 +420,13 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
                 "Urantransport", "Deathmatch-Arena", "Gefängnis", "Hochseefischer", "Feuerwerksladen", "Angelschein", "Terroristen",
                 "Sägewerk", "200", "363", "531", "Bäckerei", "Shop", "Windrad-FBI", "UCM", "Altes-Gefängnis", "Hölle",
                 "Himmel", "Checkpoint-Gefängnis", "Anwaltskanzelei", "Musikladen"};
+        ArrayList<String> targetsList = new ArrayList<>(Arrays.asList(targets));
+        ArrayList<String> playersList = new ArrayList<>();
+        for (Player tempplayer : Bukkit.getServer().getOnlinePlayers()) {
+            playersList.add(tempplayer.getName());
+        }
+        targetsList.addAll(playersList);
+        targets = targetsList.toArray(new String[0]);
         if (args.length == 1) {
             for (String target : targets) {
                 if (target.toUpperCase().startsWith(args[0].toUpperCase())) {

@@ -21,8 +21,11 @@ public class CoolDownCommand implements CommandExecutor {
         PlayerInteractListener.rpgcooldown.put(player.getName(), Boolean.TRUE);
         UseCommand.cooldowns.put(player.getUniqueId(), 0L);
         EquipCommand.cooldowns.put(player.getName(), 0L);
+        TeamCommand.cooldowns.put(player.getName(), 0L);
         player.sendMessage(ChatColor.GRAY + "Deine Cooldowns wurden zurückgesetzt!");
-      } 
+      } else {
+        player.sendMessage("Du bist kein OP!");
+      }
     } 
     return true;
   }

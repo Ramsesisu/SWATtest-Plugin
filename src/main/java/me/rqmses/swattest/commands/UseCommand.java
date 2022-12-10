@@ -39,29 +39,23 @@ public class UseCommand implements CommandExecutor, TabCompleter {
               player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 100, 0));
               break;
             case "kokain":
-              player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_BURP, 100.0F, 1.0F);
-              player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 3000, 3));
-              player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 320, 0));
-              if (!player.getActivePotionEffects().toString().contains("SLOW"))
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 200, 0)); 
-              break;
             case "koks":
               player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_BURP, 100.0F, 1.0F);
-              player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 4400, 3));
+              player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 3000, 4));
               player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 320, 0));
               if (!player.getActivePotionEffects().toString().contains("SLOW"))
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 200, 0)); 
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 200, 0));
               break;
             case "marihuana":
             case "gras":
               player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_BURP, 100.0F, 1.0F);
-              player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 5000, 4));
+              player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 5000, 3));
               player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 400, 1));
               break;
             case "methamphetamin":
             case "meth":
               player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_BURP, 100.0F, 1.0F);
-              player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 4400, 3));
+              player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 4400, 4));
               player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 320, 1));
               if (!player.getActivePotionEffects().toString().contains("SLOW"))
                 player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 200, 0)); 

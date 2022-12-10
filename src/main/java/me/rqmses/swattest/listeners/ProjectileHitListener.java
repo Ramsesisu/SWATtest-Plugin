@@ -20,8 +20,9 @@ public class ProjectileHitListener implements Listener {
   @EventHandler
   public void onProjectileHit(ProjectileHitEvent event) {
     if (event.getEntity() instanceof Arrow) {
-      String bullettype = event.getEntity().getCustomName();
-      if (Objects.equals(bullettype, "rpg")) {
+      String[] bulletinfo = event.getEntity().getCustomName().split("-");
+      String weapontype = bulletinfo[0];
+      if (Objects.equals(weapontype, "rpg")) {
         Location loc = event.getHitBlock().getLocation();
         loc.getWorld().createExplosion(loc, 10.0F, true);
         loc.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc, 1);

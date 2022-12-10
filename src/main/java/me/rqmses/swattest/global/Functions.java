@@ -7,14 +7,19 @@ import com.mojang.authlib.properties.Property;
 import me.rqmses.swattest.commands.EquipCommand;
 import me.rqmses.swattest.listeners.PlayerJoinListener;
 import net.minecraft.server.v1_12_R1.EntityPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.*;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Objects;
+
+import static me.rqmses.swattest.SWATtest.*;
+import static me.rqmses.swattest.commands.TeamCommand.*;
 
 public class Functions {
   public static void createFile(Player player) {
@@ -150,4 +155,69 @@ public class Functions {
     }
   }
 
+  public static Team getTeam(Player player) {
+    if (player.hasMetadata("NPC")) {
+      return team0;
+    }
+    Team playerteam = team0;
+    if (team1.getEntries().contains(player.getName())) {
+      playerteam = team1;
+    }
+    if (team2.getEntries().contains(player.getName())) {
+      playerteam = team2;
+    }
+    if (team3.getEntries().contains(player.getName())) {
+      playerteam = team3;
+    }
+    if (team4.getEntries().contains(player.getName())) {
+      playerteam = team4;
+    }
+    return playerteam;
+  }
+
+  public static void setScoreBoard(Player player) {
+    ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
+    Scoreboard scoreboard = scoreboardManager.getNewScoreboard();
+
+    Objective objective = scoreboard.registerNewObjective(ChatColor.BOLD + "HowToSWAT", "dummy");
+    objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+
+    if (team1.getSize() > 0) {
+      Score score1 = objective.getScore(ChatColor.translateAlternateColorCodes('&', "&c&l" + teamname1));
+      score1.setScore(-10);
+      Score score11 = objective.getScore(ChatColor.translateAlternateColorCodes('&', "➝&c&o " + team1.getSize() + " Spieler"));
+      score11.setScore(-11);
+      Score score12 = objective.getScore(ChatColor.translateAlternateColorCodes('&', "➝&c&o " + kills1 + " Kills"));
+      score12.setScore(-12);
+    }
+
+    if (team2.getSize() > 0) {
+      Score score2 = objective.getScore(ChatColor.translateAlternateColorCodes('&', "&9&l" + teamname2));
+      score2.setScore(-20);
+      Score score21 = objective.getScore(ChatColor.translateAlternateColorCodes('&', "➝&9&o " + team2.getSize() + " Spieler"));
+      score21.setScore(-21);
+      Score score22 = objective.getScore(ChatColor.translateAlternateColorCodes('&', "➝&9&o " + kills2 + " Kills"));
+      score22.setScore(-22);
+    }
+
+    if (team3.getSize() > 0) {
+      Score score3 = objective.getScore(ChatColor.translateAlternateColorCodes('&', "&a&l" + teamname3));
+      score3.setScore(-30);
+      Score score31 = objective.getScore(ChatColor.translateAlternateColorCodes('&', "➝&a&o " + team3.getSize() + " Spieler"));
+      score31.setScore(-31);
+      Score score32 = objective.getScore(ChatColor.translateAlternateColorCodes('&', "➝&a&o " + kills3 + " Kills"));
+      score32.setScore(-32);
+    }
+
+    if (team4.getSize() > 0) {
+      Score score4 = objective.getScore(ChatColor.translateAlternateColorCodes('&', "&6&l" + teamname4));
+      score4.setScore(-40);
+      Score score41 = objective.getScore(ChatColor.translateAlternateColorCodes('&', "➝&6&o " + team4.getSize() + " Spieler"));
+      score41.setScore(-41);
+      Score score42 = objective.getScore(ChatColor.translateAlternateColorCodes('&', "➝&6&o " + kills4 + " Kills"));
+      score42.setScore(-42);
+    }
+
+    player.setScoreboard(scoreboard);
+  }
 }
