@@ -133,5 +133,6 @@ public final class SWATtest extends JavaPlugin implements Listener {
         getCommand("resetdata").setExecutor(new ResetDataCommand());
         getCommand("trainingsbot").setExecutor(new TrainingsbotCommand());
         getCommand("abaimbot").setExecutor(new AbaimbotCommand());
+        getCommand("luftlinie").setExecutor(new LuftlinieCommand());
     }
 }

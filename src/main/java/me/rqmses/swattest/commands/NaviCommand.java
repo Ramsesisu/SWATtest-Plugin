@@ -1,5 +1,7 @@
 package me.rqmses.swattest.commands;
 
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -24,6 +26,8 @@ public class NaviCommand implements CommandExecutor, TabCompleter {
 
     public static final HashMap<String, BukkitTask> navitask = new HashMap<>();
 
+    public static final HashMap<String, Boolean> navitype = new HashMap<>();
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
@@ -38,6 +42,7 @@ public class NaviCommand implements CommandExecutor, TabCompleter {
                 }
             } else {
                 Location loc;
+                navitype.putIfAbsent(player.getName(), Boolean.FALSE);
                 switch (args[0].toLowerCase()) {
                     case "stadthalle":
                         loc = new Location(Bukkit.getWorld("world"), 103, 69, 157);
@@ -325,7 +330,7 @@ public class NaviCommand implements CommandExecutor, TabCompleter {
                         loc = new Location(Bukkit.getWorld("world"), -368, 69, 530);
                         break;
                     case "flughafen-unica":
-                        loc = new Location(Bukkit.getWorld("world"), -368, 69, 530);
+                        loc = new Location(Bukkit.getWorld("world"), -263, 69, 630);
                         break;
                     case "flughafen-chinatown":
                         loc = new Location(Bukkit.getWorld("world"), 1256, 69, 45);
@@ -381,6 +386,9 @@ public class NaviCommand implements CommandExecutor, TabCompleter {
                     case "anwaltskanzelei":
                         loc = new Location(Bukkit.getWorld("world"), -134, 71, -500);
                         break;
+                    case "alcatraz":
+                        loc = new Location(Bukkit.getWorld("world"), 1183, 75, 685);
+                        break;
                     default:
                         String[] coords = args[0].split("/");
                         if (coords.length == 3) {
@@ -403,6 +411,12 @@ public class NaviCommand implements CommandExecutor, TabCompleter {
                         for (int i = 0; i < 20 * 2 /* 20 mal Länge des Navis */; i++) {
                             Location temploc = origin.add(direction);
                             player.spawnParticle(Particle.REDSTONE, temploc.subtract(direction.clone().multiply(0.75)), 1, 0.05, 0.05, 0.05, 0);
+                        }
+
+                        if (navitype.get(player.getName())) {
+                            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', "&6Noch &l" + Math.ceil(Math.sqrt(Math.pow(player.getLocation().getX() - loc.getX(), 2) + Math.pow(player.getLocation().getZ() - loc.getZ(), 2))) + "m&6 bis zum Ziel.")));
+                        } else {
+                            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', "&6Noch &l" + Math.ceil(Math.sqrt(Math.pow(player.getLocation().getX() - loc.getX(), 2) + Math.pow(player.getLocation().getY() - loc.getY(), 2) + Math.pow(player.getLocation().getZ() - loc.getZ(), 2))) + "m&6 bis zum Ziel.")));
                         }
                     }
                 };
@@ -435,7 +449,7 @@ public class NaviCommand implements CommandExecutor, TabCompleter {
                 "Tankstelle-Chinatown", "Windrad-Chinatown", "Fischerhütte", "Westside-Ballas", "Mechaniker", "Waffenladen-Ballas",
                 "Basketball", "CFK", "Kran-Uran", "Neulingshotel", "Flughafen-Unica", "Flughafen-Chinatown", "Flughafen-LasUnicas",
                 "Urantransport", "Deathmatch-Arena", "Gefängnis", "Hochseefischer", "Feuerwerksladen", "Angelschein", "Terroristen",
-                "Sägewerk", "200", "363", "531", "Bäckerei", "Shop", "Windrad-FBI", "UCM", "Anwaltskanzelei", "Musikladen"};
+                "Sägewerk", "200", "363", "531", "Bäckerei", "Shop", "Windrad-FBI", "UCM", "Anwaltskanzelei", "Musikladen", "Alcatraz"};
         ArrayList<String> targetsList = new ArrayList<>(Arrays.asList(targets));
         ArrayList<String> playersList = new ArrayList<>();
         for (Player tempplayer : Bukkit.getServer().getOnlinePlayers()) {

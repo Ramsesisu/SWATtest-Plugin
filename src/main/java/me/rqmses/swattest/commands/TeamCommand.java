@@ -65,41 +65,39 @@ public class TeamCommand implements CommandExecutor, TabCompleter {
           }
         }
       };
+      String tempplayerlistname = player.getPlayerListName();
       if (args[0].equalsIgnoreCase(teamname1)) {
-        player.setCustomName(ChatColor.RED + player.getDisplayName());
-        player.setPlayerListName(player.getPlayerListName().replace(player.getDisplayName(), ChatColor.RED + player.getDisplayName()));
         team1.addEntry(player.getName());
         NickAPI.nick(player, ChatColor.RED + player.getName());
         NickAPI.refreshPlayer(player);
+        tempplayerlistname = tempplayerlistname.replace(player.getName(), ChatColor.RED + player.getName());
         scoreboardRunnable.runTaskTimer(plugin, 20L, 0L);
         player.sendMessage(ChatColor.AQUA + "Du bist zu " + ChatColor.RED + args[0] + ChatColor.AQUA + " gewechselt.");
       } else if (args[0].equalsIgnoreCase(teamname2)) {
-        player.setCustomName(ChatColor.BLUE + player.getDisplayName());
-        player.setPlayerListName(player.getPlayerListName().replace(player.getDisplayName(), ChatColor.BLUE + player.getDisplayName()));
         team2.addEntry(player.getName());
         NickAPI.nick(player, ChatColor.BLUE + player.getName());
         NickAPI.refreshPlayer(player);
+        tempplayerlistname = tempplayerlistname.replace(player.getName(), ChatColor.BLUE + player.getName());
         scoreboardRunnable.runTaskTimer(plugin, 20L, 0L);
         player.sendMessage(ChatColor.AQUA + "Du bist zu " + ChatColor.BLUE + args[0] + ChatColor.AQUA + " gewechselt.");
       } else if (args[0].equalsIgnoreCase(teamname3)) {
-        player.setCustomName(ChatColor.GREEN + player.getDisplayName());
-        player.setPlayerListName(player.getPlayerListName().replace(player.getDisplayName(), ChatColor.GREEN + player.getDisplayName()));
         team3.addEntry(player.getName());
         NickAPI.nick(player, ChatColor.GREEN + player.getName());
         NickAPI.refreshPlayer(player);
+        tempplayerlistname = tempplayerlistname.replace(player.getName(), ChatColor.GREEN + player.getName());
         scoreboardRunnable.runTaskTimer(plugin, 20L, 0L);
         player.sendMessage(ChatColor.AQUA + "Du bist zu " + ChatColor.GREEN + args[0] + ChatColor.AQUA + " gewechselt.");
       } else if (args[0].equalsIgnoreCase(teamname4)) {
-        player.setCustomName(ChatColor.GOLD + player.getDisplayName());
-        player.setPlayerListName(player.getPlayerListName().replace(player.getDisplayName(), ChatColor.GOLD + player.getDisplayName()));
         team4.addEntry(player.getName());
         NickAPI.nick(player, ChatColor.GOLD + player.getName());
         NickAPI.refreshPlayer(player);
+        tempplayerlistname = tempplayerlistname.replace(player.getName(), ChatColor.GOLD + player.getName());
         scoreboardRunnable.runTaskTimer(plugin, 20L, 0L);
         player.sendMessage(ChatColor.AQUA + "Du bist zu " + ChatColor.GOLD + args[0] + ChatColor.AQUA + " gewechselt.");
       } else if (args[0].equalsIgnoreCase("none")) {
-        player.setCustomName(player.getDisplayName());
-        player.setPlayerListName(player.getPlayerListName().replace(player.getDisplayName(), ChatColor.WHITE + player.getDisplayName()));
+        NickAPI.nick(player, ChatColor.WHITE + player.getName());
+        NickAPI.refreshPlayer(player);
+        tempplayerlistname = tempplayerlistname.replace(player.getName(), ChatColor.WHITE + player.getName());
         team0.addEntry(player.getName());
         player.sendMessage(ChatColor.AQUA + "Du hast dein Team verlassen.");
       } else {
@@ -108,6 +106,9 @@ public class TeamCommand implements CommandExecutor, TabCompleter {
         team0.addEntry(player.getName());
         player.sendMessage(ChatColor.DARK_AQUA + args[0] + ChatColor.AQUA + " ist kein Team!");
       }
+      Player finalPlayer = player;
+      String finalTempplayerlistname = tempplayerlistname;
+      Bukkit.getScheduler().runTaskLater(plugin, () -> finalPlayer.setPlayerListName(finalTempplayerlistname), 20L);
     } 
     return true;
   }

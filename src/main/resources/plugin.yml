@@ -42,8 +42,11 @@ commands:
     description: Setzt den Speicherstand zurück.
     usage: /<command>
   trainingsbot:
-    description: Spawnt eine Trainings-KI
+    description: Spawnt eine Trainings-KI.
     usage: /<command> <name>
   abaimbot:
-    description: Spawnt eine Abaim-KI
+    description: Spawnt eine Abaim-KI.
     usage: /<command> <name>
+  luftlinie:
+    description: Stellt die Navidistanz als Luftlinie dar.
+    usage: /<command>

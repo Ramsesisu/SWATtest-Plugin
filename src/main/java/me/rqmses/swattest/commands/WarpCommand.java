@@ -384,6 +384,9 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
                     case "anwaltskanzelei":
                         loc = new Location(Bukkit.getWorld("world"), -134, 71, -500);
                         break;
+                    case "alcatraz":
+                        loc = new Location(Bukkit.getWorld("world"), 1183, 75, 685);
+                        break;
                     default:
                         String[] coords = args[0].split("/");
                         if (coords.length == 3) {
@@ -419,7 +422,7 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
                 "Basketball", "CFK", "Kran-Uran", "Neulingshotel", "Flughafen-Unica", "Flughafen-Chinatown", "Flughafen-LasUnicas",
                 "Urantransport", "Deathmatch-Arena", "Gefängnis", "Hochseefischer", "Feuerwerksladen", "Angelschein", "Terroristen",
                 "Sägewerk", "200", "363", "531", "Bäckerei", "Shop", "Windrad-FBI", "UCM", "Altes-Gefängnis", "Hölle",
-                "Himmel", "Checkpoint-Gefängnis", "Anwaltskanzelei", "Musikladen"};
+                "Himmel", "Checkpoint-Gefängnis", "Anwaltskanzelei", "Musikladen", "Alcatraz"};
         ArrayList<String> targetsList = new ArrayList<>(Arrays.asList(targets));
         ArrayList<String> playersList = new ArrayList<>();
         for (Player tempplayer : Bukkit.getServer().getOnlinePlayers()) {
