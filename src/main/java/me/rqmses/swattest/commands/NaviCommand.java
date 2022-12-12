@@ -60,9 +60,9 @@ public class NaviCommand implements CommandExecutor, TabCompleter {
                         }
 
                         if (navitype.get(player.getName())) {
-                            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', "&6Noch &l" + Math.ceil(Math.sqrt(Math.pow(player.getLocation().getX() - loc.getX(), 2) + Math.pow(player.getLocation().getZ() - loc.getZ(), 2))) + "m&6 bis zum Ziel.")));
+                            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', "&6Noch &l" + ((int) Math.floor(Math.sqrt(Math.pow(player.getLocation().getX() - loc.getX(), 2) + Math.pow(player.getLocation().getZ() - loc.getZ(), 2)))) + "m&6 bis zum Ziel.")));
                         } else {
-                            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', "&6Noch &l" + Math.ceil(Math.sqrt(Math.pow(player.getLocation().getX() - loc.getX(), 2) + Math.pow(player.getLocation().getY() - loc.getY(), 2) + Math.pow(player.getLocation().getZ() - loc.getZ(), 2))) + "m&6 bis zum Ziel.")));
+                            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', "&6Noch &l" + ((int) Math.floor(Math.sqrt(Math.pow(player.getLocation().getX() - loc.getX(), 2) + Math.pow(player.getLocation().getY() - loc.getY(), 2) + Math.pow(player.getLocation().getZ() - loc.getZ(), 2)))) + "m&6 bis zum Ziel.")));
                         }
                     }
                 };
