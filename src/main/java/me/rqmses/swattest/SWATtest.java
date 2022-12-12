@@ -11,11 +11,15 @@ import net.citizensnpcs.api.npc.NPCRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Team;
+
+import java.io.File;
 
 import static me.rqmses.swattest.commands.TeamCommand.*;
 
@@ -34,11 +38,6 @@ public final class SWATtest extends JavaPlugin implements Listener {
         plugin = this;
         listenerRegistration();
         commandRegistration();
-
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&c&lDas SWATtest-Plugin wurde reloaded! &7&l- &c&lVersion 1.6"));
-            Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&7➝ Bei Bugs muss der Spieler rejoinen."));
-        }, 20L);
 
         team0 = Bukkit.getScoreboardManager().getNewScoreboard().registerNewTeam("Team 0");
         team1 = Bukkit.getScoreboardManager().getNewScoreboard().registerNewTeam("Team 1");
@@ -85,6 +84,20 @@ public final class SWATtest extends JavaPlugin implements Listener {
         net.citizensnpcs.api.CitizensAPI.getTraitFactory().registerTrait(net.citizensnpcs.api.trait.TraitInfo.create(AttackTrait.class));
         net.citizensnpcs.api.CitizensAPI.getTraitFactory().registerTrait(net.citizensnpcs.api.trait.TraitInfo.create(AbaimTrait.class));
 
+
+
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&c&lDas SWATtest-Plugin wurde reloaded! &7&l- &c&lVersion 1.7"));
+            Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&7➝ Bei Bugs muss der Spieler rejoinen."));
+
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.FALSE);
+                PlayerJoinListener.playersafe.put(player.getUniqueId(), new File("data" + File.separator + player.getUniqueId() + ".yml"));
+                PlayerJoinListener.playerconfig.put(player.getUniqueId(), YamlConfiguration.loadConfiguration(PlayerJoinListener.playersafe.get(player.getUniqueId())));
+                team0.addEntry(player.getName());
+            }
+        }, 20L);
+
         System.out.println("Plugin erfolgreich geladen.");
     }
 
@@ -115,6 +128,7 @@ public final class SWATtest extends JavaPlugin implements Listener {
         pluginManager.registerEvents(new BlockBreakListener(), this);
         pluginManager.registerEvents(new BlockPlaceListener(), this);
         pluginManager.registerEvents(new PlayerSwitchItemListener(), this);
+        pluginManager.registerEvents(new TabCompleteListener(), this);
     }
 
     private void commandRegistration() {
@@ -134,5 +148,6 @@ public final class SWATtest extends JavaPlugin implements Listener {
         getCommand("trainingsbot").setExecutor(new TrainingsbotCommand());
         getCommand("abaimbot").setExecutor(new AbaimbotCommand());
         getCommand("luftlinie").setExecutor(new LuftlinieCommand());
+        getCommand("leitfaden").setExecutor(new LeitfadenCommand());
     }
 }

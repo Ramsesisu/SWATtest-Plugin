@@ -29,33 +29,49 @@ public class ProjectileHitListener implements Listener {
         this.entitylist = event.getEntity().getNearbyEntities(2.0D, 2.0D, 2.0D);
         for (Entity entity : this.entitylist) {
           Player nearplayer = (Player) entity;
-          nearplayer.damage(100.0D);
-          nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 200, 2));
-          nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 1));
+          if (!nearplayer.hasMetadata("NPC")) {
+            if (!PlayerDeathListener.spawnprotection.get(nearplayer.getName())) {
+              nearplayer.damage(100.0D);
+              nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 200, 2));
+              nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 1));
+            }
+          }
         }
         this.entitylist.clear();
         this.entitylist = event.getEntity().getNearbyEntities(6.0D, 6.0D, 6.0D);
         for (Entity entity : this.entitylist) {
           Player nearplayer = (Player) entity;
-          nearplayer.damage(35.0D);
-          nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 200, 2));
-          nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 1));
+          if (!nearplayer.hasMetadata("NPC")) {
+            if (!PlayerDeathListener.spawnprotection.get(nearplayer.getName())) {
+              nearplayer.damage(35.0D);
+              nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 200, 2));
+              nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 1));
+            }
+          }
         }
         this.entitylist.clear();
         this.entitylist = event.getEntity().getNearbyEntities(10.0D, 10.0D, 10.0D);
         for (Entity entity : this.entitylist) {
           Player nearplayer = (Player) entity;
-          nearplayer.damage(20.0D);
-          nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 100, 1));
-          nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 1));
+          if (!nearplayer.hasMetadata("NPC")) {
+            if (!PlayerDeathListener.spawnprotection.get(nearplayer.getName())) {
+              nearplayer.damage(20.0D);
+              nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 100, 1));
+              nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 1));
+            }
+          }
         }
         this.entitylist.clear();
         this.entitylist = event.getEntity().getNearbyEntities(15.0D, 15.0D, 15.0D);
         for (Entity entity : this.entitylist) {
           Player nearplayer = (Player) entity;
-          nearplayer.damage(8.0D);
-          nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 40, 1));
-          nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40, 1));
+          if (!nearplayer.hasMetadata("NPC")) {
+            if (!PlayerDeathListener.spawnprotection.get(nearplayer.getName())) {
+              nearplayer.damage(8.0D);
+              nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 40, 1));
+              nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40, 1));
+            }
+          }
         }
         this.entitylist.clear();
       }

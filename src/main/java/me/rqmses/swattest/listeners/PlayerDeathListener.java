@@ -68,6 +68,9 @@ public class PlayerDeathListener implements Listener {
       } 
       deathmessage = ChatColor.translateAlternateColorCodes('&', "&7" + event.getEntity().getName() + " &f&lwurde von &7" + killer + " &f&lmit&7&l " + weapon + " &f&l" + verb + ".");
       playerdeathmessage = ChatColor.translateAlternateColorCodes('&', "&7&f&lDu wurdest von &7" + killer + " &f&lmit&7&l " + weapon + " &f&l" + verb + ".");
+    } else if (event.getDeathMessage().contains("died")) {
+      deathmessage = null;
+      player.sendTitle(ChatColor.translateAlternateColorCodes('&', "&cDu wurdest getötet"), ChatColor.translateAlternateColorCodes('&', "&7Disconnect"), 10, 30, 20);
     } else {
       String killcause = String.valueOf(event.getEntity().getLastDamageCause().getCause());
       switch (killcause) {
@@ -102,41 +105,23 @@ public class PlayerDeathListener implements Listener {
       }
     }
 
-    player.sendTitle(ChatColor.translateAlternateColorCodes('&', "&cDu wurdest getötet"), ChatColor.translateAlternateColorCodes('&', "&cvon &7" + killer), 10, 30, 20);
-    List<Entity> nearPlayers = new ArrayList<>(getEntitiesAroundPoint(deathloc, 30.0D));
-    List<Entity> nearPlayers2 = new ArrayList<>();
-    nearPlayers.forEach(playerName -> {
-          nearPlayers2.remove(playerName);
-          nearPlayers2.add(playerName);
-        });
-    nearPlayers2.remove(player);
-    nearPlayers2.forEach(playerName2 -> playerName2.sendMessage(deathmessage));
-    player.sendMessage(playerdeathmessage);
+    if (deathmessage != null) {
+      player.sendTitle(ChatColor.translateAlternateColorCodes('&', "&cDu wurdest getötet"), ChatColor.translateAlternateColorCodes('&', "&cvon &7" + killer), 10, 30, 20);
+      List<Entity> nearPlayers = new ArrayList<>(getEntitiesAroundPoint(deathloc, 30.0D));
+      List<Entity> nearPlayers2 = new ArrayList<>();
+      nearPlayers.forEach(playerName -> {
+        nearPlayers2.remove(playerName);
+        nearPlayers2.add(playerName);
+      });
+      nearPlayers2.remove(player);
+      nearPlayers2.forEach(playerName2 -> playerName2.sendMessage(deathmessage));
+      player.sendMessage(playerdeathmessage);
+    }
     event.setDeathMessage("");
     event.getEntity().spigot().respawn();
     player.teleport(deathloc);
     player.setGameMode(GameMode.SPECTATOR);
     spawnprotection.put(player.getName(), Boolean.TRUE);
-    Bukkit.getScheduler().runTaskLater(SWATtest.plugin, () -> {
-      if (player.getBedSpawnLocation() == null) {
-        player.setBedSpawnLocation(new Location(Bukkit.getWorld("world"), 103, 70, 157), true);
-      }
-          player.teleport(new Location(Bukkit.getWorld(player.getWorld().getName()), player.getBedSpawnLocation().getBlockX(), (player.getBedSpawnLocation().getBlockY() + 1), player.getBedSpawnLocation().getBlockZ()));
-          player.sendTitle(ChatColor.GREEN + "Du lebst nun wieder!", "", 10, 30, 20);
-          player.setCustomName(player.getDisplayName());
-          EquipCommand.playerequip.putIfAbsent(player.getName(), "none");
-          Functions.equipPlayer(player);
-          deathtask.get(player.getName()).cancel();
-          PlayerInteractListener.cooldowntimes.put(player.getUniqueId(), 0);
-          PlayerInteractListener.cooldowns.put(player.getUniqueId(), 0L);
-          player.setGameMode(GameMode.SURVIVAL);
-        }, 300L);
-    Bukkit.getScheduler().runTaskLater(SWATtest.plugin, () -> {
-          if (spawnprotection.get(player.getName())) {
-            spawnprotection.put(player.getName(), Boolean.FALSE);
-            player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
-          } 
-        }, 400L);
     deathloadmsg.put(player.getName(), ChatColor.translateAlternateColorCodes('&', "&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛"));
     final int[] i = { 0 };
     BukkitRunnable death = new BukkitRunnable() {
@@ -144,6 +129,24 @@ public class PlayerDeathListener implements Listener {
           i[0] = i[0] + 1;
           if (i[0] == 15) {
             i[0] = 0;
+            if (player.getBedSpawnLocation() == null) {
+              player.setBedSpawnLocation(new Location(Bukkit.getWorld("world"), 103, 70, 157), true);
+            }
+            player.teleport(new Location(Bukkit.getWorld(player.getWorld().getName()), player.getBedSpawnLocation().getBlockX(), (player.getBedSpawnLocation().getBlockY() + 1), player.getBedSpawnLocation().getBlockZ()));
+            player.sendTitle(ChatColor.GREEN + "Du lebst nun wieder!", "", 10, 30, 20);
+            player.setCustomName(player.getDisplayName());
+            EquipCommand.playerequip.putIfAbsent(player.getName(), "none");
+            Functions.equipPlayer(player);
+            deathtask.get(player.getName()).cancel();
+            PlayerInteractListener.cooldowntimes.put(player.getUniqueId(), 0);
+            PlayerInteractListener.cooldowns.put(player.getUniqueId(), 0L);
+            player.setGameMode(GameMode.SURVIVAL);
+            Bukkit.getScheduler().runTaskLater(SWATtest.plugin, () -> {
+              if (spawnprotection.get(player.getName())) {
+                spawnprotection.put(player.getName(), Boolean.FALSE);
+                player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
+              }
+            }, 200L);
             cancel();
           } 
           PlayerDeathListener.deathloadmsg.put(player.getName(), PlayerDeathListener.deathloadmsg.get(player.getName()).replaceFirst("8", "a"));

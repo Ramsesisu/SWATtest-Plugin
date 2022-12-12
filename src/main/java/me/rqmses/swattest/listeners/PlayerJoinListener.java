@@ -27,7 +27,7 @@ public class PlayerJoinListener implements Listener {
   @EventHandler
   public void onPlayerJoin(PlayerJoinEvent event) {
     Player player = event.getPlayer();
-    event.setJoinMessage(ChatColor.GOLD + event.getPlayer().getName() + ChatColor.YELLOW + " ist nun" + ChatColor.GREEN + " online" + ChatColor.YELLOW + ".");
+    event.setJoinMessage(ChatColor.GOLD + player.getName() + ChatColor.YELLOW + " ist nun" + ChatColor.GREEN + " online" + ChatColor.YELLOW + ".");
     player.setGameMode(GameMode.SURVIVAL);
     player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(40.0D);
     player.setHealth(40.0D);
@@ -35,15 +35,22 @@ public class PlayerJoinListener implements Listener {
     player.getActivePotionEffects().clear();
     player.getInventory().clear();
     PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.FALSE);
-    Functions.equipPlayer(player);
-    playersafe.put(player.getUniqueId(), new File("data" + File.separator + event.getPlayer().getUniqueId() + ".yml"));
+    playersafe.put(player.getUniqueId(), new File("data" + File.separator + player.getUniqueId() + ".yml"));
     playerconfig.put(player.getUniqueId(), YamlConfiguration.loadConfiguration(playersafe.get(player.getUniqueId())));
     if (!playersafe.get(player.getUniqueId()).exists()) {
       Functions.createFile(player);
       player.setBedSpawnLocation(new Location(Bukkit.getWorld("world"), 103, 70, 157), true);
       player.teleport(new Location(Bukkit.getWorld("world"), 103, 70, 157));
+      player.chat("/news");
     }
     team0.addEntry(player.getName());
-    System.out.println(playersafe + " wurde erfolgreich geladen.");
+    Functions.equipPlayer(player);
+
+    if (PlayerQuitListener.deadplayers.contains(player.getUniqueId())) {
+      PlayerQuitListener.deadplayers.remove(player.getUniqueId());
+      PlayerDeathListener.deathloadmsg.remove(player.getName());
+      PlayerDeathListener.deathtask.get(player.getName()).cancel();
+      player.setHealth(0.0D);
+    }
   }
 }

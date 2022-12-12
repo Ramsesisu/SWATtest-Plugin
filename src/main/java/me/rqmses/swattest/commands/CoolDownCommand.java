@@ -1,5 +1,6 @@
 package me.rqmses.swattest.commands;
 
+import me.rqmses.swattest.listeners.ItemDropListener;
 import me.rqmses.swattest.listeners.PlayerInteractListener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -22,6 +23,7 @@ public class CoolDownCommand implements CommandExecutor {
         UseCommand.cooldowns.put(player.getUniqueId(), 0L);
         EquipCommand.cooldowns.put(player.getName(), 0L);
         TeamCommand.cooldowns.put(player.getName(), 0L);
+        ItemDropListener.cooldowns.put(player.getName(), 0L);
         player.sendMessage(ChatColor.GRAY + "Deine Cooldowns wurden zurückgesetzt!");
       } else {
         player.sendMessage("Du bist kein OP!");

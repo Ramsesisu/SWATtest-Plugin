@@ -1,6 +1,7 @@
 package me.rqmses.swattest.listeners;
 
 import me.rqmses.swattest.SWATtest;
+import me.rqmses.swattest.global.SoundUtils;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
@@ -415,18 +416,10 @@ public class PlayerInteractListener implements Listener {
       bullet.setVelocity(bullet.getVelocity().multiply(4.5D));
       bullet.setGravity(false);
       bullet.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
-      Bukkit.getServer().getWorld(player.getWorld().getName()).getPlayers().forEach(nearPlayer -> {
-        if (nearPlayer.getLocation().distance(player.getLocation()) <= 50.0D) {
-          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 100.0F, 0.55F);
-          nearPlayer.playSound(player.getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 0.1F, 0.0F);
-        } else if (nearPlayer.getLocation().distance(player.getLocation()) <= 100.0D) {
-          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 50.0F, 0.55F);
-        } else if (nearPlayer.getLocation().distance(player.getLocation()) <= 150.0D) {
-          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 25.0F, 0.55F);
-        } else if (nearPlayer.getLocation().distance(player.getLocation()) <= 200.0D) {
-          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 5.0F, 0.55F);
-        }
-      });
+      int range = 100;
+      for (Entity target : player.getWorld().getNearbyEntities(player.getLocation(), range, range, range)) {
+        if (target instanceof Player) new SoundUtils(SWATtest.plugin, (Player) target, target.getLocation(), range, 0.55F);
+      }
       cooldowntimes.put(player.getUniqueId(), 400);
       Bukkit.getScheduler().runTaskLater(SWATtest.plugin, bullet::remove, 60L);
     } else {
@@ -435,7 +428,6 @@ public class PlayerInteractListener implements Listener {
   }
 
   public static void shootSniper(Player player) {
-
     if (cooldowns.containsKey(player.getUniqueId())) {
       long secondsLeft = cooldowns.get(player.getUniqueId()) + cooldowntimes.get(player.getUniqueId()) - System.currentTimeMillis();
       if (secondsLeft > 0L) {
@@ -471,18 +463,10 @@ public class PlayerInteractListener implements Listener {
       bullet.setVelocity(bullet.getVelocity().multiply(6));
       bullet.setGravity(false);
       bullet.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
-      Bukkit.getServer().getWorld(player.getWorld().getName()).getPlayers().forEach(nearPlayer -> {
-        if (nearPlayer.getLocation().distance(player.getLocation()) <= 50.0D) {
-          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 100.0F, 0.0F);
-          nearPlayer.playSound(player.getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 0.1F, 0.0F);
-        } else if (nearPlayer.getLocation().distance(player.getLocation()) <= 100.0D) {
-          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 50.0F, 0.0F);
-        } else if (nearPlayer.getLocation().distance(player.getLocation()) <= 150.0D) {
-          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 25.0F, 0.0F);
-        }
-        if (nearPlayer.getLocation().distance(player.getLocation()) <= 200.0D)
-          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 5.0F, 0.0F);
-      });
+      int range = 100;
+      for (Entity target : player.getWorld().getNearbyEntities(player.getLocation(), range, range, range)) {
+        if (target instanceof Player) new SoundUtils(SWATtest.plugin, (Player) target, target.getLocation(), range, 0.0F);
+      }
       cooldowntimes.put(player.getUniqueId(), 5000);
       Bukkit.getScheduler().runTaskLater(SWATtest.plugin, bullet::remove, 60L);
     } else {
@@ -527,18 +511,10 @@ public class PlayerInteractListener implements Listener {
       bullet.setVelocity(bullet.getVelocity().multiply(5.25));
       bullet.setGravity(false);
       bullet.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
-      Bukkit.getServer().getWorld(player.getWorld().getName()).getPlayers().forEach(nearPlayer -> {
-        if (nearPlayer.getLocation().distance(player.getLocation()) <= 50.0D) {
-          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 100.0F, 1.0F);
-          nearPlayer.playSound(player.getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 0.1F, 0.0F);
-        } else if (nearPlayer.getLocation().distance(player.getLocation()) <= 100.0D) {
-          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 50.0F, 1.0F);
-        } else if (nearPlayer.getLocation().distance(player.getLocation()) <= 150.0D) {
-          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 25.0F, 1.0F);
-        }
-        if (nearPlayer.getLocation().distance(player.getLocation()) <= 200.0D)
-          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 5.0F, 1.0F);
-      });
+      int range = 100;
+      for (Entity target : player.getWorld().getNearbyEntities(player.getLocation(), range, range, range)) {
+        if (target instanceof Player) new SoundUtils(SWATtest.plugin, (Player) target, target.getLocation(), range, 1.0F);
+      }
       cooldowntimes.put(player.getUniqueId(), 300);
       Bukkit.getScheduler().runTaskLater(SWATtest.plugin, bullet::remove, 60L);
     } else {
@@ -583,18 +559,10 @@ public class PlayerInteractListener implements Listener {
       bullet.setVelocity(bullet.getVelocity().multiply(4));
       bullet.setGravity(false);
       bullet.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
-      Bukkit.getServer().getWorld(player.getWorld().getName()).getPlayers().forEach(nearPlayer -> {
-        if (nearPlayer.getLocation().distance(player.getLocation()) <= 50.0D) {
-          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 100.0F, -0.5F);
-          nearPlayer.playSound(player.getLocation(), Sound.ITEM_FLINTANDSTEEL_USE, 0.1F, 0.0F);
-        } else if (nearPlayer.getLocation().distance(player.getLocation()) <= 100.0D) {
-          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 50.0F, -0.5F);
-        } else if (nearPlayer.getLocation().distance(player.getLocation()) <= 150.0D) {
-          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 25.0F, -0.5F);
-        }
-        if (nearPlayer.getLocation().distance(player.getLocation()) <= 200.0D)
-          nearPlayer.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_BLAST, 5.0F, -0.5F);
-      });
+      int range = 100;
+      for (Entity target : player.getWorld().getNearbyEntities(player.getLocation(), range, range, range)) {
+        if (target instanceof Player) new SoundUtils(SWATtest.plugin, (Player) target, target.getLocation(), range, -0.5F);
+      }
       cooldowntimes.put(player.getUniqueId(), 3000);
       Bukkit.getScheduler().runTaskLater(SWATtest.plugin, bullet::remove, 60L);
     } else {

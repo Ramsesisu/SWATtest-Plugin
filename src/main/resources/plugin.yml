@@ -50,3 +50,6 @@ commands:
   luftlinie:
     description: Stellt die Navidistanz als Luftlinie dar.
     usage: /<command>
+  leitfaden:
+    description: Öffnet eine analoge Unterstützung für Spieler.
+    usage: /<command>
