@@ -68,11 +68,14 @@ public class PlayerDeathListener implements Listener {
       } 
       deathmessage = ChatColor.translateAlternateColorCodes('&', "&7" + event.getEntity().getName() + " &f&lwurde von &7" + killer + " &f&lmit&7&l " + weapon + " &f&l" + verb + ".");
       playerdeathmessage = ChatColor.translateAlternateColorCodes('&', "&7&f&lDu wurdest von &7" + killer + " &f&lmit&7&l " + weapon + " &f&l" + verb + ".");
-    } else if (event.getDeathMessage().contains("died")) {
-      deathmessage = null;
-      player.sendTitle(ChatColor.translateAlternateColorCodes('&', "&cDu wurdest getötet"), ChatColor.translateAlternateColorCodes('&', "&7Disconnect"), 10, 30, 20);
     } else {
-      String killcause = String.valueOf(event.getEntity().getLastDamageCause().getCause());
+      String killcause = "";
+      try {
+        killcause = String.valueOf(event.getEntity().getLastDamageCause().getCause());
+      } catch (Exception e) {
+        deathmessage = null;
+        player.sendTitle(ChatColor.translateAlternateColorCodes('&', "&cDu wurdest getötet"), ChatColor.translateAlternateColorCodes('&', "&7Disconnect"), 10, 30, 20);
+      }
       switch (killcause) {
         case "CUSTOM":
         case "BLOCK_EXPLOSION":
