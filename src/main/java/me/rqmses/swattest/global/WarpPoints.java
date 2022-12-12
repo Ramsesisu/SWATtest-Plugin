@@ -283,7 +283,7 @@ public class WarpPoints {
                 loc = new Location(Bukkit.getWorld("world"), -368, 69, 530);
                 break;
             case "flughafen-unica":
-                loc = new Location(Bukkit.getWorld("world"), -368, 69, 530);
+                loc = new Location(Bukkit.getWorld("world"), -264, 69, 631);
                 break;
             case "flughafen-chinatown":
                 loc = new Location(Bukkit.getWorld("world"), 1256, 69, 45);
