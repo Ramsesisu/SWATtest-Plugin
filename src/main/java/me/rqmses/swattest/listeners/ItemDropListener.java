@@ -1,8 +1,6 @@
 package me.rqmses.swattest.listeners;
 
 import me.rqmses.swattest.SWATtest;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -73,7 +71,6 @@ public class ItemDropListener implements Listener {
       if (cooldowns.containsKey(player.getName())) {
         long secondsLeft = cooldowns.get(player.getName()) + cooldowntimes.get(player.getName()) - System.currentTimeMillis();
         if (secondsLeft > 0L) {
-          player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.GRAY + "Du kannst diese Waffe gerade nicht benutzen..."));
           return;
         }
       }
