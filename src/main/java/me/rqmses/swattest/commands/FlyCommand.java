@@ -29,7 +29,7 @@ public class FlyCommand implements CommandExecutor {
           this.flyingplayers.remove(this.player);
           this.player.setAllowFlight(false);
           this.player.setPlayerListName(this.player.getPlayerListName().substring(0, this.player.getPlayerListName().length() - 4));
-          this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&bFlug-Modus &c&ldeaktiviert&b."));
+          this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&bFlug-Modus ist nun &c&ldeaktiviert&b."));
         } else {
           this.flyingplayers.add(this.player);
           this.player.setAllowFlight(true);
@@ -37,7 +37,7 @@ public class FlyCommand implements CommandExecutor {
             this.player.setPlayerListName(this.player.getPlayerListName().substring(0, this.player.getPlayerListName().length() - 4));
           }
           this.player.setPlayerListName(this.player.getPlayerListName() + ChatColor.translateAlternateColorCodes('&', "&b&l F"));
-          this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&bFlug-Modus &a&laktiviert&b."));
+          this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&bFlug-Modus ist nun &a&laktiviert&b."));
         }
       }
     }

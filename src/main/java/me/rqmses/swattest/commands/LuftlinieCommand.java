@@ -15,9 +15,9 @@ public class LuftlinieCommand implements CommandExecutor {
         navitype.putIfAbsent(player.getName(), Boolean.FALSE);
         navitype.put(player.getName(), !navitype.get(player.getName()));
         if (navitype.get(player.getName())) {
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&eModus Luftlinie ist nun &a&laktiviert&e."));
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&eLuftlinien-Modus ist nun &a&laktiviert&e."));
         } else {
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&eModus Luftlinie ist nun &c&ldeaktiviert&e."));
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&eLuftlinien-Modus ist nun &c&ldeaktiviert&e."));
         }
         return true;
     }
