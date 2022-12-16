@@ -44,8 +44,8 @@ public class ItemDropListener implements Listener {
     if (event.getItemDrop().getItemStack().getType() == Material.SHIELD)
       event.setCancelled(true); 
     if (event.getItemDrop().getItemStack().getType() == Material.SLIME_BALL) {
-      dropFlash(event.getPlayer());
       event.setCancelled(true);
+      dropFlash(event.getPlayer());
     }
     if (event.getItemDrop().getItemStack().getType() == Material.WOOD_HOE)
       event.setCancelled(true); 

@@ -61,7 +61,7 @@ public class TeamCommand implements CommandExecutor, TabCompleter {
             Bukkit.getServer().getPlayer(finalPlayerName).setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
             cancel();
           } else {
-            Functions.setScoreBoard(Bukkit.getServer().getPlayer(finalPlayerName));
+            Functions.setScoreBoard(Bukkit.getServer().getPlayer(finalPlayerName), "teams");
           }
         }
       };

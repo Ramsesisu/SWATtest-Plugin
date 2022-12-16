@@ -8,14 +8,19 @@ import net.citizensnpcs.api.event.NPCDeathEvent;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.Trait;
 import net.citizensnpcs.api.trait.TraitName;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.UUID;
+
+import static me.rqmses.swattest.SWATtest.team0;
 
 @TraitName("attacktrait")
 public class AttackTrait extends Trait {
@@ -35,6 +40,8 @@ public class AttackTrait extends Trait {
         ((Player) npcplayer.getEntity()).setGameMode(GameMode.SURVIVAL);
         ((Player) npcplayer.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(40.0D);
         ((Player) npcplayer.getEntity()).setHealth(40);
+
+        team0.addEntry(npcplayer.getName());
 
         npcplayer.setProtected(false);
 
@@ -94,7 +101,9 @@ public class AttackTrait extends Trait {
                     PlayerInteractListener.shootM4((Player) npcplayer.getEntity());
                 }
                 if (((Player) npcplayer.getEntity()).getHealth() < 30) {
-                    ((Player) npcplayer.getEntity()).chat("/use Kokain");
+                    if (!((CraftPlayer) npcplayer.getEntity()).hasPotionEffect(PotionEffectType.REGENERATION)) {
+                        ((Player) npcplayer.getEntity()).chat("/use Kokain");
+                    }
                 }
                 if (result.getCustomName().equals("dead")) {
                     result = null;

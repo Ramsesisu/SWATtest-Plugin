@@ -354,6 +354,18 @@ public class WarpPoints {
             case "alcatraz":
                 loc = new Location(Bukkit.getWorld("world"), 1183, 75, 685);
                 break;
+            case "36":
+                loc = new Location(Bukkit.getWorld("world"), -157, 69, -21);
+                break;
+            case "144":
+                loc = new Location(Bukkit.getWorld("world"), -382, 69, -267);
+                break;
+            case "171":
+                loc = new Location(Bukkit.getWorld("world"), -81, 74, 284);
+                break;
+            case "190":
+                loc = new Location(Bukkit.getWorld("world"), 590, 69, 206);
+                break;
             default:
                 String[] coords = warp.split("/");
                 if (coords.length == 3) {
@@ -382,6 +394,6 @@ public class WarpPoints {
                 "Basketball", "CFK", "Kran-Uran", "Neulingshotel", "Flughafen-Unica", "Flughafen-Chinatown", "Flughafen-LasUnicas",
                 "Urantransport", "Deathmatch-Arena", "Gefängnis", "Hochseefischer", "Feuerwerksladen", "Angelschein", "Terroristen",
                 "Sägewerk", "200", "363", "531", "Bäckerei", "Shop", "Windrad-FBI", "UCM", "Altes-Gefängnis", "Hölle",
-                "Himmel", "Checkpoint-Gefängnis", "Anwaltskanzelei", "Musikladen", "Alcatraz"};
+                "Himmel", "Checkpoint-Gefängnis", "Anwaltskanzelei", "Musikladen", "Alcatraz", "36", "144", "171", "190"};
     }
 }

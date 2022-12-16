@@ -53,3 +53,6 @@ commands:
   leitfaden:
     description: Öffnet eine analoge Unterstützung für Spieler.
     usage: /<command>
+  car:
+    description: Spawnt und steuert ein Auto.
+    usage: /<command> <argument>

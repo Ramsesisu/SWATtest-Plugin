@@ -31,8 +31,6 @@ public class PlayerDamageListener implements Listener {
   @EventHandler
   public void onBulletHit(EntityDamageByEntityEvent event) {
     if (event.getEntity() instanceof Player) {
-
-      if (event.getEntity().hasMetadata("NPC")) {return;}
       Player player = (Player) event.getEntity();
 
       if (event.getDamager() instanceof Player) {
@@ -47,20 +45,21 @@ public class PlayerDamageListener implements Listener {
         }
       }
       if (event.getDamager().getType() == EntityType.ARROW) {
-        String[] bulletinfo = event.getDamager().getCustomName().split("-");
+        String[] bulletinfo = event.getDamager().getCustomName().split(":");
         String weapontype = bulletinfo[0];
         shooter = Bukkit.getPlayer(bulletinfo[1]);
         if (shooter != null) {
           PlayerDeathListener.setKiller(shooter.getName());
+
+          if (Functions.getTeam(player) == Functions.getTeam(shooter) && Functions.getTeam(player) != team0) {
+            event.setCancelled(true);
+          }
         } else {
           PlayerDeathListener.setKiller("Bot");
         }
 
-        if (Functions.getTeam(player) == Functions.getTeam(shooter) && Functions.getTeam(player) != team0) {
-          event.setCancelled(true);
-        }
         if (Objects.equals(weapontype, "m4"))
-          if (player.getInventory().getChestplate() == null) {
+          if (player.getInventory().getChestplate() == null || player.getInventory().getChestplate().getType() != Material.LEATHER_CHESTPLATE) {
             event.setDamage(7.0D);
           } else if (player.isBlocking()) {
             if (((Player)event.getEntity()).getInventory().getChestplate().getDurability() < 79) {
@@ -71,14 +70,14 @@ public class PlayerDamageListener implements Listener {
             } 
           } else if (((Player)event.getEntity()).getInventory().getChestplate().getDurability() < 76) {
             ((Player)event.getEntity()).getInventory().getChestplate().setDurability((short)(((Player)event.getEntity()).getInventory().getChestplate().getDurability() + 4));
-            event.setDamage(1.0D);
+              event.setDamage(1.0D);
           } else {
             player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 1.0F);
             ((Player)event.getEntity()).getInventory().setChestplate(null);
-            event.setDamage(1.0D);
+              event.setDamage(1.0D);
           }  
         if (Objects.equals(weapontype, "sniper"))
-          if (player.getInventory().getChestplate() == null) {
+          if (player.getInventory().getChestplate() == null || player.getInventory().getChestplate().getType() != Material.LEATHER_CHESTPLATE) {
             event.setDamage(14.5D);
           } else if (player.isBlocking()) {
             if (((Player)event.getEntity()).getInventory().getChestplate().getDurability() < 79) {
@@ -89,14 +88,14 @@ public class PlayerDamageListener implements Listener {
             } 
           } else if (((Player)event.getEntity()).getInventory().getChestplate().getDurability() < 76) {
             ((Player)event.getEntity()).getInventory().getChestplate().setDurability((short)(((Player)event.getEntity()).getInventory().getChestplate().getDurability() + 4));
-            event.setDamage(1.0D);
+              event.setDamage(1.0D);
           } else {
             player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 1.0F);
             ((Player)event.getEntity()).getInventory().setChestplate(null);
-            event.setDamage(1.0D);
+              event.setDamage(1.0D);
           }  
         if (Objects.equals(weapontype, "mp5"))
-          if (player.getInventory().getChestplate() == null) {
+          if (player.getInventory().getChestplate() == null || player.getInventory().getChestplate().getType() != Material.LEATHER_CHESTPLATE) {
             event.setDamage(5.0D);
           } else if (player.isBlocking()) {
             if (((Player)event.getEntity()).getInventory().getChestplate().getDurability() < 79) {
@@ -107,14 +106,14 @@ public class PlayerDamageListener implements Listener {
             } 
           } else if (((Player)event.getEntity()).getInventory().getChestplate().getDurability() < 76) {
             ((Player)event.getEntity()).getInventory().getChestplate().setDurability((short)(((Player)event.getEntity()).getInventory().getChestplate().getDurability() + 4));
-            event.setDamage(1.0D);
+              event.setDamage(1.0D);
           } else {
             player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 1.0F);
             ((Player)event.getEntity()).getInventory().setChestplate(null);
-            event.setDamage(1.0D);
+              event.setDamage(1.0D);
           }  
         if (Objects.equals(weapontype, "jagdflinte"))
-          if (player.getInventory().getChestplate() == null) {
+          if (player.getInventory().getChestplate() == null || player.getInventory().getChestplate().getType() != Material.LEATHER_CHESTPLATE) {
             event.setDamage(11.5D);
           } else if (player.isBlocking()) {
             if (((Player)event.getEntity()).getInventory().getChestplate().getDurability() < 79) {
@@ -125,62 +124,54 @@ public class PlayerDamageListener implements Listener {
             } 
           } else if (((Player)event.getEntity()).getInventory().getChestplate().getDurability() < 76) {
             ((Player)event.getEntity()).getInventory().getChestplate().setDurability((short)(((Player)event.getEntity()).getInventory().getChestplate().getDurability() + 4));
-            event.setDamage(1.0D);
+              event.setDamage(1.0D);
           } else {
             player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 1.0F);
             ((Player)event.getEntity()).getInventory().setChestplate(null);
-            event.setDamage(1.0D);
+              event.setDamage(1.0D);
           }  
         if (Objects.equals(weapontype, "rpg")) {
           event.setDamage(0.0D);
           Location loc = player.getLocation();
           loc.getWorld().createExplosion(loc, 10.0F, true);
           loc.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc, 1);
-          this.entitylist = event.getEntity().getNearbyEntities(2.0D, 2.0D, 2.0D);
+          this.entitylist = player.getNearbyEntities(2.0D, 2.0D, 2.0D);
           for (Entity entity : this.entitylist) {
-            Player nearplayer = (Player)entity;
-            if (!nearplayer.hasMetadata("NPC")) {
-              if (!PlayerDeathListener.spawnprotection.get(nearplayer.getName())) {
-                nearplayer.damage(100.0D);
-                nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 200, 2));
-                nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 1));
-              }
+            if (entity instanceof Player) {
+              Player nearplayer = (Player) entity;
+              nearplayer.damage(100.0D);
+              nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 200, 2));
+              nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 1));
             }
           } 
           this.entitylist.clear();
-          this.entitylist = event.getEntity().getNearbyEntities(6.0D, 6.0D, 6.0D);
+          this.entitylist = player.getNearbyEntities(6.0D, 6.0D, 6.0D);
           for (Entity entity : this.entitylist) {
-            Player nearplayer = (Player)entity;
-            if (!nearplayer.hasMetadata("NPC")) {
-              if (!PlayerDeathListener.spawnprotection.get(nearplayer.getName())) {
-                nearplayer.damage(35.0D);
-                nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 200, 2));
-                nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 1));
-              }
+            if (entity instanceof Player) {
+              Player nearplayer = (Player) entity;
+              nearplayer.damage(35.0D);
+              nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 200, 2));
+              nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 1));
             }
           } 
           this.entitylist.clear();
-          this.entitylist = event.getEntity().getNearbyEntities(10.0D, 10.0D, 10.0D);
+          this.entitylist = player.getNearbyEntities(10.0D, 10.0D, 10.0D);
           for (Entity entity : this.entitylist) {
-            Player nearplayer = (Player)entity;
-            if (!nearplayer.hasMetadata("NPC")) {
-              if (!PlayerDeathListener.spawnprotection.get(nearplayer.getName())) {
-                nearplayer.damage(20.0D);
-                nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 100, 1));
-                nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 1));
-              }
+            if (entity instanceof Player) {
+              Player nearplayer = (Player) entity;
+              nearplayer.damage(20.0D);
+              nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 100, 1));
+              nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 1));
             }
           }
           this.entitylist.clear();
-          this.entitylist = event.getEntity().getNearbyEntities(15.0D, 15.0D, 15.0D);
+          this.entitylist = player.getNearbyEntities(15.0D, 15.0D, 15.0D);
           for (Entity entity : this.entitylist) {
-            Player nearplayer = (Player)entity;
-            if (!nearplayer.hasMetadata("NPC")) {
-              if (!PlayerDeathListener.spawnprotection.get(nearplayer.getName())) {
-                nearplayer.damage(8.0D);
-                nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 40, 1));
-                nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40, 1));
-              }
+            if (entity instanceof Player) {
+              Player nearplayer = (Player) entity;
+              nearplayer.damage(8.0D);
+              nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 40, 1));
+              nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40, 1));
             }
           } 
           this.entitylist.clear();

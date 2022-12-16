@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class FlyCommand implements CommandExecutor {
 
-  private final ArrayList<Player> flyingplayers = new ArrayList<>();
+  public static final ArrayList<Player> flyingplayers = new ArrayList<>();
 
   Player player;
   
@@ -25,13 +25,13 @@ public class FlyCommand implements CommandExecutor {
         this.player = (Player) sender;
       }
       if (player.getGameMode() == GameMode.SURVIVAL) {
-        if (this.flyingplayers.contains(this.player)) {
-          this.flyingplayers.remove(this.player);
+        if (flyingplayers.contains(this.player)) {
+          flyingplayers.remove(this.player);
           this.player.setAllowFlight(false);
           this.player.setPlayerListName(this.player.getPlayerListName().substring(0, this.player.getPlayerListName().length() - 4));
           this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&bFlug-Modus ist nun &c&ldeaktiviert&b."));
         } else {
-          this.flyingplayers.add(this.player);
+          flyingplayers.add(this.player);
           this.player.setAllowFlight(true);
           if (this.player.getPlayerListName().contains(ChatColor.translateAlternateColorCodes('&', "&b&l F"))) {
             this.player.setPlayerListName(this.player.getPlayerListName().substring(0, this.player.getPlayerListName().length() - 4));

@@ -24,6 +24,7 @@ public class CoolDownCommand implements CommandExecutor {
         EquipCommand.cooldowns.put(player.getName(), 0L);
         TeamCommand.cooldowns.put(player.getName(), 0L);
         ItemDropListener.cooldowns.put(player.getName(), 0L);
+        ItemDropListener.cooldowntimes.put(player.getName(), 0);
         player.sendMessage(ChatColor.GRAY + "Deine Cooldowns wurden zurückgesetzt!");
       } else {
         player.sendMessage("Du bist kein OP!");

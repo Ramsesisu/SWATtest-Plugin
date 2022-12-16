@@ -58,7 +58,7 @@ public class PlayerHitListener implements Listener {
           event.setCancelled(true);
           return true;
         }
-        if (player.getInventory().getChestplate() != null)
+        if (player.getInventory().getChestplate() != null && player.getInventory().getChestplate().getType() == Material.LEATHER_CHESTPLATE)
           if (((Player)event.getEntity()).getInventory().getChestplate().getDurability() < 79) {
             ((Player)event.getEntity()).getInventory().getChestplate().setDurability((short)(((Player)event.getEntity()).getInventory().getChestplate().getDurability() + 1));
           } else {

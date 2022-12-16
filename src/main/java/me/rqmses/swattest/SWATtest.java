@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
@@ -21,6 +22,7 @@ import org.bukkit.scoreboard.Team;
 
 import java.io.File;
 
+import static me.rqmses.swattest.commands.CarCommand.minecarts;
 import static me.rqmses.swattest.commands.TeamCommand.*;
 
 public final class SWATtest extends JavaPlugin implements Listener {
@@ -84,10 +86,8 @@ public final class SWATtest extends JavaPlugin implements Listener {
         net.citizensnpcs.api.CitizensAPI.getTraitFactory().registerTrait(net.citizensnpcs.api.trait.TraitInfo.create(AttackTrait.class));
         net.citizensnpcs.api.CitizensAPI.getTraitFactory().registerTrait(net.citizensnpcs.api.trait.TraitInfo.create(AbaimTrait.class));
 
-
-
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&c&lDas SWATtest-Plugin wurde reloaded! &7&l- &c&lVersion 1.7"));
+            Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&c&lDas SWATtest-Plugin wurde reloaded! &7&l- &c&lVersion 1.8"));
             Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&7➝ Bei Bugs muss der Spieler rejoinen."));
 
             for (Player player : Bukkit.getOnlinePlayers()) {
@@ -110,6 +110,10 @@ public final class SWATtest extends JavaPlugin implements Listener {
             npc.despawn(DespawnReason.RELOAD);
             npc.destroy();
         }
+
+        for (Minecart minecart : minecarts.values()) {
+            minecart.remove();
+        }
         System.out.println("Plugin erfolgreich heruntergefahren.");
     }
 
@@ -129,6 +133,7 @@ public final class SWATtest extends JavaPlugin implements Listener {
         pluginManager.registerEvents(new BlockPlaceListener(), this);
         pluginManager.registerEvents(new PlayerSwitchItemListener(), this);
         pluginManager.registerEvents(new TabCompleteListener(), this);
+        pluginManager.registerEvents(new MinecartListener(), this);
     }
 
     private void commandRegistration() {
@@ -149,5 +154,6 @@ public final class SWATtest extends JavaPlugin implements Listener {
         getCommand("abaimbot").setExecutor(new AbaimbotCommand());
         getCommand("luftlinie").setExecutor(new LuftlinieCommand());
         getCommand("leitfaden").setExecutor(new LeitfadenCommand());
+        getCommand("car").setExecutor(new CarCommand());
     }
 }

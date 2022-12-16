@@ -110,7 +110,7 @@ public class PlayerInteractListener implements Listener {
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
             Vector playerDirection = player.getLocation().getDirection();
             Arrow bullet = player.launchProjectile(Arrow.class, playerDirection);
-            bullet.setCustomName("rpg-"+player.getName());
+            bullet.setCustomName("rpg:"+player.getName());
             bullet.setVelocity(bullet.getVelocity().multiply(7));
             bullet.setGravity(false);
             bullet.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
@@ -412,11 +412,12 @@ public class PlayerInteractListener implements Listener {
       player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
       Vector playerDirection = player.getLocation().getDirection();
       Arrow bullet = player.launchProjectile(Arrow.class, playerDirection);
-      bullet.setCustomName("m4-"+player.getName());
+      bullet.setCustomName("m4:"+player.getName());
       bullet.setVelocity(bullet.getVelocity().multiply(4.5D));
       bullet.setGravity(false);
       bullet.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
       int range = 100;
+      player.getWorld().getNearbyEntities(player.getLocation(), range, range, range).clear();
       for (Entity target : player.getWorld().getNearbyEntities(player.getLocation(), range, range, range)) {
         if (target instanceof Player) new SoundUtils(SWATtest.plugin, (Player) target, target.getLocation(), range, 0.55F);
       }
@@ -459,11 +460,12 @@ public class PlayerInteractListener implements Listener {
       player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
       Vector playerDirection = player.getLocation().getDirection();
       Arrow bullet = player.launchProjectile(Arrow.class, playerDirection);
-      bullet.setCustomName("sniper-"+player.getName());
+      bullet.setCustomName("sniper:"+player.getName());
       bullet.setVelocity(bullet.getVelocity().multiply(6));
       bullet.setGravity(false);
       bullet.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
       int range = 100;
+      player.getWorld().getNearbyEntities(player.getLocation(), range, range, range).clear();
       for (Entity target : player.getWorld().getNearbyEntities(player.getLocation(), range, range, range)) {
         if (target instanceof Player) new SoundUtils(SWATtest.plugin, (Player) target, target.getLocation(), range, 0.0F);
       }
@@ -507,11 +509,12 @@ public class PlayerInteractListener implements Listener {
       player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
       Vector playerDirection = player.getLocation().getDirection();
       Arrow bullet = player.launchProjectile(Arrow.class, playerDirection);
-      bullet.setCustomName("mp5-"+player.getName());
+      bullet.setCustomName("mp5:"+player.getName());
       bullet.setVelocity(bullet.getVelocity().multiply(5.25));
       bullet.setGravity(false);
       bullet.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
       int range = 100;
+      player.getWorld().getNearbyEntities(player.getLocation(), range, range, range).clear();
       for (Entity target : player.getWorld().getNearbyEntities(player.getLocation(), range, range, range)) {
         if (target instanceof Player) new SoundUtils(SWATtest.plugin, (Player) target, target.getLocation(), range, 1.0F);
       }
@@ -555,11 +558,12 @@ public class PlayerInteractListener implements Listener {
       player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(templore));
       Vector playerDirection = player.getLocation().getDirection();
       Arrow bullet = player.launchProjectile(Arrow.class, playerDirection);
-      bullet.setCustomName("jagdflinte-"+player.getName());
+      bullet.setCustomName("jagdflinte:"+player.getName());
       bullet.setVelocity(bullet.getVelocity().multiply(4));
       bullet.setGravity(false);
       bullet.setPickupStatus(Arrow.PickupStatus.DISALLOWED);
       int range = 100;
+      player.getWorld().getNearbyEntities(player.getLocation(), range, range, range).clear();
       for (Entity target : player.getWorld().getNearbyEntities(player.getLocation(), range, range, range)) {
         if (target instanceof Player) new SoundUtils(SWATtest.plugin, (Player) target, target.getLocation(), range, -0.5F);
       }

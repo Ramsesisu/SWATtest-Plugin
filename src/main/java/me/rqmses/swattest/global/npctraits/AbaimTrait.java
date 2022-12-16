@@ -20,6 +20,8 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.HashMap;
 import java.util.UUID;
 
+import static me.rqmses.swattest.SWATtest.team0;
+
 @TraitName("abaimtrait")
 public class AbaimTrait extends Trait {
     public AbaimTrait() {
@@ -38,6 +40,8 @@ public class AbaimTrait extends Trait {
         ((Player) npcplayer.getEntity()).setGameMode(GameMode.SURVIVAL);
         ((Player) npcplayer.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(40.0D);
         ((Player) npcplayer.getEntity()).setHealth(40);
+
+        team0.addEntry(npcplayer.getName());
 
         npcplayer.setProtected(false);
 
@@ -88,7 +92,9 @@ public class AbaimTrait extends Trait {
                     }
                 }
                 if (((Player) npcplayer.getEntity()).getHealth() < 30) {
-                    ((Player) npcplayer.getEntity()).chat("/use Kokain");
+                    if (!((CraftPlayer) npcplayer.getEntity()).hasPotionEffect(PotionEffectType.REGENERATION)) {
+                        ((Player) npcplayer.getEntity()).chat("/use Kokain");
+                    }
                 }
             }
         }, 60L, 10L));
