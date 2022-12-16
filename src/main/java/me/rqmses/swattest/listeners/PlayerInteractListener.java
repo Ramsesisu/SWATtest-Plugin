@@ -27,6 +27,8 @@ import org.bukkit.util.Vector;
 
 import java.util.*;
 
+import static me.rqmses.swattest.listeners.MinecartListener.minecartplayerslist;
+
 public class PlayerInteractListener implements Listener {
   public static final HashMap<UUID, Long> cooldowns = new HashMap<>();
   
@@ -60,7 +62,9 @@ public class PlayerInteractListener implements Listener {
     if (player.getGameMode() == GameMode.SPECTATOR)
       return false; 
     if (player.isFlying())
-      return false; 
+      return false;
+    if (minecartplayerslist.contains(player.getName()))
+      return false;
     if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
       if (player.getInventory().getItemInMainHand().getType() == Material.DIAMOND_BARDING) {
         shootM4(player);

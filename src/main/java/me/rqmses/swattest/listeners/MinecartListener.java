@@ -56,7 +56,7 @@ public class MinecartListener implements Listener {
                 if (event.getEntity() != Bukkit.getServer().getPlayer(event.getVehicle().getCustomName())) {
                     Player player = (Player) event.getEntity();
                     player.chat("/car start f");
-                    player.setVelocity(event.getVehicle().getLocation().getDirection().multiply(3));
+                    player.setVelocity(Bukkit.getServer().getPlayer(event.getVehicle().getCustomName()).getLocation().getDirection().multiply(3));
                     player.damage(14);
                     player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 5, 0));
                     player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 8, 2));
