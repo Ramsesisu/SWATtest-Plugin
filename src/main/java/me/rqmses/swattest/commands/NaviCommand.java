@@ -3,7 +3,6 @@ package me.rqmses.swattest.commands;
 import me.rqmses.swattest.global.WarpPoints;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -17,7 +16,6 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -83,13 +81,6 @@ public class NaviCommand implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         ArrayList<String> list = new ArrayList<>();
         String[] targets = WarpPoints.getTargets();
-        ArrayList<String> targetsList = new ArrayList<>(Arrays.asList(targets));
-        ArrayList<String> playersList = new ArrayList<>();
-        for (Player tempplayer : Bukkit.getServer().getOnlinePlayers()) {
-            playersList.add(tempplayer.getName());
-        }
-        targetsList.addAll(playersList);
-        targets = targetsList.toArray(new String[0]);
         if (args.length == 1) {
             for (String target : targets) {
                 if (target.toUpperCase().startsWith(args[0].toUpperCase())) {

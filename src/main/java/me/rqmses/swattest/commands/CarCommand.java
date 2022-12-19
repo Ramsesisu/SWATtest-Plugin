@@ -23,10 +23,10 @@ public class CarCommand implements CommandExecutor {
     public static HashMap<String, Minecart> minecarts = new HashMap<>();
     public static HashMap<String, BukkitTask> cartasks = new HashMap<>();
 
-    public static HashMap<String, Double> kilometer = new HashMap<String, Double>();
+    public static HashMap<String, Double> kilometer = new HashMap<>();
     public static HashMap<String, Integer> zustand = new HashMap<>();
     public static HashMap<String, Double> tacho = new HashMap<>();
-    public static HashMap<String, Double> tank = new HashMap<String, Double>();
+    public static HashMap<String, Double> tank = new HashMap<>();
     public static HashMap<String, Integer> gang = new HashMap<>();
 
     @Override

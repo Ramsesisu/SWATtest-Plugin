@@ -24,7 +24,7 @@ public class PlayerSwitchItemListener implements Listener {
       } 
       PlayerJoinListener.playerconfig.get(player.getUniqueId()).set(EquipCommand.playerequip.get(player.getName()) + "." + event.getSlot(), item.getType().toString());
       try {
-        PlayerJoinListener.playerconfig.get(player.getUniqueId()).save(PlayerJoinListener.playersafe.get(player.getUniqueId()));
+        PlayerJoinListener.playerconfig.get(player.getUniqueId()).save(PlayerJoinListener.playersave.get(player.getUniqueId()));
       } catch (IOException e) {
         throw new RuntimeException(e);
       } 

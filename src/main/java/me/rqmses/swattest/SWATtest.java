@@ -21,6 +21,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Team;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static me.rqmses.swattest.commands.CarCommand.minecarts;
 import static me.rqmses.swattest.commands.TeamCommand.*;
@@ -35,6 +38,11 @@ public final class SWATtest extends JavaPlugin implements Listener {
     public static Team team2;
     public static Team team3;
     public static Team team4;
+
+    public static List<Object> admins = new ArrayList<>();
+
+    public static File adminsave;
+    public static YamlConfiguration adminconfig;
 
     public void onEnable() {
         plugin = this;
@@ -94,11 +102,33 @@ public final class SWATtest extends JavaPlugin implements Listener {
 
             for (Player player : Bukkit.getOnlinePlayers()) {
                 PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.FALSE);
-                PlayerJoinListener.playersafe.put(player.getUniqueId(), new File("data" + File.separator + player.getUniqueId() + ".yml"));
-                PlayerJoinListener.playerconfig.put(player.getUniqueId(), YamlConfiguration.loadConfiguration(PlayerJoinListener.playersafe.get(player.getUniqueId())));
+                PlayerJoinListener.playersave.put(player.getUniqueId(), new File("data" + File.separator + player.getUniqueId() + ".yml"));
+                PlayerJoinListener.playerconfig.put(player.getUniqueId(), YamlConfiguration.loadConfiguration(PlayerJoinListener.playersave.get(player.getUniqueId())));
                 team0.addEntry(player.getName());
             }
         }, 20L);
+
+        adminsave = new File("plugins" + File.separator + "SWATtest" + File.separator + "admins.yml");
+        adminconfig = YamlConfiguration.loadConfiguration(adminsave);
+        if (!adminsave.exists()) {
+            try {
+                //noinspection ResultOfMethodCallIgnored
+                adminsave.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            adminconfig.set("admins", admins);
+            try {
+                adminconfig.save(adminsave);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+
+        for (Object name : adminconfig.getList("admins")) {
+            admins.add(String.valueOf(name));
+        }
 
         System.out.println("Plugin erfolgreich geladen.");
     }
@@ -159,5 +189,6 @@ public final class SWATtest extends JavaPlugin implements Listener {
         getCommand("car").setExecutor(new CarCommand());
         getCommand("inv").setExecutor(new InvCommand());
         getCommand("vanish").setExecutor(new VanishCommand());
+        getCommand("admin").setExecutor(new AdminCommand());
     }
 }

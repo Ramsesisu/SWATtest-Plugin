@@ -21,7 +21,7 @@ public class ResetDataCommand implements CommandExecutor {
         this.player = (Player)sender;
       }
       //noinspection ResultOfMethodCallIgnored
-      PlayerJoinListener.playersafe.get(this.player.getUniqueId()).delete();
+      PlayerJoinListener.playersave.get(this.player.getUniqueId()).delete();
       Functions.createFile(this.player);
       this.player.sendMessage(ChatColor.GRAY + "Dein Speicherstand wurde zurückgesetzt!");
     } 

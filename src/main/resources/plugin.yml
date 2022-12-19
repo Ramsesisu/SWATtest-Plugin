@@ -62,3 +62,6 @@ commands:
   vanish:
     description: Versteckt den Spieler vor allen Systemen.
     usage: /<command>
+  admin:
+    description: Gibt eine Liste an Admins aus, beziehungsweise fügt hinzu.
+    usage: /<command> <name>

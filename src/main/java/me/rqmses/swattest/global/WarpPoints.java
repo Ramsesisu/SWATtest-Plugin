@@ -5,6 +5,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import static me.rqmses.swattest.commands.VanishCommand.hidden;
+
 public class WarpPoints {
     public static Location getWarp(String warp, Player player) {
         Location loc = null;
@@ -366,12 +371,19 @@ public class WarpPoints {
             case "190":
                 loc = new Location(Bukkit.getWorld("world"), 590, 69, 206);
                 break;
+            case "382":
+                loc = new Location(Bukkit.getWorld("world"), -61, 69, -566);
+                break;
             default:
                 String[] coords = warp.split("/");
                 if (coords.length == 3) {
                     loc = new Location(Bukkit.getWorld("world"), Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2]));
                 } else if (Bukkit.getServer().getPlayer(warp) != null) {
-                    loc = Bukkit.getServer().getPlayer(warp).getLocation();
+                    if (hidden.contains(Bukkit.getServer().getPlayer(warp)) && Bukkit.getServer().getPlayer(warp) != player) {
+                        player.sendMessage(ChatColor.GOLD + warp + ChatColor.YELLOW + " ist kein gültiges Ziel!");
+                    } else {
+                        loc = Bukkit.getServer().getPlayer(warp).getLocation();
+                    }
                 } else {
                     player.sendMessage(ChatColor.GOLD + warp + ChatColor.YELLOW + " ist kein gültiges Ziel!");
                 }
@@ -380,7 +392,7 @@ public class WarpPoints {
     }
 
     public static String[] getTargets() {
-        return new String[] {"Stadthalle", "Uranberg", "Würfelpark", "261", "248", "KF-Kran", "LU-Kran",
+        String[] targets = new String[] {"Stadthalle", "Uranberg", "Würfelpark", "261", "248", "KF-Kran", "LU-Kran",
                 "LU-Baustelle", "Psychiatrie", "Golfplatz", "Funpark", "Staatsbank", "Schule", "LU-Casino", "Fightclub",
                 "Schwimmbad", "Atomkraftwerk", "643,5", "OBrien", "KF-Bar", "Kerzakov", "Rotlichbar", "FBI", "Triaden",
                 "Chinatown", "HRT", "UC17", "Insel", "SWAT", "Mall", "Farm", "Altstadt", "Labor", "Weinberg",
@@ -394,6 +406,15 @@ public class WarpPoints {
                 "Basketball", "CFK", "Kran-Uran", "Neulingshotel", "Flughafen-Unica", "Flughafen-Chinatown", "Flughafen-LasUnicas",
                 "Urantransport", "Deathmatch-Arena", "Gefängnis", "Hochseefischer", "Feuerwerksladen", "Angelschein", "Terroristen",
                 "Sägewerk", "200", "363", "531", "Bäckerei", "Shop", "Windrad-FBI", "UCM", "Altes-Gefängnis", "Hölle",
-                "Himmel", "Checkpoint-Gefängnis", "Anwaltskanzelei", "Musikladen", "Alcatraz", "36", "144", "171", "190"};
+                "Himmel", "Checkpoint-Gefängnis", "Anwaltskanzelei", "Musikladen", "Alcatraz", "36", "144", "171", "190",
+                "382"};
+        ArrayList<String> targetsList = new ArrayList<>(Arrays.asList(targets));
+        ArrayList<String> playersList = new ArrayList<>();
+        for (Player tempplayer : Bukkit.getServer().getOnlinePlayers()) {
+            playersList.add(tempplayer.getName());
+        }
+        targetsList.addAll(playersList);
+        targets = targetsList.toArray(new String[0]);
+        return targets;
     }
 }

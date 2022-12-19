@@ -1,6 +1,7 @@
 package me.rqmses.swattest.commands;
 
 import de.myzelyam.api.vanish.VanishAPI;
+import me.rqmses.swattest.global.Admins;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -27,6 +28,7 @@ public class VanishCommand implements CommandExecutor {
                 VanishAPI.hidePlayer(player);
                 Bukkit.broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.YELLOW + " ist nun" + ChatColor.RED + " offline" + ChatColor.YELLOW + ".");
             }
+            Admins.msgAdmin(ChatColor.DARK_RED + player.getName() + ChatColor.RED + " benutzt " + ChatColor.DARK_RED + "/vanish" + ChatColor.RED + ".");
         }
         return true;
     }

@@ -21,13 +21,12 @@ import java.util.Objects;
 import static me.rqmses.swattest.SWATtest.*;
 import static me.rqmses.swattest.commands.CarCommand.*;
 import static me.rqmses.swattest.commands.TeamCommand.*;
-import static me.rqmses.swattest.commands.TeamCommand.kills4;
 
 public class Functions {
   public static void createFile(Player player) {
     try {
       //noinspection ResultOfMethodCallIgnored
-      PlayerJoinListener.playersafe.get(player.getUniqueId()).createNewFile();
+      PlayerJoinListener.playersave.get(player.getUniqueId()).createNewFile();
     } catch (IOException e) {
       throw new RuntimeException(e);
     } 
@@ -95,7 +94,7 @@ public class Functions {
     PlayerJoinListener.playerconfig.get(player.getUniqueId()).set("flammenwerfer.7", Items.getAir().getType().toString());
     PlayerJoinListener.playerconfig.get(player.getUniqueId()).set("flammenwerfer.8", Items.getAir().getType().toString());
     try {
-      PlayerJoinListener.playerconfig.get(player.getUniqueId()).save(PlayerJoinListener.playersafe.get(player.getUniqueId()));
+      PlayerJoinListener.playerconfig.get(player.getUniqueId()).save(PlayerJoinListener.playersave.get(player.getUniqueId()));
     } catch (IOException e) {
       throw new RuntimeException(e);
     } 

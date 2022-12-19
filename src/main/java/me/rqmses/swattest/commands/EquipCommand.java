@@ -185,7 +185,7 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
 
           if (Objects.equals(playerequip.get(player.getName()), "swat")) {
             if (itemamount != 5) {
-              PlayerJoinListener.playersafe.get(player.getUniqueId()).delete();
+              PlayerJoinListener.playersave.get(player.getUniqueId()).delete();
               Functions.createFile(player);
               Functions.equipPlayer(player);
               cooldowns.put(player.getName(), 600L);
@@ -193,7 +193,7 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
           }
           if (Objects.equals(playerequip.get(player.getName()), "elytra")) {
             if (itemamount != 1) {
-              PlayerJoinListener.playersafe.get(player.getUniqueId()).delete();
+              PlayerJoinListener.playersave.get(player.getUniqueId()).delete();
               Functions.createFile(player);
               Functions.equipPlayer(player);
               cooldowns.put(player.getName(), 600L);
@@ -201,7 +201,7 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
           }
           if (Objects.equals(playerequip.get(player.getName()), "ballas")) {
             if (itemamount != 4) {
-              PlayerJoinListener.playersafe.get(player.getUniqueId()).delete();
+              PlayerJoinListener.playersave.get(player.getUniqueId()).delete();
               Functions.createFile(player);
               Functions.equipPlayer(player);
               cooldowns.put(player.getName(), 600L);
@@ -209,7 +209,7 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
           }
           if (Objects.equals(playerequip.get(player.getName()), "polizei")) {
             if (itemamount != 4) {
-              PlayerJoinListener.playersafe.get(player.getUniqueId()).delete();
+              PlayerJoinListener.playersave.get(player.getUniqueId()).delete();
               Functions.createFile(player);
               Functions.equipPlayer(player);
               cooldowns.put(player.getName(), 600L);
@@ -217,7 +217,7 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
           }
           if (Objects.equals(playerequip.get(player.getName()), "zivilist")) {
             if (itemamount != 2) {
-              PlayerJoinListener.playersafe.get(player.getUniqueId()).delete();
+              PlayerJoinListener.playersave.get(player.getUniqueId()).delete();
               Functions.createFile(player);
               Functions.equipPlayer(player);
               cooldowns.put(player.getName(), 600L);
@@ -225,7 +225,7 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
           }
           if (Objects.equals(playerequip.get(player.getName()), "flammenwerfer")) {
             if (itemamount != 2) {
-              PlayerJoinListener.playersafe.get(player.getUniqueId()).delete();
+              PlayerJoinListener.playersave.get(player.getUniqueId()).delete();
               Functions.createFile(player);
               Functions.equipPlayer(player);
               cooldowns.put(player.getName(), 600L);
@@ -233,7 +233,7 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
           }
           if (Objects.equals(playerequip.get(player.getName()), "terror")) {
             if (itemamount != 3) {
-              PlayerJoinListener.playersafe.get(player.getUniqueId()).delete();
+              PlayerJoinListener.playersave.get(player.getUniqueId()).delete();
               Functions.createFile(player);
               Functions.equipPlayer(player);
               cooldowns.put(player.getName(), 600L);

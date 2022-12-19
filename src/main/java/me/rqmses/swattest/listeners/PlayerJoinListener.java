@@ -22,7 +22,7 @@ import static me.rqmses.swattest.SWATtest.plugin;
 import static me.rqmses.swattest.SWATtest.team0;
 
 public class PlayerJoinListener implements Listener {
-  public static final HashMap<UUID, File> playersafe = new HashMap<>();
+  public static final HashMap<UUID, File> playersave = new HashMap<>();
   
   public static final HashMap<UUID, FileConfiguration> playerconfig = new HashMap<>();
   
@@ -37,9 +37,9 @@ public class PlayerJoinListener implements Listener {
     player.getActivePotionEffects().clear();
     player.getInventory().clear();
     PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.FALSE);
-    playersafe.put(player.getUniqueId(), new File("data" + File.separator + player.getUniqueId() + ".yml"));
-    playerconfig.put(player.getUniqueId(), YamlConfiguration.loadConfiguration(playersafe.get(player.getUniqueId())));
-    if (!playersafe.get(player.getUniqueId()).exists()) {
+    playersave.put(player.getUniqueId(), new File("data" + File.separator + player.getUniqueId() + ".yml"));
+    playerconfig.put(player.getUniqueId(), YamlConfiguration.loadConfiguration(playersave.get(player.getUniqueId())));
+    if (!playersave.get(player.getUniqueId()).exists()) {
       Functions.createFile(player);
       player.setBedSpawnLocation(new Location(Bukkit.getWorld("world"), 103, 70, 157), true);
       player.teleport(new Location(Bukkit.getWorld("world"), 103, 70, 157));
