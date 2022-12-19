@@ -12,11 +12,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.permissions.PermissionAttachment;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.UUID;
 
+import static me.rqmses.swattest.SWATtest.plugin;
 import static me.rqmses.swattest.SWATtest.team0;
 
 public class PlayerJoinListener implements Listener {
@@ -45,6 +47,9 @@ public class PlayerJoinListener implements Listener {
     }
     team0.addEntry(player.getName());
     Functions.equipPlayer(player);
+
+    PermissionAttachment pperms = player.addAttachment(plugin);
+    pperms.setPermission("booknews.news", true);
 
     if (PlayerQuitListener.deadplayers.contains(player.getUniqueId())) {
       PlayerQuitListener.deadplayers.remove(player.getUniqueId());

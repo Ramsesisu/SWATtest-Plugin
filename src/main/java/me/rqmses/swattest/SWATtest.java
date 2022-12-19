@@ -86,8 +86,10 @@ public final class SWATtest extends JavaPlugin implements Listener {
         net.citizensnpcs.api.CitizensAPI.getTraitFactory().registerTrait(net.citizensnpcs.api.trait.TraitInfo.create(AttackTrait.class));
         net.citizensnpcs.api.CitizensAPI.getTraitFactory().registerTrait(net.citizensnpcs.api.trait.TraitInfo.create(AbaimTrait.class));
 
+        String version = this.getDescription().getVersion();
+
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&c&lDas SWATtest-Plugin wurde reloaded! &7&l- &c&lVersion 1.8"));
+            Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&c&lDas SWATtest-Plugin wurde reloaded! &7&l- &c&lVersion " + version));
             Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&7➝ Bei Bugs muss der Spieler rejoinen."));
 
             for (Player player : Bukkit.getOnlinePlayers()) {
@@ -155,5 +157,7 @@ public final class SWATtest extends JavaPlugin implements Listener {
         getCommand("luftlinie").setExecutor(new LuftlinieCommand());
         getCommand("leitfaden").setExecutor(new LeitfadenCommand());
         getCommand("car").setExecutor(new CarCommand());
+        getCommand("inv").setExecutor(new InvCommand());
+        getCommand("vanish").setExecutor(new VanishCommand());
     }
 }

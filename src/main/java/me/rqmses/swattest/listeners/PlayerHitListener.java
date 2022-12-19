@@ -18,6 +18,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static me.rqmses.swattest.commands.VanishCommand.hidden;
+
 public class PlayerHitListener implements Listener {
   public final HashMap<String, Long> cooldowns = new HashMap<>();
   
@@ -31,7 +33,11 @@ public class PlayerHitListener implements Listener {
       event.getDamager().getType() != EntityType.ARROW && 
       event.getDamager() instanceof Player) {
       if (event.getEntity().getName().contains("-KI")) {return true;}
-      hitter = (Player)event.getDamager();
+      hitter = (Player) event.getDamager();
+      if (hidden.contains(hitter)) {
+        event.setCancelled(true);
+        return true;
+      }
       PlayerDeathListener.setKiller(hitter.getName());
       if (!hitter.getName().contains("-KI")) {
         if (PlayerDeathListener.spawnprotection.get(hitter.getName())) {

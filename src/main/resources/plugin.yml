@@ -56,3 +56,9 @@ commands:
   car:
     description: Spawnt und steuert ein Auto.
     usage: /<command> <argument>
+  inv:
+    description: Gibt Zugriff auf das Inventar eines anderen Spielers.
+    usage: /<command> <player>
+  vanish:
+    description: Versteckt den Spieler vor allen Systemen.
+    usage: /<command>

@@ -27,6 +27,7 @@ import org.bukkit.util.Vector;
 
 import java.util.*;
 
+import static me.rqmses.swattest.commands.VanishCommand.hidden;
 import static me.rqmses.swattest.listeners.MinecartListener.minecartplayerslist;
 
 public class PlayerInteractListener implements Listener {
@@ -63,8 +64,10 @@ public class PlayerInteractListener implements Listener {
       return false; 
     if (player.isFlying())
       return false;
-    if (minecartplayerslist.contains(player.getName()))
+    if (minecartplayerslist.contains(player.getName()) || hidden.contains(player)) {
+      event.setCancelled(true);
       return false;
+    }
     if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
       if (player.getInventory().getItemInMainHand().getType() == Material.DIAMOND_BARDING) {
         shootM4(player);

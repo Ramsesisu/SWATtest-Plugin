@@ -19,8 +19,10 @@ public class PlayerQuitListener implements Listener {
   public void onPlayerQuit(PlayerQuitEvent event) {
     Player player = event.getPlayer();
     Functions.getTeam(player).removeEntry(player.getName());
-    if (player.getCustomName().equals("dead")) {
-      deadplayers.add(player.getUniqueId());
+    if (player.getCustomName() != null) {
+      if (player.getCustomName().equals("dead")) {
+        deadplayers.add(player.getUniqueId());
+      }
     }
     if (CarCommand.minecarts.get(player.getName()) != null) {
       CarCommand.minecarts.get(player.getName()).remove();

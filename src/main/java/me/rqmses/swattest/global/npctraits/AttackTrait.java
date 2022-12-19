@@ -65,7 +65,7 @@ public class AttackTrait extends Trait {
                     if (distance < lastDistance) {
                         lastDistance = distance;
                         result = p;
-                        if (!((Player) npcplayer.getEntity()).getInventory().contains(Material.DIAMOND_BARDING)) {
+                        if (((Player) npcplayer.getEntity()).getInventory().getItemInMainHand().getType() == Material.AIR) {
                             ((Player) npcplayer.getEntity()).getInventory().setItemInMainHand(Items.getM4());
                         }
                         npcplayer.getNavigator().setTarget(result, true);

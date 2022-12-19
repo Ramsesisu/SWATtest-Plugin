@@ -20,6 +20,9 @@ import org.bukkit.util.Vector;
 
 import java.util.*;
 
+import static me.rqmses.swattest.commands.VanishCommand.hidden;
+import static me.rqmses.swattest.listeners.MinecartListener.minecartplayerslist;
+
 public class ItemDropListener implements Listener {
   public static final HashMap<String, Long> cooldowns = new HashMap<>();
   
@@ -31,6 +34,10 @@ public class ItemDropListener implements Listener {
   
   @EventHandler
   public void onItemDrop(PlayerDropItemEvent event) {
+      if (minecartplayerslist.contains(event.getPlayer().getName()) || hidden.contains(event.getPlayer())) {
+          event.setCancelled(true);
+          return;
+      }
     ItemStack flash = new ItemStack(Material.SLIME_BALL);
     ItemMeta flashmeta = flash.getItemMeta();
     flashmeta.setDisplayName(ChatColor.GRAY + "Blendgranate");
@@ -58,6 +65,10 @@ public class ItemDropListener implements Listener {
   @EventHandler
   public void onFlashRightClick(PlayerInteractEvent event) {
     Player player = event.getPlayer();
+    if (minecartplayerslist.contains(player.getName()) || hidden.contains(player)) {
+        event.setCancelled(true);
+        return;
+    }
     if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
       if (player.getInventory().getItemInMainHand().getType() == Material.SLIME_BALL) {
         event.setCancelled(true);
