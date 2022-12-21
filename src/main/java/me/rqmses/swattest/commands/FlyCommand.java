@@ -28,7 +28,9 @@ public class FlyCommand implements CommandExecutor {
         if (flyingplayers.contains(this.player)) {
           flyingplayers.remove(this.player);
           this.player.setAllowFlight(false);
-          this.player.setPlayerListName(this.player.getPlayerListName().substring(0, this.player.getPlayerListName().length() - 4));
+          if (player.getPlayerListName().contains(ChatColor.translateAlternateColorCodes('&', "&b&l F"))) {
+            player.setPlayerListName(player.getPlayerListName().substring(0, player.getPlayerListName().length() - 4));
+          }
           this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&bFlug-Modus ist nun &c&ldeaktiviert&b."));
         } else {
           flyingplayers.add(this.player);

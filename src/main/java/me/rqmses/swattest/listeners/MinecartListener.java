@@ -17,7 +17,7 @@ import java.util.Objects;
 
 public class MinecartListener implements Listener {
 
-    public static ArrayList<String> minecartplayerslist = new ArrayList<>();
+    public static final ArrayList<String> minecartplayerslist = new ArrayList<>();
 
     @EventHandler
     public void onCarEnter(VehicleEnterEvent event) {

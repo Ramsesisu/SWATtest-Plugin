@@ -3,6 +3,7 @@ package me.rqmses.swattest.global.npctraits;
 import me.rqmses.swattest.SWATtest;
 import me.rqmses.swattest.commands.TrainingsbotCommand;
 import me.rqmses.swattest.global.Items;
+import me.rqmses.swattest.listeners.PlayerDeathListener;
 import me.rqmses.swattest.listeners.PlayerInteractListener;
 import net.citizensnpcs.api.event.NPCDeathEvent;
 import net.citizensnpcs.api.npc.NPC;
@@ -40,6 +41,8 @@ public class AbaimTrait extends Trait {
         ((Player) npcplayer.getEntity()).setGameMode(GameMode.SURVIVAL);
         ((Player) npcplayer.getEntity()).getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(40.0D);
         ((Player) npcplayer.getEntity()).setHealth(40);
+
+        PlayerDeathListener.spawnprotection.put(npcplayer.getUniqueId(), Boolean.FALSE);
 
         team0.addEntry(npcplayer.getName());
 
@@ -112,7 +115,7 @@ public class AbaimTrait extends Trait {
     @EventHandler
     public void onDeath(NPCDeathEvent event) {
         TrainingsbotCommand.NPCList.remove(npc);
-        TrainingsbotCommand.NPCListPlayer.put(event.getNPC().data().get("origin"), TrainingsbotCommand.NPCListPlayer.get(event.getNPC().data().get("origin")) - 1);
+        TrainingsbotCommand.NPCListPlayer.get(event.getNPC().data().get("origin")).remove(npc);
         event.getNPC().despawn();
     }
 }

@@ -1,10 +1,8 @@
 package me.rqmses.swattest.listeners;
 
+import me.rqmses.swattest.global.Admins;
 import me.rqmses.swattest.global.Functions;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -29,6 +27,7 @@ public class PlayerJoinListener implements Listener {
   @EventHandler
   public void onPlayerJoin(PlayerJoinEvent event) {
     Player player = event.getPlayer();
+    player.setOp(false);
     event.setJoinMessage(ChatColor.GOLD + player.getName() + ChatColor.YELLOW + " ist nun" + ChatColor.GREEN + " online" + ChatColor.YELLOW + ".");
     player.setGameMode(GameMode.SURVIVAL);
     player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(40.0D);
@@ -36,7 +35,7 @@ public class PlayerJoinListener implements Listener {
     player.setCustomName(" ");
     player.getActivePotionEffects().clear();
     player.getInventory().clear();
-    PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.FALSE);
+    PlayerDeathListener.spawnprotection.put(player.getUniqueId(), Boolean.FALSE);
     playersave.put(player.getUniqueId(), new File("data" + File.separator + player.getUniqueId() + ".yml"));
     playerconfig.put(player.getUniqueId(), YamlConfiguration.loadConfiguration(playersave.get(player.getUniqueId())));
     if (!playersave.get(player.getUniqueId()).exists()) {
@@ -57,5 +56,11 @@ public class PlayerJoinListener implements Listener {
       PlayerDeathListener.deathtask.get(player.getName()).cancel();
       player.setHealth(0.0D);
     }
+
+    if (Admins.isAdmin(player)) {
+      player.setOp(true);
+    }
+
+    player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, SoundCategory.AMBIENT, 10, 1);
   }
 }

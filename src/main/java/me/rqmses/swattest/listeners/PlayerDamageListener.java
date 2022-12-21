@@ -2,8 +2,13 @@ package me.rqmses.swattest.listeners;
 
 import com.google.common.collect.Sets;
 import me.rqmses.swattest.global.Functions;
-import org.bukkit.*;
-import org.bukkit.entity.Entity;
+import net.minecraft.server.v1_12_R1.DataWatcherObject;
+import net.minecraft.server.v1_12_R1.DataWatcherRegistry;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftLivingEntity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,7 +21,6 @@ import org.bukkit.event.player.PlayerToggleSprintEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -26,8 +30,6 @@ import static me.rqmses.swattest.SWATtest.team0;
 public class PlayerDamageListener implements Listener {
   public static Player shooter;
 
-  List<Entity> entitylist;
-  
   @EventHandler
   public void onBulletHit(EntityDamageByEntityEvent event) {
     if (event.getEntity() instanceof Player) {
@@ -38,8 +40,8 @@ public class PlayerDamageListener implements Listener {
           event.setCancelled(true);
         }
       }
-      if (!player.hasMetadata("NPC")) {
-        if (PlayerDeathListener.spawnprotection.get(player.getName())) {
+      if (PlayerDeathListener.spawnprotection.get(player.getUniqueId()) != null) {
+        if (PlayerDeathListener.spawnprotection.get(player.getUniqueId())) {
           event.setCancelled(true);
           return;
         }
@@ -132,52 +134,10 @@ public class PlayerDamageListener implements Listener {
           }  
         if (Objects.equals(weapontype, "rpg")) {
           event.setDamage(0.0D);
-          Location loc = player.getLocation();
-          loc.getWorld().createExplosion(loc, 10.0F, true);
-          loc.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, loc, 1);
-          this.entitylist = player.getNearbyEntities(2.0D, 2.0D, 2.0D);
-          for (Entity entity : this.entitylist) {
-            if (entity instanceof Player) {
-              Player nearplayer = (Player) entity;
-              nearplayer.damage(100.0D);
-              nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 200, 2));
-              nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 1));
-            }
-          } 
-          this.entitylist.clear();
-          this.entitylist = player.getNearbyEntities(6.0D, 6.0D, 6.0D);
-          for (Entity entity : this.entitylist) {
-            if (entity instanceof Player) {
-              Player nearplayer = (Player) entity;
-              nearplayer.damage(35.0D);
-              nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 200, 2));
-              nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 1));
-            }
-          } 
-          this.entitylist.clear();
-          this.entitylist = player.getNearbyEntities(10.0D, 10.0D, 10.0D);
-          for (Entity entity : this.entitylist) {
-            if (entity instanceof Player) {
-              Player nearplayer = (Player) entity;
-              nearplayer.damage(20.0D);
-              nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 100, 1));
-              nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 1));
-            }
-          }
-          this.entitylist.clear();
-          this.entitylist = player.getNearbyEntities(15.0D, 15.0D, 15.0D);
-          for (Entity entity : this.entitylist) {
-            if (entity instanceof Player) {
-              Player nearplayer = (Player) entity;
-              nearplayer.damage(8.0D);
-              nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 40, 1));
-              nearplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40, 1));
-            }
-          } 
-          this.entitylist.clear();
+          ProjectileHitListener.exlode(player.getLocation(), event.getDamager());
         }
 
-        event.getDamager().remove();
+        ((CraftLivingEntity) player).getHandle().getDataWatcher().set(new DataWatcherObject<>(10, DataWatcherRegistry.b),-1);
       }
     }
   }

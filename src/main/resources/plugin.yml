@@ -62,6 +62,15 @@ commands:
   vanish:
     description: Versteckt den Spieler vor allen Systemen.
     usage: /<command>
-  admin:
+  admins:
     description: Gibt eine Liste an Admins aus, beziehungsweise fügt hinzu.
     usage: /<command> <name>
+  builders:
+    description: Gibt eine Liste an Buildern aus, beziehungsweise fügt hinzu.
+    usage: /<command> <name>
+  buildmode:
+    description: Versetzt den Spieler in den Bau-Modus.
+    usage: /<command>
+  sprenggürtel:
+    description: Zündet einen Sprenggürtel, solange er angezogen wurde.
+    usage: /<command>

@@ -1,6 +1,7 @@
 package me.rqmses.swattest;
 
 import me.rqmses.swattest.commands.*;
+import me.rqmses.swattest.global.Admins;
 import me.rqmses.swattest.global.npctraits.AbaimTrait;
 import me.rqmses.swattest.global.npctraits.AttackTrait;
 import me.rqmses.swattest.listeners.*;
@@ -39,10 +40,13 @@ public final class SWATtest extends JavaPlugin implements Listener {
     public static Team team3;
     public static Team team4;
 
-    public static List<Object> admins = new ArrayList<>();
+    public static final List<Object> admins = new ArrayList<>();
+    public static final List<Object> builders = new ArrayList<>();
 
     public static File adminsave;
     public static YamlConfiguration adminconfig;
+    public static File buildersave;
+    public static YamlConfiguration builderconfig;
 
     public void onEnable() {
         plugin = this;
@@ -96,18 +100,6 @@ public final class SWATtest extends JavaPlugin implements Listener {
 
         String version = this.getDescription().getVersion();
 
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&c&lDas SWATtest-Plugin wurde reloaded! &7&l- &c&lVersion " + version));
-            Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&7➝ Bei Bugs muss der Spieler rejoinen."));
-
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.FALSE);
-                PlayerJoinListener.playersave.put(player.getUniqueId(), new File("data" + File.separator + player.getUniqueId() + ".yml"));
-                PlayerJoinListener.playerconfig.put(player.getUniqueId(), YamlConfiguration.loadConfiguration(PlayerJoinListener.playersave.get(player.getUniqueId())));
-                team0.addEntry(player.getName());
-            }
-        }, 20L);
-
         adminsave = new File("plugins" + File.separator + "SWATtest" + File.separator + "admins.yml");
         adminconfig = YamlConfiguration.loadConfiguration(adminsave);
         if (!adminsave.exists()) {
@@ -125,10 +117,43 @@ public final class SWATtest extends JavaPlugin implements Listener {
             }
         }
 
+        buildersave = new File("plugins" + File.separator + "SWATtest" + File.separator + "builders.yml");
+        builderconfig = YamlConfiguration.loadConfiguration(buildersave);
+        if (!buildersave.exists()) {
+            try {
+                //noinspection ResultOfMethodCallIgnored
+                buildersave.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            builderconfig.set("builders", builders);
+            try {
+                builderconfig.save(buildersave);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
         for (Object name : adminconfig.getList("admins")) {
             admins.add(String.valueOf(name));
         }
+
+        for (Object name : builderconfig.getList("builders")) {
+            builders.add(String.valueOf(name));
+        }
+
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&c&lDas SWATtest-Plugin wurde reloaded! &7&l- &c&lVersion " + version));
+            Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&7➝ Bei Bugs muss der Spieler rejoinen."));
+
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                PlayerDeathListener.spawnprotection.put(player.getUniqueId(), Boolean.FALSE);
+                PlayerJoinListener.playersave.put(player.getUniqueId(), new File("data" + File.separator + player.getUniqueId() + ".yml"));
+                PlayerJoinListener.playerconfig.put(player.getUniqueId(), YamlConfiguration.loadConfiguration(PlayerJoinListener.playersave.get(player.getUniqueId())));
+                team0.addEntry(player.getName());
+                player.setOp(Admins.isAdmin(player));
+            }
+        }, 20L);
 
         System.out.println("Plugin erfolgreich geladen.");
     }
@@ -189,6 +214,9 @@ public final class SWATtest extends JavaPlugin implements Listener {
         getCommand("car").setExecutor(new CarCommand());
         getCommand("inv").setExecutor(new InvCommand());
         getCommand("vanish").setExecutor(new VanishCommand());
-        getCommand("admin").setExecutor(new AdminCommand());
+        getCommand("admins").setExecutor(new AdminsCommand());
+        getCommand("builders").setExecutor(new BuildersCommand());
+        getCommand("buildmode").setExecutor(new BuildmodeCommand());
+        getCommand("sprenggürtel").setExecutor(new SprengguertelCommand());
     }
 }

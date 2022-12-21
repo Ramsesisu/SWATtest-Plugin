@@ -9,6 +9,8 @@ import org.bukkit.entity.Player;
 
 import java.util.Objects;
 
+import static me.rqmses.swattest.commands.BuildmodeCommand.buildmode;
+
 public class CameraCommand implements CommandExecutor {
   Player player;
   
@@ -22,7 +24,11 @@ public class CameraCommand implements CommandExecutor {
       } 
       if (!Objects.equals(this.player.getCustomName(), "dead"))
         if (this.player.getGameMode() == GameMode.SPECTATOR) {
-          this.player.setGameMode(GameMode.SURVIVAL);
+          if (buildmode.contains(this.player)) {
+            this.player.setGameMode(GameMode.CREATIVE);
+          } else {
+            this.player.setGameMode(GameMode.SURVIVAL);
+          }
         } else {
           this.player.setGameMode(GameMode.SPECTATOR);
         }  

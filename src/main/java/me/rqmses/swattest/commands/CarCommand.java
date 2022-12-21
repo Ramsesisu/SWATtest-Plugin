@@ -20,14 +20,14 @@ import static me.rqmses.swattest.commands.FlyCommand.flyingplayers;
 
 public class CarCommand implements CommandExecutor {
 
-    public static HashMap<String, Minecart> minecarts = new HashMap<>();
-    public static HashMap<String, BukkitTask> cartasks = new HashMap<>();
+    public static final HashMap<String, Minecart> minecarts = new HashMap<>();
+    public static final HashMap<String, BukkitTask> cartasks = new HashMap<>();
 
-    public static HashMap<String, Double> kilometer = new HashMap<>();
-    public static HashMap<String, Integer> zustand = new HashMap<>();
-    public static HashMap<String, Double> tacho = new HashMap<>();
-    public static HashMap<String, Double> tank = new HashMap<>();
-    public static HashMap<String, Integer> gang = new HashMap<>();
+    public static final HashMap<String, Double> kilometer = new HashMap<>();
+    public static final HashMap<String, Integer> zustand = new HashMap<>();
+    public static final HashMap<String, Double> tacho = new HashMap<>();
+    public static final HashMap<String, Double> tank = new HashMap<>();
+    public static final HashMap<String, Integer> gang = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {

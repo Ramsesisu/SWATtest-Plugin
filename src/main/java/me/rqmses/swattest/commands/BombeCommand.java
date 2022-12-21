@@ -16,10 +16,6 @@ public class BombeCommand implements CommandExecutor {
   
   public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
     Player player = (Player)sender;
-    if (!player.isOp()) {
-      player.sendMessage("Du bist kein OP!");
-      return true;
-    }
     Location loc = player.getLocation();
     if (bomb) {
       if (Bukkit.getWorld(player.getWorld().getName()).getBlockAt(bombloc).getType() == Material.TNT) {

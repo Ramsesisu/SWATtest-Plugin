@@ -27,6 +27,7 @@ import org.bukkit.util.Vector;
 
 import java.util.*;
 
+import static me.rqmses.swattest.commands.BuildmodeCommand.buildmode;
 import static me.rqmses.swattest.commands.VanishCommand.hidden;
 import static me.rqmses.swattest.listeners.MinecartListener.minecartplayerslist;
 
@@ -64,8 +65,7 @@ public class PlayerInteractListener implements Listener {
       return false; 
     if (player.isFlying())
       return false;
-    if (minecartplayerslist.contains(player.getName()) || hidden.contains(player)) {
-      event.setCancelled(true);
+    if (minecartplayerslist.contains(player.getName()) || hidden.contains(player) || buildmode.contains(player)) {
       return false;
     }
     if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
@@ -94,8 +94,8 @@ public class PlayerInteractListener implements Listener {
               return true;
             } 
           } 
-          if (PlayerDeathListener.spawnprotection.get(player.getName())) {
-            PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.FALSE);
+          if (PlayerDeathListener.spawnprotection.get(player.getUniqueId())) {
+            PlayerDeathListener.spawnprotection.put(player.getUniqueId(), Boolean.FALSE);
             player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
           } 
           cooldowns.put(player.getUniqueId(), System.currentTimeMillis());
@@ -134,8 +134,8 @@ public class PlayerInteractListener implements Listener {
         if (!tazerstatus.containsKey(player.getName()))
           tazerstatus.put(player.getName(), 10);
         if (tazerstatus.get(player.getName()) >= 10) {
-          if (PlayerDeathListener.spawnprotection.get(player.getName())) {
-            PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.FALSE);
+          if (PlayerDeathListener.spawnprotection.get(player.getUniqueId())) {
+            PlayerDeathListener.spawnprotection.put(player.getUniqueId(), Boolean.FALSE);
             player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
           } 
           tazerstatus.put(player.getName(), 1);
@@ -191,8 +191,8 @@ public class PlayerInteractListener implements Listener {
           event.setCancelled(true);
           return true;
         } 
-        if (PlayerDeathListener.spawnprotection.get(player.getName())) {
-          PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.FALSE);
+        if (PlayerDeathListener.spawnprotection.get(player.getUniqueId())) {
+          PlayerDeathListener.spawnprotection.put(player.getUniqueId(), Boolean.FALSE);
           player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
         } 
         flammilast.putIfAbsent(player.getName(), 1L);
@@ -394,8 +394,8 @@ public class PlayerInteractListener implements Listener {
       }
     }
     if (!player.hasMetadata("NPC")) {
-      if (PlayerDeathListener.spawnprotection.get(player.getName())) {
-        PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.FALSE);
+      if (PlayerDeathListener.spawnprotection.get(player.getUniqueId())) {
+        PlayerDeathListener.spawnprotection.put(player.getUniqueId(), Boolean.FALSE);
         player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
       }
     } else {
@@ -443,11 +443,9 @@ public class PlayerInteractListener implements Listener {
         return;
       }
     }
-    if (!player.hasMetadata("NPC")) {
-      if (PlayerDeathListener.spawnprotection.get(player.getName())) {
-        PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.FALSE);
-        player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
-      }
+    if (PlayerDeathListener.spawnprotection.get(player.getUniqueId())) {
+      PlayerDeathListener.spawnprotection.put(player.getUniqueId(), Boolean.FALSE);
+      player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
     }
     cooldowns.put(player.getUniqueId(), System.currentTimeMillis());
     ItemStack gun = player.getInventory().getItemInMainHand();
@@ -492,11 +490,9 @@ public class PlayerInteractListener implements Listener {
         return;
       }
     }
-    if (!player.hasMetadata("NPC")) {
-      if (PlayerDeathListener.spawnprotection.get(player.getName())) {
-        PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.FALSE);
-        player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
-      }
+    if (PlayerDeathListener.spawnprotection.get(player.getUniqueId())) {
+      PlayerDeathListener.spawnprotection.put(player.getUniqueId(), Boolean.FALSE);
+      player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
     }
     cooldowns.put(player.getUniqueId(), System.currentTimeMillis());
     ItemStack gun = player.getInventory().getItemInMainHand();
@@ -541,11 +537,9 @@ public class PlayerInteractListener implements Listener {
         return;
       }
     }
-    if (!player.hasMetadata("NPC")) {
-      if (PlayerDeathListener.spawnprotection.get(player.getName())) {
-        PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.FALSE);
-        player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
-      }
+    if (PlayerDeathListener.spawnprotection.get(player.getUniqueId())) {
+      PlayerDeathListener.spawnprotection.put(player.getUniqueId(), Boolean.FALSE);
+      player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
     }
     cooldowns.put(player.getUniqueId(), System.currentTimeMillis());
     ItemStack gun = player.getInventory().getItemInMainHand();

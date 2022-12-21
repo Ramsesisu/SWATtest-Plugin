@@ -18,6 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static me.rqmses.swattest.commands.BuildmodeCommand.buildmode;
 import static me.rqmses.swattest.commands.VanishCommand.hidden;
 
 public class PlayerHitListener implements Listener {
@@ -34,14 +35,14 @@ public class PlayerHitListener implements Listener {
       event.getDamager() instanceof Player) {
       if (event.getEntity().getName().contains("-KI")) {return true;}
       hitter = (Player) event.getDamager();
-      if (hidden.contains(hitter)) {
+      if (hidden.contains(hitter) || buildmode.contains(hitter)) {
         event.setCancelled(true);
         return true;
       }
       PlayerDeathListener.setKiller(hitter.getName());
       if (!hitter.getName().contains("-KI")) {
-        if (PlayerDeathListener.spawnprotection.get(hitter.getName())) {
-          PlayerDeathListener.spawnprotection.put(hitter.getName(), Boolean.FALSE);
+        if (PlayerDeathListener.spawnprotection.get(hitter.getUniqueId())) {
+          PlayerDeathListener.spawnprotection.put(hitter.getUniqueId(), Boolean.FALSE);
           hitter.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
         }
       }
@@ -106,7 +107,7 @@ public class PlayerHitListener implements Listener {
     if ((event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) && 
       player.getInventory().getItemInMainHand().getType() == Material.FEATHER) {
       hitter = player;
-      PlayerDeathListener.spawnprotection.put(hitter.getName(), Boolean.FALSE);
+      PlayerDeathListener.spawnprotection.put(hitter.getUniqueId(), Boolean.FALSE);
     } 
   }
 }

@@ -13,7 +13,10 @@ import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.Objects;
+
+import static me.rqmses.swattest.commands.TrainingsbotCommand.NPCListPlayer;
 
 public class AbaimbotCommand implements CommandExecutor {
 
@@ -22,8 +25,8 @@ public class AbaimbotCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
-            TrainingsbotCommand.NPCListPlayer.putIfAbsent(sender.getName(), 0);
-            if ((TrainingsbotCommand.NPCListPlayer.get(sender.getName()) >= 3)) {
+            NPCListPlayer.putIfAbsent(sender.getName(), new ArrayList<>());
+            if (NPCListPlayer.get(sender.getName()).size() >= 3) {
                 if (!sender.isOp()) {
                     sender.sendMessage(ChatColor.AQUA + "Dein Limit an Bots wurde bereits erreicht.");
                     return true;
@@ -54,7 +57,7 @@ public class AbaimbotCommand implements CommandExecutor {
             TrainingsbotCommand.NPCList.add(npc);
 
             npc.data().set("origin", player.getName());
-            TrainingsbotCommand.NPCListPlayer.put(player.getName(), TrainingsbotCommand.NPCListPlayer.get(player.getName()) + 1);
+            NPCListPlayer.get(player.getName()).add(npc);
 
             npc.addTrait(new AbaimTrait());
 

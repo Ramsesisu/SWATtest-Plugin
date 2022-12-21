@@ -11,13 +11,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import static me.rqmses.swattest.SWATtest.*;
 import static me.rqmses.swattest.commands.TeamCommand.*;
@@ -33,7 +31,7 @@ public class PlayerDeathListener implements Listener {
   
   public static final HashMap<String, BukkitTask> deathtask = new HashMap<>();
   
-  public static final HashMap<String, Boolean> spawnprotection = new HashMap<>();
+  public static final HashMap<UUID, Boolean> spawnprotection = new HashMap<>();
   
   String deathmessage;
   
@@ -45,6 +43,10 @@ public class PlayerDeathListener implements Listener {
     System.out.println(event.getDeathMessage());
     final Player player = event.getEntity().getPlayer();
     Location deathloc = player.getLocation();
+
+    Entity skull = player.getWorld().dropItem(deathloc, new ItemStack(Material.SKULL_ITEM, 1));
+    skull.setCustomName(ChatColor.GRAY + "✟ " + player.getName());
+
     player.spigot().respawn();
     player.setCustomName("dead");
     if (event.getDeathMessage().contains("fell")) {
@@ -81,7 +83,8 @@ public class PlayerDeathListener implements Listener {
         case "BLOCK_EXPLOSION":
         case "PROJECTILE":
         case "WITHER":
-          killer = "RPG";
+          killer = "Explosion";
+          skull.setCustomName(ChatColor.DARK_GRAY + "✟ " + player.getName());
           break;
         case "FIRE_TICK":
           killer = "Flammenwerfer";
@@ -90,6 +93,8 @@ public class PlayerDeathListener implements Listener {
       deathmessage = ChatColor.translateAlternateColorCodes('&', "&7" + event.getEntity().getName() + " &f&lwurde von &7" + killer + " &f&lgetötet");
       playerdeathmessage = ChatColor.translateAlternateColorCodes('&', "&7&f&lDu wurdest von &7" + killer + " &f&lgetötet");
     }
+
+    skull.setCustomNameVisible(true);
 
     if (Bukkit.getServer().getPlayer(killer) != null) {
       if (Functions.getTeam(Bukkit.getServer().getPlayer(killer)) != team0) {
@@ -123,8 +128,9 @@ public class PlayerDeathListener implements Listener {
     event.setDeathMessage("");
     event.getEntity().spigot().respawn();
     player.teleport(deathloc);
+    player.getInventory().clear();
     player.setGameMode(GameMode.SPECTATOR);
-    spawnprotection.put(player.getName(), Boolean.TRUE);
+    spawnprotection.put(player.getUniqueId(), Boolean.TRUE);
     deathloadmsg.put(player.getName(), ChatColor.translateAlternateColorCodes('&', "&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛"));
     final int[] i = { 0 };
     BukkitRunnable death = new BukkitRunnable() {
@@ -138,6 +144,7 @@ public class PlayerDeathListener implements Listener {
             player.teleport(new Location(Bukkit.getWorld(player.getWorld().getName()), player.getBedSpawnLocation().getBlockX(), (player.getBedSpawnLocation().getBlockY() + 1), player.getBedSpawnLocation().getBlockZ()));
             player.sendTitle(ChatColor.GREEN + "Du lebst nun wieder!", "", 10, 30, 20);
             player.setCustomName(player.getDisplayName());
+            skull.remove();
             EquipCommand.playerequip.putIfAbsent(player.getName(), "none");
             Functions.equipPlayer(player);
             deathtask.get(player.getName()).cancel();
@@ -145,8 +152,8 @@ public class PlayerDeathListener implements Listener {
             PlayerInteractListener.cooldowns.put(player.getUniqueId(), 0L);
             player.setGameMode(GameMode.SURVIVAL);
             Bukkit.getScheduler().runTaskLater(SWATtest.plugin, () -> {
-              if (spawnprotection.get(player.getName())) {
-                spawnprotection.put(player.getName(), Boolean.FALSE);
+              if (spawnprotection.get(player.getUniqueId())) {
+                spawnprotection.put(player.getUniqueId(), Boolean.FALSE);
                 player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
               }
             }, 200L);

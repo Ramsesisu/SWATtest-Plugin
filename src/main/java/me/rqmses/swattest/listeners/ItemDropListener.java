@@ -20,6 +20,7 @@ import org.bukkit.util.Vector;
 
 import java.util.*;
 
+import static me.rqmses.swattest.commands.BuildmodeCommand.buildmode;
 import static me.rqmses.swattest.commands.VanishCommand.hidden;
 import static me.rqmses.swattest.listeners.MinecartListener.minecartplayerslist;
 
@@ -34,8 +35,7 @@ public class ItemDropListener implements Listener {
   
   @EventHandler
   public void onItemDrop(PlayerDropItemEvent event) {
-      if (minecartplayerslist.contains(event.getPlayer().getName()) || hidden.contains(event.getPlayer())) {
-          event.setCancelled(true);
+      if (minecartplayerslist.contains(event.getPlayer().getName()) || hidden.contains(event.getPlayer()) || buildmode.contains(event.getPlayer())) {
           return;
       }
     ItemStack flash = new ItemStack(Material.SLIME_BALL);
@@ -65,8 +65,7 @@ public class ItemDropListener implements Listener {
   @EventHandler
   public void onFlashRightClick(PlayerInteractEvent event) {
     Player player = event.getPlayer();
-    if (minecartplayerslist.contains(player.getName()) || hidden.contains(player)) {
-        event.setCancelled(true);
+    if (minecartplayerslist.contains(player.getName()) || hidden.contains(player) || buildmode.contains(player)) {
         return;
     }
     if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
@@ -78,7 +77,7 @@ public class ItemDropListener implements Listener {
   }
 
   public void dropFlash(Player player) {
-      PlayerDeathListener.spawnprotection.put(player.getName(), Boolean.FALSE);
+      PlayerDeathListener.spawnprotection.put(player.getUniqueId(), Boolean.FALSE);
       if (cooldowns.containsKey(player.getName())) {
         long secondsLeft = cooldowns.get(player.getName()) + cooldowntimes.get(player.getName()) - System.currentTimeMillis();
         if (secondsLeft > 0L) {
@@ -109,13 +108,10 @@ public class ItemDropListener implements Listener {
               if (nearPlayer instanceof Player) {
                 this.nextplayer = (Player)nearPlayer;
                 Random rand = new Random();
-                if (PlayerDeathListener.spawnprotection.get(this.nextplayer.getName()) != null && !PlayerDeathListener.spawnprotection.get(this.nextplayer.getName())) {
+                if (!PlayerDeathListener.spawnprotection.get(this.nextplayer.getUniqueId())) {
                   this.nextplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, rand.nextInt(140) + 60, 0));
                   this.nextplayer.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, rand.nextInt(200) + 200, 0));
-                } else if (nearPlayer.hasMetadata("NPC")) {
-                    this.nextplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, rand.nextInt(140) + 60, 0));
-                    this.nextplayer.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, rand.nextInt(200) + 200, 0));
-                  }
+                }
               } 
             } 
             this.nearPlayers.clear();
@@ -124,12 +120,9 @@ public class ItemDropListener implements Listener {
               if (nearPlayer instanceof Player) {
                 this.nextplayer = (Player)nearPlayer;
                 Random rand = new Random();
-                if (PlayerDeathListener.spawnprotection.get(this.nextplayer.getName()) != null && !PlayerDeathListener.spawnprotection.get(this.nextplayer.getName())) {
+                if (!PlayerDeathListener.spawnprotection.get(this.nextplayer.getUniqueId())) {
                   this.nextplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, rand.nextInt(100), 0));
                   this.nextplayer.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, rand.nextInt(200), 0));
-                } else if (nearPlayer.hasMetadata("NPC")) {
-                    this.nextplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, rand.nextInt(140) + 60, 0));
-                    this.nextplayer.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, rand.nextInt(200) + 200, 0));
                 }
               } 
             } 
@@ -138,7 +131,7 @@ public class ItemDropListener implements Listener {
   
   @EventHandler
   public void onItemPickUp(EntityPickupItemEvent event) {
-    if (event.getItem().getItemStack().getType() == Material.SLIME_BALL)
+    if (event.getItem().getItemStack().getType() == Material.SLIME_BALL || event.getItem().getItemStack().getType() == Material.SKULL_ITEM)
       event.setCancelled(true); 
   }
   

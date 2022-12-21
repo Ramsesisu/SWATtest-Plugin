@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class VanishCommand implements CommandExecutor {
 
-    public static ArrayList<Player> hidden = new ArrayList<>();
+    public static final ArrayList<Player> hidden = new ArrayList<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {

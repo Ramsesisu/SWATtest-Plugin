@@ -1,6 +1,5 @@
 package me.rqmses.swattest.global;
 
-import java.util.ArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -8,6 +7,8 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+
+import java.util.ArrayList;
 
 public class Items {
   public static ItemStack getAir() {
@@ -34,7 +35,17 @@ public class Items {
     kev.setDurability(durability);
     return kev;
   }
-  
+
+  public static ItemStack getSprengi() {
+    ItemStack sprengi = new ItemStack(Material.LEATHER_CHESTPLATE);
+    ItemMeta kevname = sprengi.getItemMeta();
+    kevname.setDisplayName(ChatColor.GRAY + "Sprenggürtel");
+    kevname.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+    sprengi.setItemMeta(kevname);
+    sprengi.setDurability((short) 0);
+    return sprengi;
+  }
+
   public static ItemStack getSchild() {
     ItemStack schild = new ItemStack(Material.SHIELD);
     schild.setDurability((short)176);
