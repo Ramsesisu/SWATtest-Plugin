@@ -394,7 +394,7 @@ public class WarpPoints {
     public static String[] getTargets() {
         String[] targets = new String[] {"Stadthalle", "Uranberg", "Würfelpark", "261", "248", "KF-Kran", "LU-Kran",
                 "LU-Baustelle", "Psychiatrie", "Golfplatz", "Funpark", "Staatsbank", "Schule", "LU-Casino", "Fightclub",
-                "Schwimmbad", "Atomkraftwerk", "643,5", "OBrien", "KF-Bar", "Kerzakov", "Rotlichbar", "FBI", "Triaden",
+                "Schwimmbad", "Atomkraftwerk", "643,5", "OBrien", "KF-Bar", "Kerzakov", "Rotlichtbar", "FBI", "Triaden",
                 "Chinatown", "HRT", "UC17", "Insel", "SWAT", "Mall", "Farm", "Altstadt", "Labor", "Weinberg",
                 "Tabakplantage", "Müllhalde", "Eisenstollen", "Krankenhaus", "Maklerbüro", "Park", "SH-Kran", "Cherrys",
                 "Cafe", "Bar", "Windrad-Mex", "Hausaddon-Shop", "Lasertag", "News", "Feuerwehr", "314", "Kartell", "Disko",

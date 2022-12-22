@@ -44,8 +44,9 @@ public class PlayerDeathListener implements Listener {
     final Player player = event.getEntity().getPlayer();
     Location deathloc = player.getLocation();
 
-    Entity skull = player.getWorld().dropItem(deathloc, new ItemStack(Material.SKULL_ITEM, 1));
+    Entity skull = player.getWorld().dropItem(deathloc, new ItemStack(Material.SKULL_ITEM));
     skull.setCustomName(ChatColor.GRAY + "✟ " + player.getName());
+    skull.setCustomNameVisible(true);
 
     player.spigot().respawn();
     player.setCustomName("dead");
