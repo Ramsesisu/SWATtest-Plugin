@@ -62,11 +62,13 @@ public class PlayerInteractListener implements Listener {
   
   @EventHandler
   public static boolean onPlayerUse(PlayerInteractEvent event) {
-    if (itemtoggles.containsKey(event.getItem().getType())) {
-      if (!itemtoggles.get(event.getItem().getType())) {
-        event.getPlayer().sendMessage("Dieses Item ist deaktiviert!");
-        event.setCancelled(true);
-        return true;
+    if (!Objects.equals(event.getPlayer().getInventory().getItemInMainHand().getType(), Material.AIR)) {
+      if (itemtoggles.containsKey(event.getItem().getType())) {
+        if (!itemtoggles.get(event.getItem().getType())) {
+          event.getPlayer().sendMessage("Dieses Item ist deaktiviert!");
+          event.setCancelled(true);
+          return true;
+        }
       }
     }
     Player player = event.getPlayer();

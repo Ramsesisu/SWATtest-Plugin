@@ -92,10 +92,12 @@ public class PlayerHitListener implements Listener {
     Player player = event.getPlayer();
     ItemStack item = event.getItem();
     if (item.getType() == Material.SHIELD) {
-      if (hitter.getInventory().getItemInMainHand().getType() == Material.FEATHER) {
-        item.setDurability((short)(item.getDurability() - 9));
-        player.damage(7.0D);
-      } 
+      if (hitter != null) {
+        if (hitter.getInventory().getItemInMainHand().getType() == Material.FEATHER) {
+          item.setDurability((short) (item.getDurability() - 9));
+          player.damage(7.0D);
+        }
+      }
     } else {
       event.setCancelled(true);
     } 
