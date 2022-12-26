@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Objects;
 
+import static me.rqmses.swattest.SWATtest.commandtoggles;
 import static me.rqmses.swattest.commands.TrainingsbotCommand.NPCList;
 
 public class InvCommand implements CommandExecutor {
@@ -21,26 +22,31 @@ public class InvCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         if (sender instanceof Player) {
-            if (sender.isOp()) {
-                if (args.length >= 1) {
-                    if (Bukkit.getPlayer(args[0]) != null) {
-                        Player player = Bukkit.getPlayer(args[0]);
-                        showInventory((Player) sender, player);
-                        sender.sendMessage(ChatColor.BLUE + "Du hast das Inventar von " + ChatColor.DARK_BLUE + player.getName() + ChatColor.BLUE + " durchsucht.");
-                        Admins.msgAdmin(ChatColor.DARK_RED + sender.getName() + ChatColor.RED + " benutzt " + ChatColor.DARK_RED + "/inv " + args[0] + ChatColor.RED + ".");
-                    } else if (getKI(args[0]) != null) {
-                        showInventory((Player) sender, (Player) getKI(args[0]).getEntity());
-                        sender.sendMessage(ChatColor.BLUE + "Du hast das Inventar von " + ChatColor.DARK_BLUE + getKI(args[0]).getName() + ChatColor.BLUE + " durchsucht.");
-                        Admins.msgAdmin(ChatColor.DARK_RED + sender.getName() + ChatColor.RED + " benutzt " + ChatColor.DARK_RED + "/inv " + args[0] + ChatColor.RED + ".");
+            if (commandtoggles.get(command.getName()) || Admins.isAdmin(((Player) sender).getPlayer())) {
+                if (sender.isOp()) {
+                    if (args.length >= 1) {
+                        if (Bukkit.getPlayer(args[0]) != null) {
+                            Player player = Bukkit.getPlayer(args[0]);
+                            showInventory((Player) sender, player);
+                            sender.sendMessage(ChatColor.BLUE + "Du hast das Inventar von " + ChatColor.DARK_BLUE + player.getName() + ChatColor.BLUE + " durchsucht.");
+                            Admins.msgAdmin(ChatColor.DARK_RED + sender.getName() + ChatColor.RED + " benutzt " + ChatColor.DARK_RED + "/inv " + args[0] + ChatColor.RED + ".");
+                        } else if (getKI(args[0]) != null) {
+                            showInventory((Player) sender, (Player) getKI(args[0]).getEntity());
+                            sender.sendMessage(ChatColor.BLUE + "Du hast das Inventar von " + ChatColor.DARK_BLUE + getKI(args[0]).getName() + ChatColor.BLUE + " durchsucht.");
+                            Admins.msgAdmin(ChatColor.DARK_RED + sender.getName() + ChatColor.RED + " benutzt " + ChatColor.DARK_RED + "/inv " + args[0] + ChatColor.RED + ".");
+                        } else {
+                            sender.sendMessage(ChatColor.BLUE + "Der Spieler " + ChatColor.DARK_BLUE + args[0] + ChatColor.BLUE + " wurde nicht gefunden!");
+                        }
                     } else {
-                        sender.sendMessage(ChatColor.BLUE + "Der Spieler " + ChatColor.DARK_BLUE + args[0] + ChatColor.BLUE + " wurde nicht gefunden!");
+                        sender.sendMessage(ChatColor.BLUE + "Du musst einen Spielernamen angeben!");
                     }
                 } else {
-                    sender.sendMessage(ChatColor.BLUE + "Du musst einen Spielernamen angeben!");
+                    sender.sendMessage("Du bist kein OP!");
                 }
-            } else {
-                sender.sendMessage("Du bist kein OP!");
             }
+        }
+        if (!commandtoggles.get(command.getName())) {
+            sender.sendMessage("Dieser Befehl ist deaktiviert!");
         }
         return true;
     }

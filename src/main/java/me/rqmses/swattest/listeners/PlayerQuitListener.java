@@ -22,6 +22,7 @@ public class PlayerQuitListener implements Listener {
   @EventHandler
   public void onPlayerQuit(PlayerQuitEvent event) {
     Player player = event.getPlayer();
+    event.setQuitMessage(ChatColor.GOLD + player.getName() + ChatColor.YELLOW + " ist nun" + ChatColor.RED + " offline" + ChatColor.YELLOW + ".");
     Functions.getTeam(player).removeEntry(player.getName());
     if (player.getCustomName() != null) {
       if (player.getCustomName().equals("dead")) {
@@ -39,6 +40,5 @@ public class PlayerQuitListener implements Listener {
         npc.destroy();
       }
     }
-    event.setQuitMessage(ChatColor.GOLD + player.getName() + ChatColor.YELLOW + " ist nun" + ChatColor.RED + " offline" + ChatColor.YELLOW + ".");
   }
 }

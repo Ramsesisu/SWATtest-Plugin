@@ -77,6 +77,7 @@ public class ItemDropListener implements Listener {
   }
 
   public void dropFlash(Player player) {
+      if (buildmode.contains(player)) { return; }
       PlayerDeathListener.spawnprotection.put(player.getUniqueId(), Boolean.FALSE);
       if (cooldowns.containsKey(player.getName())) {
         long secondsLeft = cooldowns.get(player.getName()) + cooldowntimes.get(player.getName()) - System.currentTimeMillis();
@@ -108,7 +109,7 @@ public class ItemDropListener implements Listener {
               if (nearPlayer instanceof Player) {
                 this.nextplayer = (Player)nearPlayer;
                 Random rand = new Random();
-                if (!PlayerDeathListener.spawnprotection.get(this.nextplayer.getUniqueId())) {
+                if (!PlayerDeathListener.spawnprotection.get(this.nextplayer.getUniqueId()) && !buildmode.contains(nextplayer)) {
                   this.nextplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, rand.nextInt(140) + 60, 0));
                   this.nextplayer.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, rand.nextInt(200) + 200, 0));
                 }
@@ -120,7 +121,7 @@ public class ItemDropListener implements Listener {
               if (nearPlayer instanceof Player) {
                 this.nextplayer = (Player)nearPlayer;
                 Random rand = new Random();
-                if (!PlayerDeathListener.spawnprotection.get(this.nextplayer.getUniqueId())) {
+                if (!PlayerDeathListener.spawnprotection.get(this.nextplayer.getUniqueId()) && !buildmode.contains(nextplayer)) {
                   this.nextplayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, rand.nextInt(100), 0));
                   this.nextplayer.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, rand.nextInt(200), 0));
                 }
@@ -131,8 +132,13 @@ public class ItemDropListener implements Listener {
   
   @EventHandler
   public void onItemPickUp(EntityPickupItemEvent event) {
-    if (event.getItem().getItemStack().getType() == Material.SLIME_BALL || event.getItem().getItemStack().getType() == Material.SKULL_ITEM)
-      event.setCancelled(true); 
+    if (event.getItem().getItemStack().getType() == Material.SLIME_BALL || event.getItem().getItemStack().getType() == Material.SKULL_ITEM) {
+        if (event.getEntity() instanceof Player) {
+            if (!buildmode.contains(((Player) event.getEntity()).getPlayer())) {
+                event.setCancelled(true);
+            }
+        }
+    }
   }
   
   public static List<Entity> getEntitiesAroundPoint(Location location, double radius) {

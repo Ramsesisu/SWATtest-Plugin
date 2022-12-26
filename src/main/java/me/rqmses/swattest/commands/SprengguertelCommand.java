@@ -1,6 +1,7 @@
 package me.rqmses.swattest.commands;
 
 import me.rqmses.swattest.SWATtest;
+import me.rqmses.swattest.global.Admins;
 import me.rqmses.swattest.listeners.PlayerDeathListener;
 import me.rqmses.swattest.listeners.ProjectileHitListener;
 import org.bukkit.Bukkit;
@@ -12,28 +13,35 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import static me.rqmses.swattest.SWATtest.commandtoggles;
+
 public class SprengguertelCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
-        int countdown = 0;
-        if (args.length == 1) {
-            countdown = Integer.parseInt(args[0]);
-        }
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            if (PlayerDeathListener.spawnprotection.get(player.getUniqueId())) {
-                PlayerDeathListener.spawnprotection.put(player.getUniqueId(), Boolean.FALSE);
-                player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
+        if (commandtoggles.get(command.getName()) || Admins.isAdmin(((Player) sender).getPlayer())) {
+            int countdown = 0;
+            if (args.length == 1) {
+                countdown = Integer.parseInt(args[0]);
             }
-            if (player.getInventory().getChestplate().getItemMeta().getDisplayName().contains("Sprenggürtel")) {
-                Bukkit.getScheduler().runTaskLater(SWATtest.plugin, () -> {
+            if (sender instanceof Player) {
+                Player player = (Player) sender;
+                if (PlayerDeathListener.spawnprotection.get(player.getUniqueId())) {
+                    PlayerDeathListener.spawnprotection.put(player.getUniqueId(), Boolean.FALSE);
+                    player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
+                }
+                if (player.getInventory().getChestplate().getItemMeta().getDisplayName().contains("Sprenggürtel")) {
+                    Bukkit.getScheduler().runTaskLater(SWATtest.plugin, () -> {
                         if (player.getInventory().getChestplate().getType() == Material.LEATHER_CHESTPLATE) {
                             ProjectileHitListener.exlode(player.getLocation(), player);
                             player.sendMessage(ChatColor.YELLOW + "Dein Sprenggürtel ist explodiert!");
                             player.getInventory().setChestplate(new ItemStack(Material.AIR, 1));
                         }
                     }, countdown * 20L);
+                }
             }
+        }
+        if (!commandtoggles.get(command.getName())) {
+            sender.sendMessage("Dieser Befehl ist deaktiviert!");
         }
         return true;
     }

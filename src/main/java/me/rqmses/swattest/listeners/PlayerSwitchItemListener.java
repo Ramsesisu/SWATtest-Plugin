@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import java.io.IOException;
 import java.util.Objects;
 
+import static me.rqmses.swattest.SWATtest.itemtoggles;
 import static me.rqmses.swattest.commands.BuildmodeCommand.buildmode;
 
 public class PlayerSwitchItemListener implements Listener {
@@ -61,7 +62,14 @@ public class PlayerSwitchItemListener implements Listener {
         }
     } else if (event.getSlot() == 38) {
       if (!buildmode.contains(player)) {
-        if (event.getCursor().getType() != Material.ELYTRA && event.getCursor().getType() != Material.LEATHER_CHESTPLATE && event.getCurrentItem().getType() != Material.ELYTRA && event.getCurrentItem().getType() != Material.LEATHER_CHESTPLATE) {
+        if (event.getCursor().getType() == Material.ELYTRA || event.getCursor().getType() == Material.LEATHER_CHESTPLATE || event.getCurrentItem().getType() == Material.ELYTRA || event.getCurrentItem().getType() == Material.LEATHER_CHESTPLATE) {
+          if (itemtoggles.containsKey(event.getCursor().getType())) {
+            if (!itemtoggles.get(event.getCursor().getType())) {
+              player.sendMessage("Dieses Item ist deaktiviert!");
+              event.setCancelled(true);
+            }
+          }
+        } else {
           event.setCancelled(true);
         }
       }

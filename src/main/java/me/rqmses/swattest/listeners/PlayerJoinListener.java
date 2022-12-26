@@ -16,8 +16,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.UUID;
 
-import static me.rqmses.swattest.SWATtest.plugin;
-import static me.rqmses.swattest.SWATtest.team0;
+import static me.rqmses.swattest.SWATtest.*;
 
 public class PlayerJoinListener implements Listener {
   public static final HashMap<UUID, File> playersave = new HashMap<>();
@@ -26,6 +25,10 @@ public class PlayerJoinListener implements Listener {
   
   @EventHandler
   public void onPlayerJoin(PlayerJoinEvent event) {
+    if (banned.contains(event.getPlayer().getName())) {
+      event.getPlayer().kickPlayer("Du bist noch gebannt!");
+      return;
+    }
     Player player = event.getPlayer();
     player.setOp(false);
     event.setJoinMessage(ChatColor.GOLD + player.getName() + ChatColor.YELLOW + " ist nun" + ChatColor.GREEN + " online" + ChatColor.YELLOW + ".");

@@ -11,6 +11,40 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import java.util.ArrayList;
 
 public class Items {
+  public static final String[] itemlist = { "Elytra" , "Kevlar", "Sprenggürtel", "Schild", "Flashes", "M4", "MP5", "Sniper", "Jagdflinte", "RPG", "Messer", "Tazer", "Flammenwerfer"};
+
+  public static Material getItem(String item) {
+    switch (item.toLowerCase()) {
+      case "elytra":
+        return getElytra().getType();
+      case "kevlar":
+        return getKev((short) 50).getType();
+      case "sprenggürtel":
+        return getSprengi().getType();
+      case "schild":
+        return getSchild().getType();
+      case "flashes":
+        return getFlashes().getType();
+      case "m4":
+        return getM4().getType();
+      case "mp5":
+        return getMp5().getType();
+      case "sniper":
+        return getSniper().getType();
+      case "jagdflinte":
+        return getJagdflinte().getType();
+      case "rpg":
+        return getRPG().getType();
+      case "messer":
+        return getMesser().getType();
+      case "tazer":
+        return getTazer().getType();
+      case "flammenwerfer":
+        return getFlammenwerfer().getType();
+    }
+    return null;
+  }
+
   public static ItemStack getAir() {
     return new ItemStack(Material.AIR);
   }

@@ -74,3 +74,15 @@ commands:
   sprenggürtel:
     description: Zündet einen Sprenggürtel, solange er angezogen wurde.
     usage: /<command>
+  disablecommand:
+    description: Deaktiviert einen Befehl.
+    usage: /<command> <command>
+  disableitem:
+    description: Deaktiviert ein Item.
+    usage: /<command> <item>
+  kick:
+    description: Kickt einen Spieler.
+    usage: /<command> <player> <reason>
+  ban:
+    description: Bannt einen Spieler.
+    usage: /<command> <player> <reason>

@@ -12,6 +12,8 @@ import net.citizensnpcs.api.npc.NPCRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.PluginCommandYamlParser;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
@@ -24,6 +26,7 @@ import org.bukkit.scoreboard.Team;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static me.rqmses.swattest.commands.CarCommand.minecarts;
@@ -42,11 +45,19 @@ public final class SWATtest extends JavaPlugin implements Listener {
 
     public static final List<Object> admins = new ArrayList<>();
     public static final List<Object> builders = new ArrayList<>();
+    public static final List<Object> banned = new ArrayList<>();
 
     public static File adminsave;
     public static YamlConfiguration adminconfig;
     public static File buildersave;
     public static YamlConfiguration builderconfig;
+    public static File bannedsave;
+    public static YamlConfiguration bannedconfig;
+
+    public static List<Command> commandlist;
+
+    public static final HashMap<String, Boolean> commandtoggles = new HashMap<>();
+    public static final HashMap<Material, Boolean> itemtoggles = new HashMap<>();
 
     public void onEnable() {
         plugin = this;
@@ -65,7 +76,6 @@ public final class SWATtest extends JavaPlugin implements Listener {
         team4.setAllowFriendlyFire(false);
         team0.setColor(ChatColor.WHITE);
         team1.setColor(ChatColor.RED);
-        team1.setPrefix(ChatColor.RED.toString());
         team2.setColor(ChatColor.BLUE);
         team3.setColor(ChatColor.GREEN);
         team4.setColor(ChatColor.GOLD);
@@ -134,6 +144,23 @@ public final class SWATtest extends JavaPlugin implements Listener {
             }
         }
 
+        bannedsave = new File("plugins" + File.separator + "SWATtest" + File.separator + "banned.yml");
+        bannedconfig = YamlConfiguration.loadConfiguration(bannedsave);
+        if (!bannedsave.exists()) {
+            try {
+                //noinspection ResultOfMethodCallIgnored
+                bannedsave.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            bannedconfig.set("banned", banned);
+            try {
+                bannedconfig.save(bannedsave);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         for (Object name : adminconfig.getList("admins")) {
             admins.add(String.valueOf(name));
         }
@@ -141,6 +168,12 @@ public final class SWATtest extends JavaPlugin implements Listener {
         for (Object name : builderconfig.getList("builders")) {
             builders.add(String.valueOf(name));
         }
+
+        for (Object name : bannedconfig.getList("banned")) {
+            banned.add(String.valueOf(name));
+        }
+
+        commandlist = PluginCommandYamlParser.parse(plugin);
 
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', "&c&lDas SWATtest-Plugin wurde reloaded! &7&l- &c&lVersion " + version));
@@ -154,6 +187,8 @@ public final class SWATtest extends JavaPlugin implements Listener {
                 player.setOp(Admins.isAdmin(player));
             }
         }, 20L);
+
+        for (Command tempcommand : commandlist) { commandtoggles.put(tempcommand.getName(), Boolean.TRUE); }
 
         System.out.println("Plugin erfolgreich geladen.");
     }
@@ -218,5 +253,9 @@ public final class SWATtest extends JavaPlugin implements Listener {
         getCommand("builders").setExecutor(new BuildersCommand());
         getCommand("buildmode").setExecutor(new BuildmodeCommand());
         getCommand("sprenggürtel").setExecutor(new SprengguertelCommand());
+        getCommand("disablecommand").setExecutor(new DisableCommandCommand());
+        getCommand("disableitem").setExecutor(new DisableItemCommand());
+        getCommand("kick").setExecutor(new KickCommand());
+        getCommand("ban").setExecutor(new BanCommand());
     }
 }

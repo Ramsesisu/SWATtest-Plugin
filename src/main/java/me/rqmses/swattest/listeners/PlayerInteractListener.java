@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityToggleGlideEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
@@ -27,6 +28,7 @@ import org.bukkit.util.Vector;
 
 import java.util.*;
 
+import static me.rqmses.swattest.SWATtest.itemtoggles;
 import static me.rqmses.swattest.commands.BuildmodeCommand.buildmode;
 import static me.rqmses.swattest.commands.VanishCommand.hidden;
 import static me.rqmses.swattest.listeners.MinecartListener.minecartplayerslist;
@@ -60,6 +62,13 @@ public class PlayerInteractListener implements Listener {
   
   @EventHandler
   public static boolean onPlayerUse(PlayerInteractEvent event) {
+    if (itemtoggles.containsKey(event.getItem().getType())) {
+      if (!itemtoggles.get(event.getItem().getType())) {
+        event.getPlayer().sendMessage("Dieses Item ist deaktiviert!");
+        event.setCancelled(true);
+        return true;
+      }
+    }
     Player player = event.getPlayer();
     if (player.getGameMode() == GameMode.SPECTATOR)
       return false; 
@@ -572,6 +581,16 @@ public class PlayerInteractListener implements Listener {
       Bukkit.getScheduler().runTaskLater(SWATtest.plugin, bullet::remove, 60L);
     } else {
       reloadGun(player, 6000, gun, 5);
+    }
+  }
+
+  @EventHandler
+  public static void onElytra(EntityToggleGlideEvent event) {
+    if (itemtoggles.containsKey(Material.ELYTRA)) {
+      if (!itemtoggles.get(Material.ELYTRA)) {
+        event.getEntity().sendMessage("Dieses Item ist deaktiviert!");
+        event.setCancelled(true);
+      }
     }
   }
 }

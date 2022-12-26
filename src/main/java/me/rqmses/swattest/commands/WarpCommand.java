@@ -1,5 +1,6 @@
 package me.rqmses.swattest.commands;
 
+import me.rqmses.swattest.global.Admins;
 import me.rqmses.swattest.global.WarpPoints;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -13,6 +14,8 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+import static me.rqmses.swattest.SWATtest.commandtoggles;
+
 public class WarpCommand implements CommandExecutor, TabCompleter {
 
     Player player;
@@ -20,23 +23,28 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
-            if (args.length == 2) {
-                if (sender.isOp()) {
-                    player = Bukkit.getPlayer(args[1]);
+            if (commandtoggles.get(command.getName()) || Admins.isAdmin(((Player) sender).getPlayer())) {
+                if (args.length == 2) {
+                    if (sender.isOp()) {
+                        player = Bukkit.getPlayer(args[1]);
+                    }
+                } else {
+                    player = (Player) sender;
                 }
-            } else {
-                player = (Player) sender;
-            }
-            if(args.length == 0 ) {
-                player.sendMessage(ChatColor.YELLOW + "Du musst ein Ziel angeben!");
-            } else {
-                Location loc = WarpPoints.getWarp(args[0], player);
-                if (loc == null) {
-                    return true;
+                if (args.length == 0) {
+                    player.sendMessage(ChatColor.YELLOW + "Du musst ein Ziel angeben!");
+                } else {
+                    Location loc = WarpPoints.getWarp(args[0], player);
+                    if (loc == null) {
+                        return true;
+                    }
+                    player.teleport(loc);
+                    player.sendMessage(ChatColor.YELLOW + "Du wurdest zu " + ChatColor.GOLD + args[0] + ChatColor.YELLOW + " teleportiert!");
                 }
-                player.teleport(loc);
-                player.sendMessage(ChatColor.YELLOW + "Du wurdest zu " + ChatColor.GOLD + args[0] + ChatColor.YELLOW + " teleportiert!");
             }
+        }
+        if (!commandtoggles.get(command.getName())) {
+            sender.sendMessage("Dieser Befehl ist deaktiviert!");
         }
         return true;
     }

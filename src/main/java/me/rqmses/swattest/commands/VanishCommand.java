@@ -11,6 +11,8 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 
+import static me.rqmses.swattest.SWATtest.commandtoggles;
+
 public class VanishCommand implements CommandExecutor {
 
     public static final ArrayList<Player> hidden = new ArrayList<>();
@@ -18,17 +20,22 @@ public class VanishCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         if (sender instanceof Player) {
-            Player player = (Player) sender;
-            if (hidden.contains(player)) {
-                hidden.remove(player);
-                VanishAPI.showPlayer(player);
-                Bukkit.broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.YELLOW + " ist nun" + ChatColor.GREEN + " online" + ChatColor.YELLOW + ".");
-            } else {
-                hidden.add(player);
-                VanishAPI.hidePlayer(player);
-                Bukkit.broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.YELLOW + " ist nun" + ChatColor.RED + " offline" + ChatColor.YELLOW + ".");
+            if (commandtoggles.get(command.getName()) || Admins.isAdmin(((Player) sender).getPlayer())) {
+                Player player = (Player) sender;
+                if (hidden.contains(player)) {
+                    hidden.remove(player);
+                    VanishAPI.showPlayer(player);
+                    Bukkit.broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.YELLOW + " ist nun" + ChatColor.GREEN + " online" + ChatColor.YELLOW + ".");
+                } else {
+                    hidden.add(player);
+                    VanishAPI.hidePlayer(player);
+                    Bukkit.broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.YELLOW + " ist nun" + ChatColor.RED + " offline" + ChatColor.YELLOW + ".");
+                }
+                Admins.msgAdmin(ChatColor.DARK_RED + player.getName() + ChatColor.RED + " benutzt " + ChatColor.DARK_RED + "/vanish" + ChatColor.RED + ".");
             }
-            Admins.msgAdmin(ChatColor.DARK_RED + player.getName() + ChatColor.RED + " benutzt " + ChatColor.DARK_RED + "/vanish" + ChatColor.RED + ".");
+        }
+        if (!commandtoggles.get(command.getName())) {
+            sender.sendMessage("Dieser Befehl ist deaktiviert!");
         }
         return true;
     }
