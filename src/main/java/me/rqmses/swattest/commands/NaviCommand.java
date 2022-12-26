@@ -44,7 +44,7 @@ public class NaviCommand implements CommandExecutor, TabCompleter {
                     }
                 } else {
                     navitype.putIfAbsent(player.getName(), Boolean.FALSE);
-                    Location loc = WarpPoints.getWarp(args[0], player);
+                    Location loc = WarpPoints.getWarp(args[0], player, "navi");
                     if (loc == null) {
                         return true;
                     }

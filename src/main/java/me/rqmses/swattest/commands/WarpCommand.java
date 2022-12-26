@@ -34,7 +34,7 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
                 if (args.length == 0) {
                     player.sendMessage(ChatColor.YELLOW + "Du musst ein Ziel angeben!");
                 } else {
-                    Location loc = WarpPoints.getWarp(args[0], player);
+                    Location loc = WarpPoints.getWarp(args[0], player, "warp");
                     if (loc == null) {
                         return true;
                     }

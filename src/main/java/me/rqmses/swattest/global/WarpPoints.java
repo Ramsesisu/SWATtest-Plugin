@@ -4,14 +4,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static me.rqmses.swattest.commands.BlockanfragenCommand.blockedplayers;
 import static me.rqmses.swattest.commands.VanishCommand.hidden;
 
 public class WarpPoints {
-    public static Location getWarp(String warp, Player player) {
+    public static Location getWarp(String warp, Player player, String type) {
         Location loc = null;
         switch (warp.toLowerCase()) {
             case "stadthalle":
@@ -382,7 +384,32 @@ public class WarpPoints {
                     if (hidden.contains(Bukkit.getServer().getPlayer(warp)) && Bukkit.getServer().getPlayer(warp) != player) {
                         player.sendMessage(ChatColor.GOLD + warp + ChatColor.YELLOW + " ist kein gültiges Ziel!");
                     } else {
-                        loc = Bukkit.getServer().getPlayer(warp).getLocation();
+                        if (type.equals("warp")) {
+                            Player target = Bukkit.getServer().getPlayer(warp);
+                            player.sendMessage(ChatColor.YELLOW + "Du hast eine Warp-Anfrage an " + ChatColor.GOLD + target.getName() + ChatColor.YELLOW + " geschickt!");
+
+                            blockedplayers.putIfAbsent(target.getName(), new ArrayList<>());
+                            if (!blockedplayers.get(target.getName()).contains(player.getName().toLowerCase())) {
+                                target.sendMessage(ChatColor.GOLD + player.getName() + ChatColor.YELLOW + " hat dir eine Warp-Anfrage geschickt!");
+                                target.spigot().sendMessage(TextUtils.getAccept());
+                                target.spigot().sendMessage(TextUtils.getDecline());
+
+                                BukkitRunnable anfrage = new BukkitRunnable() {
+                                    @Override
+                                    public void run() {
+                                        if (Functions.choice.get(target.getName())) {
+                                            if (Bukkit.getServer().getPlayer(player.getName()) != null) {
+                                                player.teleport(target.getLocation());
+                                                player.sendMessage(ChatColor.YELLOW + "Die Warp-Anfrage an " + ChatColor.GOLD + target.getName() + ChatColor.YELLOW + " wurde angenommen!");
+                                            }
+                                        }
+                                    }
+                                };
+                                Functions.accepttask.put(target.getName(), anfrage);
+                            }
+                        } else {
+                            loc = Bukkit.getServer().getPlayer(warp).getLocation();
+                        }
                     }
                 } else {
                     player.sendMessage(ChatColor.GOLD + warp + ChatColor.YELLOW + " ist kein gültiges Ziel!");

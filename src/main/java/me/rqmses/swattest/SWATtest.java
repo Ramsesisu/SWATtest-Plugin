@@ -257,5 +257,8 @@ public final class SWATtest extends JavaPlugin implements Listener {
         getCommand("disableitem").setExecutor(new DisableItemCommand());
         getCommand("kick").setExecutor(new KickCommand());
         getCommand("ban").setExecutor(new BanCommand());
+        getCommand("annehmen").setExecutor(new AnnehmenCommand());
+        getCommand("ablehnen").setExecutor(new AblehnenCommand());
+        getCommand("blockanfragen").setExecutor(new BlockanfragenCommand());
     }
 }

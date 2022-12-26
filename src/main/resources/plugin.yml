@@ -86,3 +86,12 @@ commands:
   ban:
     description: Bannt einen Spieler.
     usage: /<command> <player> <reason>
+  annehmen:
+    description: Nimmt eine Anfrage an.
+    usage: /<command>
+  ablehnen:
+    description: Lehnt eine Anfrage ab.
+    usage: /<command>
+  blockanfragen:
+    description: Blockiert die Anfragen eines Spielers.
+    usage: /<command> <player>

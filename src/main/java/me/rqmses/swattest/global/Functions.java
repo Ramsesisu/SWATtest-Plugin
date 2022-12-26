@@ -11,11 +11,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.*;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Objects;
 
 import static me.rqmses.swattest.SWATtest.*;
@@ -23,6 +25,10 @@ import static me.rqmses.swattest.commands.CarCommand.*;
 import static me.rqmses.swattest.commands.TeamCommand.*;
 
 public class Functions {
+
+  public static HashMap<String, BukkitRunnable> accepttask = new HashMap<>();
+  public static HashMap<String, Boolean> choice = new HashMap<>();
+
   public static void createFile(Player player) {
     try {
       //noinspection ResultOfMethodCallIgnored

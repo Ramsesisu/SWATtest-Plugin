@@ -24,6 +24,7 @@ public class PlayerQuitListener implements Listener {
     Player player = event.getPlayer();
     event.setQuitMessage(ChatColor.GOLD + player.getName() + ChatColor.YELLOW + " ist nun" + ChatColor.RED + " offline" + ChatColor.YELLOW + ".");
     Functions.getTeam(player).removeEntry(player.getName());
+    Functions.accepttask.put(player.getName(), null);
     if (player.getCustomName() != null) {
       if (player.getCustomName().equals("dead")) {
         deadplayers.add(player.getUniqueId());
