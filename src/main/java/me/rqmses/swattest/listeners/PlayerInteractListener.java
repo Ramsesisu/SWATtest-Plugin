@@ -92,12 +92,11 @@ public class PlayerInteractListener implements Listener {
       }
     }
     if (!Objects.equals(event.getPlayer().getInventory().getItemInMainHand().getType(), Material.AIR)) {
-      if (itemtoggles.containsKey(event.getItem().getType())) {
-        if (!itemtoggles.get(event.getItem().getType())) {
-          event.getPlayer().sendMessage("Dieses Item ist deaktiviert!");
-          event.setCancelled(true);
-          return true;
-        }
+      itemtoggles.putIfAbsent(event.getItem().getType(), Boolean.TRUE);
+      if (!itemtoggles.get(event.getItem().getType())) {
+        event.getPlayer().sendMessage("Dieses Item ist deaktiviert!");
+        event.setCancelled(true);
+        return true;
       }
     }
     if (player.getGameMode() == GameMode.SPECTATOR)
