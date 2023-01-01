@@ -11,7 +11,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import java.util.ArrayList;
 
 public class Items {
-  public static final String[] itemlist = { "Elytra" , "Kevlar", "Sprenggürtel", "Schild", "Flashes", "M4", "MP5", "Sniper", "Jagdflinte", "RPG", "Messer", "Tazer", "Flammenwerfer"};
+  public static final String[] itemlist = { "Elytra" , "Kevlar", "Sprenggürtel", "Schild", "Flashes", "M4", "Mp5", "Pistole", "Sniper", "Jagdflinte", "RPG", "Messer", "Tazer", "Flammenwerfer"};
 
   public static Material getItem(String item) {
     switch (item.toLowerCase()) {
@@ -29,6 +29,8 @@ public class Items {
         return getM4().getType();
       case "mp5":
         return getMp5().getType();
+      case "pistole":
+        return getPistole().getType();
       case "sniper":
         return getSniper().getType();
       case "jagdflinte":
