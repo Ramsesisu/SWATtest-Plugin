@@ -1,6 +1,7 @@
 package me.rqmses.swattest.commands;
 
 import me.rqmses.swattest.global.Admins;
+import me.rqmses.swattest.global.TextUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -21,18 +22,23 @@ public class BombeCommand implements CommandExecutor {
     if (sender instanceof Player) {
       if (commandtoggles.get(command.getName()) || Admins.isAdmin(((Player) sender).getPlayer())) {
         Player player = (Player) sender;
-        Location loc = player.getLocation();
-        if (bomb) {
-          if (Bukkit.getWorld(player.getWorld().getName()).getBlockAt(bombloc).getType() == Material.TNT) {
-            Bukkit.getWorld(player.getWorld().getName()).getBlockAt(bombloc).setType(Material.AIR);
-            bomb = false;
-            player.sendMessage(ChatColor.DARK_RED + "Du hast die Bombe bei " + ChatColor.GRAY + bombloc.getBlockX() + ", " + bombloc.getBlockY() + ", " + bombloc.getBlockZ() + ChatColor.DARK_RED + " entfernt.");
+        if (Admins.isVerified(player)) {
+          Location loc = player.getLocation();
+          if (bomb) {
+            if (Bukkit.getWorld(player.getWorld().getName()).getBlockAt(bombloc).getType() == Material.TNT) {
+              Bukkit.getWorld(player.getWorld().getName()).getBlockAt(bombloc).setType(Material.AIR);
+              bomb = false;
+              player.sendMessage(ChatColor.DARK_RED + "Du hast die Bombe bei " + ChatColor.GRAY + bombloc.getBlockX() + ", " + bombloc.getBlockY() + ", " + bombloc.getBlockZ() + ChatColor.DARK_RED + " entfernt.");
+            }
+          } else if (Bukkit.getWorld(player.getWorld().getName()).getBlockAt(loc).getType() == Material.AIR) {
+            Bukkit.getWorld(player.getWorld().getName()).getBlockAt(loc).setType(Material.TNT);
+            bombloc = loc;
+            bomb = true;
+            player.sendMessage(ChatColor.DARK_RED + "Du hast eine Bombe bei " + ChatColor.GRAY + bombloc.getBlockX() + ", " + bombloc.getBlockY() + ", " + bombloc.getBlockZ() + ChatColor.DARK_RED + " platziert.");
           }
-        } else if (Bukkit.getWorld(player.getWorld().getName()).getBlockAt(loc).getType() == Material.AIR) {
-          Bukkit.getWorld(player.getWorld().getName()).getBlockAt(loc).setType(Material.TNT);
-          bombloc = loc;
-          bomb = true;
-          player.sendMessage(ChatColor.DARK_RED + "Du hast eine Bombe bei " + ChatColor.GRAY + bombloc.getBlockX() + ", " + bombloc.getBlockY() + ", " + bombloc.getBlockZ() + ChatColor.DARK_RED + " platziert.");
+        } else {
+          player.sendMessage(ChatColor.DARK_AQUA + "Du musst erst verifiziert werden, bevor du eine Bombe platzieren kannst!");
+          player.spigot().sendMessage(TextUtils.getCustomClickable(ChatColor.DARK_RED, net.md_5.bungee.api.ChatColor.GRAY + "» " + net.md_5.bungee.api.ChatColor.DARK_RED + "Admins", "/admins"));
         }
       }
     }

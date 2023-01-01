@@ -93,12 +93,14 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
                 playerequip.put(this.player.getName(), "terror");
                 this.player.getInventory().clear();
                 invchanged = true;
-                PlayerInteractListener.rpgcooldown.put(this.player.getName(), Boolean.FALSE);
                 this.player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', "&8&l[&eTerror&8&l] &r") + playername + fly);
+                PlayerInteractListener.rpgcooldown.put(this.player.getName(), Boolean.FALSE);
                 rpg = new BukkitRunnable() {
                   public void run() {
-                    PlayerInteractListener.rpgcooldown.put(EquipCommand.this.player.getName(), Boolean.TRUE);
-                    EquipCommand.this.player.sendMessage(ChatColor.GRAY + "Du kannst deine RPG nun benutzen!");
+                    if (!PlayerInteractListener.rpgcooldown.get(EquipCommand.this.player.getName())) {
+                      PlayerInteractListener.rpgcooldown.put(EquipCommand.this.player.getName(), Boolean.TRUE);
+                      EquipCommand.this.player.sendMessage(ChatColor.GRAY + "Du kannst deine RPG nun benutzen!");
+                    }
                   }
                 };
                 rpgtask.put(this.player.getName(), rpg.runTaskLater(SWATtest.plugin, 600L));
@@ -182,6 +184,10 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
                     itemamount++;
                     this.player.getInventory().setItem(i, Items.getMp5());
                     break;
+                  case "IRON_BARDING":
+                    itemamount++;
+                    this.player.getInventory().setItem(i, Items.getPistole());
+                    break;
                   case "ELYTRA":
                     itemamount++;
                     this.player.getInventory().setItem(i, Items.getElytra());
@@ -225,7 +231,7 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
                 }
               }
               if (Objects.equals(playerequip.get(player.getName()), "zivilist")) {
-                if (itemamount != 2) {
+                if (itemamount != 3) {
                   PlayerJoinListener.playersave.get(player.getUniqueId()).delete();
                   Functions.createFile(player);
                   Functions.equipPlayer(player);

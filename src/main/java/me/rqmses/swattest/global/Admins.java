@@ -3,8 +3,7 @@ package me.rqmses.swattest.global;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import static me.rqmses.swattest.SWATtest.admins;
-import static me.rqmses.swattest.SWATtest.builders;
+import static me.rqmses.swattest.SWATtest.*;
 
 public class Admins {
 
@@ -14,6 +13,10 @@ public class Admins {
 
     public static Boolean isBuilder(Player player) {
         return builders.contains(player.getName());
+    }
+
+    public static Boolean isVerified(Player player) {
+        return verified.contains(player.getName());
     }
 
     public static void msgAdmin(String msg) {

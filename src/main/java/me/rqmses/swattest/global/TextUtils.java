@@ -20,4 +20,10 @@ public class TextUtils {
         message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/ablehnen"));
         return message;
     }
+    public static TextComponent getCustomClickable(org.bukkit.ChatColor color, String msg, String command) {
+        TextComponent message = new TextComponent (color + msg);
+        message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText(color + command)));
+        message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
+        return message;
+    }
 }

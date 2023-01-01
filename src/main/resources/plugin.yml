@@ -95,3 +95,15 @@ commands:
   blockanfragen:
     description: Blockiert die Anfragen eines Spielers.
     usage: /<command> <player>
+  elytradamage:
+    description: Schaltet den Schaden und Verlust für Elytren um.
+    usage: /<command>
+  sit:
+    description: Setzt den Spieler hin.
+    usage: /<command>
+  kill:
+    description: Tötet einen Spieler oder einen Bot.
+    usage: /<command> <name>
+  verify:
+    description: Verifiziert einen Spieler.
+    usage: /<command> <player>

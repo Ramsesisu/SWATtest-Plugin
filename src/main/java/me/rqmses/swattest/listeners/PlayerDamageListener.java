@@ -2,12 +2,14 @@ package me.rqmses.swattest.listeners;
 
 import com.google.common.collect.Sets;
 import me.rqmses.swattest.global.Functions;
+import me.rqmses.swattest.global.Items;
 import net.minecraft.server.v1_12_R1.DataWatcherObject;
 import net.minecraft.server.v1_12_R1.DataWatcherRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftLivingEntity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -18,6 +20,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleSprintEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -26,6 +29,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import static me.rqmses.swattest.SWATtest.team0;
+import static me.rqmses.swattest.commands.ElytraDamageCommand.elytradamage;
 
 public class PlayerDamageListener implements Listener {
   public static Player shooter;
@@ -113,7 +117,25 @@ public class PlayerDamageListener implements Listener {
             player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 1.0F);
             ((Player)event.getEntity()).getInventory().setChestplate(null);
               event.setDamage(1.0D);
-          }  
+          }
+        if (Objects.equals(weapontype, "pistole"))
+          if (player.getInventory().getChestplate() == null || player.getInventory().getChestplate().getType() != Material.LEATHER_CHESTPLATE) {
+            event.setDamage(8.5D);
+          } else if (player.isBlocking()) {
+            if (((Player)event.getEntity()).getInventory().getChestplate().getDurability() < 79) {
+              ((Player)event.getEntity()).getInventory().getChestplate().setDurability((short)(((Player)event.getEntity()).getInventory().getChestplate().getDurability() + 1));
+            } else {
+              player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 1.0F);
+              ((Player)event.getEntity()).getInventory().setChestplate(null);
+            }
+          } else if (((Player)event.getEntity()).getInventory().getChestplate().getDurability() < 76) {
+            ((Player)event.getEntity()).getInventory().getChestplate().setDurability((short)(((Player)event.getEntity()).getInventory().getChestplate().getDurability() + 4));
+              event.setDamage(1.0D);
+          } else {
+            player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 1.0F);
+            ((Player)event.getEntity()).getInventory().setChestplate(null);
+              event.setDamage(1.0D);
+          }
         if (Objects.equals(weapontype, "jagdflinte"))
           if (player.getInventory().getChestplate() == null || player.getInventory().getChestplate().getType() != Material.LEATHER_CHESTPLATE) {
             event.setDamage(11.5D);
@@ -146,6 +168,19 @@ public class PlayerDamageListener implements Listener {
   public void onFallDamage(EntityDamageEvent event) {
     if (event.getEntity() instanceof Player) {
       Player player = (Player)event.getEntity();
+      if (player.getInventory().getChestplate() != null && player.getInventory().getChestplate().getType() == Material.ELYTRA) {
+        if (elytradamage.get(player.getName())) {
+          if (player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType() != Material.AIR) {
+            player.getInventory().setChestplate(new ItemStack(Material.AIR));
+            if (!player.getInventory().contains(Material.ELYTRA)) {
+              player.getInventory().addItem(Items.getElytra());
+            }
+            player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 3 * 20, 0));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 3 * 20, 0));
+            player.sendMessage(ChatColor.DARK_AQUA + "Dein Wingsuit wurde zerstört.");
+          }
+        }
+      }
       if (event.getCause() == EntityDamageEvent.DamageCause.FALL && 
         event.getDamage() >= 30.0D) {
         player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 2147483647, 3), true);

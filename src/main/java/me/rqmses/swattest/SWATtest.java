@@ -15,6 +15,8 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommandYamlParser;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -28,6 +30,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import static me.rqmses.swattest.commands.CarCommand.minecarts;
 import static me.rqmses.swattest.commands.TeamCommand.*;
@@ -45,7 +48,10 @@ public final class SWATtest extends JavaPlugin implements Listener {
 
     public static final List<Object> admins = new ArrayList<>();
     public static final List<Object> builders = new ArrayList<>();
-    public static final List<Object> banned = new ArrayList<>();
+    public static final List<Object> verified = new ArrayList<>();
+    public static final List<Object> bannedlist = new ArrayList<>();
+
+    public static final HashMap<Object, String> banned = new HashMap<>();
 
     public static File adminsave;
     public static YamlConfiguration adminconfig;
@@ -53,6 +59,8 @@ public final class SWATtest extends JavaPlugin implements Listener {
     public static YamlConfiguration builderconfig;
     public static File bannedsave;
     public static YamlConfiguration bannedconfig;
+    public static File verifiedsave;
+    public static YamlConfiguration verifiedconfig;
 
     public static List<Command> commandlist;
 
@@ -80,7 +88,7 @@ public final class SWATtest extends JavaPlugin implements Listener {
         team3.setColor(ChatColor.GREEN);
         team4.setColor(ChatColor.GOLD);
 
-        BukkitRunnable checkTeamsizes = new BukkitRunnable() {
+        BukkitRunnable reloadData = new BukkitRunnable() {
             @Override
             public void run() {
                 if (team1.getSize() == 0) {
@@ -99,10 +107,18 @@ public final class SWATtest extends JavaPlugin implements Listener {
                     kills4 = 0;
                     teamname4 = "Team-4";
                 }
+
+                for (Entity entity : Bukkit.getServer().getWorld("world").getEntities()) {
+                    if (entity instanceof ArmorStand) {
+                        if (Objects.equals(String.valueOf(entity.getPassengers()), "[]")) {
+                            entity.remove();
+                        }
+                    }
+                }
             }
         };
 
-        checkTeamsizes.runTaskTimer(plugin, 20L, 0L);
+        reloadData.runTaskTimer(plugin, 20L, 20L);
 
         registry = CitizensAPI.getNPCRegistry();
         net.citizensnpcs.api.CitizensAPI.getTraitFactory().registerTrait(net.citizensnpcs.api.trait.TraitInfo.create(AttackTrait.class));
@@ -161,6 +177,23 @@ public final class SWATtest extends JavaPlugin implements Listener {
             }
         }
 
+        verifiedsave = new File("plugins" + File.separator + "SWATtest" + File.separator + "verified.yml");
+        verifiedconfig = YamlConfiguration.loadConfiguration(verifiedsave);
+        if (!verifiedsave.exists()) {
+            try {
+                //noinspection ResultOfMethodCallIgnored
+                verifiedsave.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            verifiedconfig.set("verified", verified);
+            try {
+                verifiedconfig.save(verifiedsave);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         for (Object name : adminconfig.getList("admins")) {
             admins.add(String.valueOf(name));
         }
@@ -170,7 +203,13 @@ public final class SWATtest extends JavaPlugin implements Listener {
         }
 
         for (Object name : bannedconfig.getList("banned")) {
-            banned.add(String.valueOf(name));
+            String[] strings = ((String) name).split("~");
+            banned.put(strings[0], strings[1]);
+            bannedlist.add(strings[0]+"~"+strings[1]);
+        }
+
+        for (Object name : verifiedconfig.getList("verified")) {
+            verified.add(String.valueOf(name));
         }
 
         commandlist = PluginCommandYamlParser.parse(plugin);
@@ -260,5 +299,9 @@ public final class SWATtest extends JavaPlugin implements Listener {
         getCommand("annehmen").setExecutor(new AnnehmenCommand());
         getCommand("ablehnen").setExecutor(new AblehnenCommand());
         getCommand("blockanfragen").setExecutor(new BlockanfragenCommand());
+        getCommand("elytradamage").setExecutor(new ElytraDamageCommand());
+        getCommand("sit").setExecutor(new SitCommand());
+        getCommand("kill").setExecutor(new KillCommand());
+        getCommand("verify").setExecutor(new VerifyCommand());
     }
 }

@@ -107,16 +107,27 @@ public class Items {
     m4.setItemMeta(m4meta);
     return m4;
   }
-  
+
   public static ItemStack getMp5() {
     ItemStack mp5 = new ItemStack(Material.GOLD_BARDING);
     ItemMeta mp5meta = mp5.getItemMeta();
-    mp5meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&8&lMP5"));
+    mp5meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&8&lMp5"));
     ArrayList<String> mp5lore = new ArrayList<>();
     mp5lore.add(ChatColor.translateAlternateColorCodes('&', "&621&8/&6500"));
     mp5meta.setLore(mp5lore);
     mp5.setItemMeta(mp5meta);
     return mp5;
+  }
+
+  public static ItemStack getPistole() {
+    ItemStack pistole = new ItemStack(Material.IRON_BARDING);
+    ItemMeta pistolemeta = pistole.getItemMeta();
+    pistolemeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&8&lPistole"));
+    ArrayList<String> pistolelore = new ArrayList<>();
+    pistolelore.add(ChatColor.translateAlternateColorCodes('&', "&615&8/&6300"));
+    pistolemeta.setLore(pistolelore);
+    pistole.setItemMeta(pistolemeta);
+    return pistole;
   }
   
   public static ItemStack getSniper() {
@@ -185,5 +196,33 @@ public class Items {
     flammenwerfermeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
     flammenwerfer.setItemMeta(flammenwerfermeta);
     return flammenwerfer;
+  }
+
+  public static ArrayList<Material> getSlabs() {
+    ArrayList<Material> slabs = new ArrayList<>();
+    slabs.add(Material.STEP);
+    slabs.add(Material.WOOD_STEP);
+    slabs.add(Material.PURPUR_SLAB);
+    slabs.add(Material.STONE_SLAB2);
+    return slabs;
+  }
+
+  public static ArrayList<Material> getStairs() {
+    ArrayList<Material> stairs = new ArrayList<>();
+    stairs.add(Material.SANDSTONE_STAIRS);
+    stairs.add(Material.SMOOTH_STAIRS);
+    stairs.add(Material.ACACIA_STAIRS);
+    stairs.add(Material.BRICK_STAIRS);
+    stairs.add(Material.PURPUR_STAIRS);
+    stairs.add(Material.BIRCH_WOOD_STAIRS);
+    stairs.add(Material.SPRUCE_WOOD_STAIRS);
+    stairs.add(Material.COBBLESTONE_STAIRS);
+    stairs.add(Material.DARK_OAK_STAIRS);
+    stairs.add(Material.JUNGLE_WOOD_STAIRS);
+    stairs.add(Material.NETHER_BRICK_STAIRS);
+    stairs.add(Material.QUARTZ_STAIRS);
+    stairs.add(Material.RED_SANDSTONE_STAIRS);
+    stairs.add(Material.WOOD_STAIRS);
+    return stairs;
   }
 }

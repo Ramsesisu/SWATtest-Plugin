@@ -28,9 +28,9 @@ public class BuildmodeCommand implements CommandExecutor {
                     if (buildmode.contains(player)) {
                         buildmode.remove(player);
                         PermissionAttachment pperms = player.addAttachment(plugin);
-                        pperms.unsetPermission("worldedit.*");
-                        pperms.unsetPermission("headdb.open");
-                        pperms.unsetPermission("headdb.phead");
+                        pperms.setPermission("worldedit.*", false);
+                        pperms.setPermission("headdb.open", false);
+                        pperms.setPermission("headdb.phead", false);
                         if (player.getPlayerListName().contains(ChatColor.translateAlternateColorCodes('&', "&a&l B"))) {
                             player.setPlayerListName(player.getPlayerListName().substring(0, player.getPlayerListName().length() - 4));
                         }
@@ -45,6 +45,7 @@ public class BuildmodeCommand implements CommandExecutor {
                     } else {
                         EquipCommand.cooldowns.put(player.getName(), 0L);
                         player.chat("/equip None " + player.getName() + " f");
+                        EquipCommand.cooldowns.put(player.getName(), 0L);
                         buildmode.add(player);
                         PermissionAttachment pperms = player.addAttachment(plugin);
                         pperms.setPermission("worldedit.*", true);

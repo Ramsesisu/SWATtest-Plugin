@@ -16,9 +16,11 @@ public class WarpPoints {
     public static Location getWarp(String warp, Player player, String type) {
         Location loc = null;
         switch (warp.toLowerCase()) {
+            case "sh":
             case "stadthalle":
                 loc = new Location(Bukkit.getWorld("world"), 103, 69, 157);
                 break;
+            case "uran":
             case "uranberg":
                 loc = new Location(Bukkit.getWorld("world"), -392, 194, 761);
                 break;
@@ -130,6 +132,7 @@ public class WarpPoints {
             case "eisenstollen":
                 loc = new Location(Bukkit.getWorld("world"), 1054, 69, 336);
                 break;
+            case "kh":
             case "krankenhaus":
                 loc = new Location(Bukkit.getWorld("world"), 289, 69, 238);
                 break;
@@ -232,6 +235,7 @@ public class WarpPoints {
             case "autohändler":
                 loc = new Location(Bukkit.getWorld("world"), 167, 69, -215);
                 break;
+            case "mileu":
             case "le-mileu":
                 loc = new Location(Bukkit.getWorld("world"), 286, 69, -247);
                 break;
@@ -268,6 +272,7 @@ public class WarpPoints {
             case "fischerhütte":
                 loc = new Location(Bukkit.getWorld("world"), -119, 69, 370);
                 break;
+            case "ballas":
             case "westside-ballas":
                 loc = new Location(Bukkit.getWorld("world"), -161, 69, 201);
                 break;
@@ -376,6 +381,21 @@ public class WarpPoints {
             case "382":
                 loc = new Location(Bukkit.getWorld("world"), -61, 69, -566);
                 break;
+            case "stadion":
+                loc = new Location(Bukkit.getWorld("world"), 1558, 69, 48);
+                break;
+            case "433":
+                loc = new Location(Bukkit.getWorld("world"), -450, 69, -279);
+                break;
+            case "metzgerei":
+                loc = new Location(Bukkit.getWorld("world"), -145, 69, -325);
+                break;
+            case "las-unicas":
+                loc = new Location(Bukkit.getWorld("world"), 1509, 69, 305);
+                break;
+            case "ct-shop":
+                loc = new Location(Bukkit.getWorld("world"), 1062, 69, -188);
+                break;
             default:
                 String[] coords = warp.split("/");
                 if (coords.length == 3) {
@@ -418,7 +438,7 @@ public class WarpPoints {
         return loc;
     }
 
-    public static String[] getTargets() {
+    public static String[] getTargets(Player player) {
         String[] targets = new String[] {"Stadthalle", "Uranberg", "Würfelpark", "261", "248", "KF-Kran", "LU-Kran",
                 "LU-Baustelle", "Psychiatrie", "Golfplatz", "Funpark", "Staatsbank", "Schule", "LU-Casino", "Fightclub",
                 "Schwimmbad", "Atomkraftwerk", "643,5", "OBrien", "KF-Bar", "Kerzakov", "Rotlichtbar", "FBI", "Triaden",
@@ -433,13 +453,15 @@ public class WarpPoints {
                 "Basketball", "CFK", "Kran-Uran", "Neulingshotel", "Flughafen-Unica", "Flughafen-Chinatown", "Flughafen-LasUnicas",
                 "Urantransport", "Deathmatch-Arena", "Gefängnis", "Hochseefischer", "Feuerwerksladen", "Angelschein", "Terroristen",
                 "Sägewerk", "200", "363", "531", "Bäckerei", "Shop", "Windrad-FBI", "UCM", "Altes-Gefängnis", "Hölle",
-                "Himmel", "Checkpoint-Gefängnis", "Anwaltskanzelei", "Musikladen", "Alcatraz", "36", "144", "171", "190",
-                "382"};
+                "Himmel", "Checkpoint-Gefängnis", "Anwaltskanzelei", "Musikladen", "Alcatraz", "36", "144", "171", "190", "Stadion", "433",
+                "382", "Metzgerei", "Las-Unicas", "CT-Shop", "Mileu", "Ballas","SH", "KH", "Uran"};
         ArrayList<String> targetsList = new ArrayList<>(Arrays.asList(targets));
         ArrayList<String> playersList = new ArrayList<>();
         for (Player tempplayer : Bukkit.getServer().getOnlinePlayers()) {
             playersList.add(tempplayer.getName());
         }
+        Location loc = player.getLocation();
+        targetsList.add(loc.getBlockX() + "/" + loc.getBlockY() + "/" + loc.getBlockZ());
         targetsList.addAll(playersList);
         targets = targetsList.toArray(new String[0]);
         return targets;

@@ -1,7 +1,9 @@
 package me.rqmses.swattest.listeners;
 
+import me.rqmses.swattest.SWATtest;
 import me.rqmses.swattest.global.Admins;
 import me.rqmses.swattest.global.Functions;
+import me.rqmses.swattest.global.TextUtils;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -17,6 +19,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import static me.rqmses.swattest.SWATtest.*;
+import static me.rqmses.swattest.listeners.PlayerDeathListener.spawnprotection;
 
 public class PlayerJoinListener implements Listener {
   public static final HashMap<UUID, File> playersave = new HashMap<>();
@@ -25,20 +28,21 @@ public class PlayerJoinListener implements Listener {
   
   @EventHandler
   public void onPlayerJoin(PlayerJoinEvent event) {
-    if (banned.contains(event.getPlayer().getName())) {
-      event.getPlayer().kickPlayer("Du bist noch gebannt!");
+    Player player = event.getPlayer();
+    event.setJoinMessage(ChatColor.GOLD + player.getName() + ChatColor.YELLOW + " ist nun" + ChatColor.GREEN + " online" + ChatColor.YELLOW + ".");
+    if (banned.containsKey(player.getName())) {
+      event.setJoinMessage("");
+      player.kickPlayer(banned.get(player.getName()));
       return;
     }
-    Player player = event.getPlayer();
     player.setOp(false);
-    event.setJoinMessage(ChatColor.GOLD + player.getName() + ChatColor.YELLOW + " ist nun" + ChatColor.GREEN + " online" + ChatColor.YELLOW + ".");
     player.setGameMode(GameMode.SURVIVAL);
     player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(40.0D);
     player.setHealth(40.0D);
     player.setCustomName(" ");
     player.getActivePotionEffects().clear();
     player.getInventory().clear();
-    PlayerDeathListener.spawnprotection.put(player.getUniqueId(), Boolean.FALSE);
+    spawnprotection.put(player.getUniqueId(), Boolean.FALSE);
     playersave.put(player.getUniqueId(), new File("data" + File.separator + player.getUniqueId() + ".yml"));
     playerconfig.put(player.getUniqueId(), YamlConfiguration.loadConfiguration(playersave.get(player.getUniqueId())));
     if (!playersave.get(player.getUniqueId()).exists()) {
@@ -63,6 +67,21 @@ public class PlayerJoinListener implements Listener {
     if (Admins.isAdmin(player)) {
       player.setOp(true);
     }
+
+    if (!verified.contains(player.getName())) {
+      player.sendMessage(ChatColor.DARK_AQUA + "Du bist noch nicht verifiziert, melde dich bei einem Admin!");
+      player.spigot().sendMessage(TextUtils.getCustomClickable(ChatColor.DARK_RED, net.md_5.bungee.api.ChatColor.GRAY + "» " + net.md_5.bungee.api.ChatColor.DARK_RED + "Admins", "/admins"));
+    }
+
+    if (!spawnprotection.get(player.getUniqueId())) {
+      spawnprotection.put(player.getUniqueId(), Boolean.TRUE);
+    }
+    Bukkit.getScheduler().runTaskLater(SWATtest.plugin, () -> {
+      if (spawnprotection.get(player.getUniqueId())) {
+        spawnprotection.put(player.getUniqueId(), Boolean.FALSE);
+        player.sendMessage(ChatColor.GREEN + "Dein Spawnschutz ist nun vorbei.");
+      }
+    }, 200L);
 
     player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, SoundCategory.AMBIENT, 10, 1);
   }

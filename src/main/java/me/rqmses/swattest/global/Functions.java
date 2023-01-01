@@ -6,28 +6,35 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import me.rqmses.swattest.commands.EquipCommand;
 import me.rqmses.swattest.listeners.PlayerJoinListener;
+import net.citizensnpcs.api.npc.NPC;
 import net.minecraft.server.v1_12_R1.EntityPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.*;
+import org.bukkit.util.Vector;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
 import static me.rqmses.swattest.SWATtest.*;
 import static me.rqmses.swattest.commands.CarCommand.*;
 import static me.rqmses.swattest.commands.TeamCommand.*;
+import static me.rqmses.swattest.commands.TrainingsbotCommand.NPCList;
 
 public class Functions {
 
-  public static HashMap<String, BukkitRunnable> accepttask = new HashMap<>();
-  public static HashMap<String, Boolean> choice = new HashMap<>();
+  public static final HashMap<String, BukkitRunnable> accepttask = new HashMap<>();
+  public static final HashMap<String, Boolean> choice = new HashMap<>();
 
   public static void createFile(Player player) {
     try {
@@ -82,8 +89,8 @@ public class Functions {
     PlayerJoinListener.playerconfig.get(player.getUniqueId()).set("terror.7", Items.getAir().getType().toString());
     PlayerJoinListener.playerconfig.get(player.getUniqueId()).set("terror.8", Items.getAir().getType().toString());
     PlayerJoinListener.playerconfig.get(player.getUniqueId()).set("zivilist.0", Items.getMp5().getType().toString());
-    PlayerJoinListener.playerconfig.get(player.getUniqueId()).set("zivilist.1", Items.getMesser().getType().toString());
-    PlayerJoinListener.playerconfig.get(player.getUniqueId()).set("zivilist.2", Items.getAir().getType().toString());
+    PlayerJoinListener.playerconfig.get(player.getUniqueId()).set("zivilist.1", Items.getPistole().getType().toString());
+    PlayerJoinListener.playerconfig.get(player.getUniqueId()).set("zivilist.2", Items.getMesser().getType().toString());
     PlayerJoinListener.playerconfig.get(player.getUniqueId()).set("zivilist.3", Items.getAir().getType().toString());
     PlayerJoinListener.playerconfig.get(player.getUniqueId()).set("zivilist.4", Items.getAir().getType().toString());
     PlayerJoinListener.playerconfig.get(player.getUniqueId()).set("zivilist.5", Items.getAir().getType().toString());
@@ -254,5 +261,32 @@ public class Functions {
         break;
       default:
     }
+  }
+
+  public static void sitPlayer(Player player, Location loc, Vector direction) {
+    ArmorStand armorstand = (ArmorStand) player.getWorld().spawnEntity(loc, EntityType.ARMOR_STAND);
+    armorstand.setGravity(false);
+    armorstand.setVisible(false);
+    armorstand.addPassenger(player);
+    player.getLocation().setDirection(direction);
+  }
+
+  public static NPC getKI(String name) {
+    for (NPC npc : NPCList) {
+      if (Objects.equals(npc.getName(), name)) {
+        return npc;
+      }
+    }
+    return null;
+  }
+
+  public static <T> ArrayList<T> removeDuplicates(ArrayList<T> list) {
+    ArrayList<T> newList = new ArrayList<>();
+    for (T element : list) {
+      if (!newList.contains(element)) {
+        newList.add(element);
+      }
+    }
+    return newList;
   }
 }

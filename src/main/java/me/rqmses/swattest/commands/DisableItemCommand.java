@@ -49,9 +49,8 @@ public class DisableItemCommand implements CommandExecutor, TabCompleter {
 
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         ArrayList<String> list = new ArrayList<>();
-        String[] targets = itemlist;
         if (args.length == 1)
-            for (String target : targets) {
+            for (String target : itemlist) {
                 if (target.toUpperCase().startsWith(args[0].toUpperCase()))
                     list.add(target);
             }

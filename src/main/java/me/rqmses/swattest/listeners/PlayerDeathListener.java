@@ -54,15 +54,17 @@ public class PlayerDeathListener implements Listener {
       killer = "Fallschaden";
       deathmessage = ChatColor.translateAlternateColorCodes('&', "&7" + event.getEntity().getName() + " &f&list an &7&lFallschaden&f&l gestorben.");
       playerdeathmessage = ChatColor.translateAlternateColorCodes('&', "&7&f&lDu bist an &7&lFallschaden&f&l gestorben.");
-    } else if (event.getDeathMessage().contains("M4") || event.getDeathMessage().contains("Sniper") || event.getDeathMessage().contains("MP5") || event.getDeathMessage().contains("Jagdflinte") || event.getDeathMessage().contains("Messer")) {
+    } else if (event.getDeathMessage().contains("M4") || event.getDeathMessage().contains("Sniper") || event.getDeathMessage().contains("Mp5") || event.getDeathMessage().contains("Pistole") || event.getDeathMessage().contains("Jagdflinte") || event.getDeathMessage().contains("Messer")) {
       String weapon = null;
       String verb = "erschossen";
       if (event.getDeathMessage().contains("M4"))
         weapon = "M4"; 
       if (event.getDeathMessage().contains("Sniper"))
         weapon = "Sniper"; 
-      if (event.getDeathMessage().contains("MP5"))
-        weapon = "MP5"; 
+      if (event.getDeathMessage().contains("Mp5"))
+        weapon = "Mp5";
+      if (event.getDeathMessage().contains("Pistole"))
+        weapon = "Pistole";
       if (event.getDeathMessage().contains("Jagdflinte"))
         weapon = "Jagdflinte"; 
       if (event.getDeathMessage().contains("Messer")) {
@@ -72,6 +74,7 @@ public class PlayerDeathListener implements Listener {
       deathmessage = ChatColor.translateAlternateColorCodes('&', "&7" + event.getEntity().getName() + " &f&lwurde von &7" + killer + " &f&lmit&7&l " + weapon + " &f&l" + verb + ".");
       playerdeathmessage = ChatColor.translateAlternateColorCodes('&', "&7&f&lDu wurdest von &7" + killer + " &f&lmit&7&l " + weapon + " &f&l" + verb + ".");
     } else {
+      skull.setCustomName(ChatColor.DARK_GRAY + "✟ " + player.getName());
       String killcause = "";
       try {
         killcause = String.valueOf(event.getEntity().getLastDamageCause().getCause());
@@ -85,9 +88,9 @@ public class PlayerDeathListener implements Listener {
         case "PROJECTILE":
         case "WITHER":
           killer = "Explosion";
-          skull.setCustomName(ChatColor.DARK_GRAY + "✟ " + player.getName());
           break;
         case "FIRE_TICK":
+          skull.setCustomName(ChatColor.GRAY + "✟ " + player.getName());
           killer = "Flammenwerfer";
           break;
       } 
@@ -130,8 +133,9 @@ public class PlayerDeathListener implements Listener {
     event.getEntity().spigot().respawn();
     player.teleport(deathloc);
     player.getInventory().clear();
-    player.setGameMode(GameMode.SPECTATOR);
-    spawnprotection.put(player.getUniqueId(), Boolean.TRUE);
+    player.setGameMode(GameMode.SPECTATOR);if (!spawnprotection.get(player.getUniqueId())) {
+      spawnprotection.put(player.getUniqueId(), Boolean.TRUE);
+    }
     deathloadmsg.put(player.getName(), ChatColor.translateAlternateColorCodes('&', "&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛&8⬛"));
     final int[] i = { 0 };
     BukkitRunnable death = new BukkitRunnable() {

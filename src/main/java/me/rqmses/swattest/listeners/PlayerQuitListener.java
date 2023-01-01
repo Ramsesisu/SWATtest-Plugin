@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import static me.rqmses.swattest.SWATtest.banned;
 import static me.rqmses.swattest.commands.TrainingsbotCommand.NPCListPlayer;
 
 public class PlayerQuitListener implements Listener {
@@ -23,6 +24,10 @@ public class PlayerQuitListener implements Listener {
   public void onPlayerQuit(PlayerQuitEvent event) {
     Player player = event.getPlayer();
     event.setQuitMessage(ChatColor.GOLD + player.getName() + ChatColor.YELLOW + " ist nun" + ChatColor.RED + " offline" + ChatColor.YELLOW + ".");
+    if (banned.containsKey(player.getName())) {
+      event.setQuitMessage("");
+      return;
+    }
     Functions.getTeam(player).removeEntry(player.getName());
     Functions.accepttask.put(player.getName(), null);
     if (player.getCustomName() != null) {

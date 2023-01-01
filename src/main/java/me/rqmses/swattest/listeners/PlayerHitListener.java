@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import static me.rqmses.swattest.commands.BuildmodeCommand.buildmode;
+import static me.rqmses.swattest.commands.ElytraDamageCommand.elytradamage;
 import static me.rqmses.swattest.commands.VanishCommand.hidden;
 
 public class PlayerHitListener implements Listener {
@@ -88,7 +89,7 @@ public class PlayerHitListener implements Listener {
   }
   
   @EventHandler
-  public void onShieldHit(PlayerItemDamageEvent event) {
+  public void onItemDamage(PlayerItemDamageEvent event) {
     Player player = event.getPlayer();
     ItemStack item = event.getItem();
     if (item.getType() == Material.SHIELD) {
@@ -98,6 +99,9 @@ public class PlayerHitListener implements Listener {
           player.damage(7.0D);
         }
       }
+    } else if (item.getType() == Material.ELYTRA) {
+      elytradamage.putIfAbsent(player.getName(), Boolean.FALSE);
+      event.setCancelled(!elytradamage.get(player.getName()));
     } else {
       event.setCancelled(true);
     } 

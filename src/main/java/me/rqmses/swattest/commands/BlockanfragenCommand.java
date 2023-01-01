@@ -14,7 +14,7 @@ import static me.rqmses.swattest.SWATtest.commandtoggles;
 
 public class BlockanfragenCommand implements CommandExecutor {
 
-    public static HashMap<String, ArrayList<String>> blockedplayers = new HashMap<>();
+    public static final HashMap<String, ArrayList<String>> blockedplayers = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {

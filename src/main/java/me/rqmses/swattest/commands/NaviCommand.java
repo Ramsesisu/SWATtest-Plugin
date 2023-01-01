@@ -87,7 +87,7 @@ public class NaviCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         ArrayList<String> list = new ArrayList<>();
-        String[] targets = WarpPoints.getTargets();
+        String[] targets = WarpPoints.getTargets((Player) sender);
         if (args.length == 1) {
             for (String target : targets) {
                 if (target.toUpperCase().startsWith(args[0].toUpperCase())) {

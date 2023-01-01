@@ -12,6 +12,7 @@ import java.util.Objects;
 
 import static me.rqmses.swattest.SWATtest.commandtoggles;
 import static me.rqmses.swattest.commands.BuildmodeCommand.buildmode;
+import static me.rqmses.swattest.commands.FlyCommand.flyingplayers;
 
 public class CameraCommand implements CommandExecutor {
   Player player;
@@ -31,6 +32,9 @@ public class CameraCommand implements CommandExecutor {
               this.player.setGameMode(GameMode.CREATIVE);
             } else {
               this.player.setGameMode(GameMode.SURVIVAL);
+              if (flyingplayers.contains(this.player)) {
+                this.player.setAllowFlight(true);
+              }
             }
           } else {
             this.player.setGameMode(GameMode.SPECTATOR);

@@ -12,6 +12,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
+import org.bukkit.material.Rails;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -73,7 +74,7 @@ public class CarCommand implements CommandExecutor {
                                     @Override
                                     public void run() {
                                         Block carblock = car.getLocation().add(0, 1, 0).getBlock();
-                                        if (carblock.getType() == Material.AIR) {
+                                        if (carblock.getType() == Material.AIR && car.getLocation().getBlock() instanceof Rails) {
                                             carblock.setType(Material.RAILS);
                                             carblock.setType(Material.AIR);
                                         }

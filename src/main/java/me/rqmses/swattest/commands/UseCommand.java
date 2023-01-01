@@ -25,6 +25,9 @@ public class UseCommand implements CommandExecutor, TabCompleter {
       if (commandtoggles.get(command.getName()) || Admins.isAdmin(((Player) sender).getPlayer())) {
         Player player = (Player) sender;
         if (player.getGameMode() == GameMode.SURVIVAL) {
+          if (player.getInventory().getChestplate() != null && player.getInventory().getChestplate().getItemMeta().getDisplayName().contains("Sprenggürtel")) {
+            player.sendMessage(ChatColor.GRAY + "In dieser Situation darfst du keine Drogen nehmen!");
+          }
           int cooldownTime = 10;
           if (cooldowns.containsKey(player.getUniqueId())) {
             long secondsLeft = cooldowns.get(player.getUniqueId()) / 1000L + cooldownTime - System.currentTimeMillis() / 1000L;
@@ -79,7 +82,15 @@ public class UseCommand implements CommandExecutor, TabCompleter {
               nearPlayers2.add(playerName);
             });
             nearPlayers2.remove(player);
-            nearPlayers2.forEach(playerName2 -> playerName2.sendMessage(ChatColor.DARK_RED + player.getName() + ChatColor.RED + " hat " + ChatColor.DARK_RED + args[0] + ChatColor.RED + " genommen."));
+            for (Entity playerName2 : nearPlayers2) {
+              if (playerName2 instanceof Player) {
+                Player tempplayer = (Player) playerName2;
+                if (tempplayer.getInventory().getChestplate() != null && tempplayer.getInventory().getChestplate().getItemMeta().getDisplayName().contains("Sprenggürtel")) {
+                  player.sendMessage(ChatColor.GRAY + "In dieser Situation darfst du keine Drogen nehmen!");
+                }
+                tempplayer.sendMessage(ChatColor.DARK_RED + player.getName() + ChatColor.RED + " hat " + ChatColor.DARK_RED + args[0] + ChatColor.RED + " genommen.");
+              }
+            }
           }
         }
       }
