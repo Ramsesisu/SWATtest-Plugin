@@ -12,6 +12,7 @@ import net.citizensnpcs.api.npc.NPCRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.WorldCreator;
 import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommandYamlParser;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -27,10 +28,7 @@ import org.bukkit.scoreboard.Team;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static me.rqmses.swattest.commands.CarCommand.minecarts;
 import static me.rqmses.swattest.commands.TeamCommand.*;
@@ -205,7 +203,7 @@ public final class SWATtest extends JavaPlugin implements Listener {
         for (Object name : bannedconfig.getList("banned")) {
             String[] strings = ((String) name).split("~");
             banned.put(strings[0], strings[1]);
-            bannedlist.add(strings[0]+"~"+strings[1]);
+            bannedlist.add(strings[0]+"~"+strings[1]+"~"+strings[2]);
         }
 
         for (Object name : verifiedconfig.getList("verified")) {
@@ -229,13 +227,16 @@ public final class SWATtest extends JavaPlugin implements Listener {
 
         for (Command tempcommand : commandlist) { commandtoggles.put(tempcommand.getName(), Boolean.TRUE); }
 
+        new WorldCreator("Baustelle").createWorld();
+        new WorldCreator("Training").createWorld();
+
         System.out.println("Plugin erfolgreich geladen.");
     }
 
     public void onDisable() {
         if (BombeCommand.bombloc != null &&
-                Bukkit.getWorld("world").getBlockAt(BombeCommand.bombloc).getType() == Material.TNT)
-            Bukkit.getWorld("world").getBlockAt(BombeCommand.bombloc).setType(Material.AIR);
+                Bukkit.getWorld("Training").getBlockAt(BombeCommand.bombloc).getType() == Material.TNT)
+            Bukkit.getWorld("Training").getBlockAt(BombeCommand.bombloc).setType(Material.AIR);
 
         for (NPC npc : registry.sorted()) {
             npc.despawn(DespawnReason.RELOAD);
@@ -245,6 +246,7 @@ public final class SWATtest extends JavaPlugin implements Listener {
         for (Minecart minecart : minecarts.values()) {
             minecart.remove();
         }
+
         System.out.println("Plugin erfolgreich heruntergefahren.");
     }
 
@@ -303,5 +305,7 @@ public final class SWATtest extends JavaPlugin implements Listener {
         getCommand("sit").setExecutor(new SitCommand());
         getCommand("kill").setExecutor(new KillCommand());
         getCommand("verify").setExecutor(new VerifyCommand());
+        getCommand("world").setExecutor(new WorldCommand());
+        getCommand("baustelle").setExecutor(new BaustelleCommand());
     }
 }

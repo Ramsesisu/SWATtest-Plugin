@@ -18,388 +18,400 @@ public class WarpPoints {
         switch (warp.toLowerCase()) {
             case "sh":
             case "stadthalle":
-                loc = new Location(Bukkit.getWorld("world"), 103, 69, 157);
+                loc = new Location(player.getWorld(), 103, 69, 157);
                 break;
             case "uran":
             case "uranberg":
-                loc = new Location(Bukkit.getWorld("world"), -392, 194, 761);
+                loc = new Location(player.getWorld(), -392, 194, 761);
                 break;
             case "würfelpark":
-                loc = new Location(Bukkit.getWorld("world"), 139, 69, 221);
+                loc = new Location(player.getWorld(), 139, 69, 221);
                 break;
             case "261":
-                loc = new Location(Bukkit.getWorld("world"), 810, 75, 94);
+                loc = new Location(player.getWorld(), 810, 75, 94);
                 break;
             case "248":
-                loc = new Location(Bukkit.getWorld("world"), 8, 74, -564);
+                loc = new Location(player.getWorld(), 8, 74, -564);
                 break;
             case "kf-kran":
-                loc = new Location(Bukkit.getWorld("world"), 972, 130, 204);
+                loc = new Location(player.getWorld(), 972, 130, 204);
                 break;
             case "lu-kran":
-                loc = new Location(Bukkit.getWorld("world"), 1562, 206, 330);
+                loc = new Location(player.getWorld(), 1562, 206, 330);
                 break;
             case "musikladen":
-                loc = new Location(Bukkit.getWorld("world"), -38, 117, 234);
+                loc = new Location(player.getWorld(), -38, 117, 234);
                 break;
             case "psychiatrie":
-                loc = new Location(Bukkit.getWorld("world"), 1631, 68, -413);
+                loc = new Location(player.getWorld(), 1631, 68, -413);
                 break;
             case "golfplatz":
-                loc = new Location(Bukkit.getWorld("world"), 1301, 70, -291);
+                loc = new Location(player.getWorld(), 1301, 70, -291);
                 break;
             case "funpark":
-                loc = new Location(Bukkit.getWorld("world"), 1405, 69, -104);
+                loc = new Location(player.getWorld(), 1405, 69, -104);
                 break;
             case "staatsbank":
-                loc = new Location(Bukkit.getWorld("world"), 1453, 71, 133);
+                loc = new Location(player.getWorld(), 1453, 71, 133);
                 break;
             case "lu-baustelle":
-                loc = new Location(Bukkit.getWorld("world"), 1557, 146, 307);
+                loc = new Location(player.getWorld(), 1557, 146, 307);
                 break;
             case "schule":
-                loc = new Location(Bukkit.getWorld("world"), 1667, 70, 514);
+                loc = new Location(player.getWorld(), 1667, 70, 514);
                 break;
             case "lu-casino":
-                loc = new Location(Bukkit.getWorld("world"), 1445, 69, 240);
+                loc = new Location(player.getWorld(), 1445, 69, 240);
                 break;
             case "fightclub":
-                loc = new Location(Bukkit.getWorld("world"), 1594, 69, 679);
+                loc = new Location(player.getWorld(), 1594, 69, 679);
                 break;
             case "schwimmbad":
-                loc = new Location(Bukkit.getWorld("world"), 1661, 69, 297);
+                loc = new Location(player.getWorld(), 1661, 69, 297);
                 break;
             case "atomkraftwerk":
-                loc = new Location(Bukkit.getWorld("world"), 1145, 68, 402);
+                loc = new Location(player.getWorld(), 1145, 68, 402);
                 break;
             case "643,5":
-                loc = new Location(Bukkit.getWorld("world"), 782, 69, 517);
+                loc = new Location(player.getWorld(), 782, 69, 517);
                 break;
             case "obrien":
-                loc = new Location(Bukkit.getWorld("world"), 706, 71, 581);
+                loc = new Location(player.getWorld(), 706, 71, 581);
                 break;
             case "kf-bar":
-                loc = new Location(Bukkit.getWorld("world"), 777, 69, 285);
+                loc = new Location(player.getWorld(), 777, 69, 285);
                 break;
             case "kerzakov":
-                loc = new Location(Bukkit.getWorld("world"), 877, 68, 203);
+                loc = new Location(player.getWorld(), 877, 68, 203);
                 break;
             case "rotlichtbar":
-                loc = new Location(Bukkit.getWorld("world"), 794, 69, 29);
+                loc = new Location(player.getWorld(), 794, 69, 29);
                 break;
             case "fbi":
-                loc = new Location(Bukkit.getWorld("world"), 867, 69, -51);
+                loc = new Location(player.getWorld(), 867, 69, -51);
                 break;
             case "triaden":
-                loc = new Location(Bukkit.getWorld("world"), 1004, 69, -101);
+                loc = new Location(player.getWorld(), 1004, 69, -101);
                 break;
             case "chinatown":
-                loc = new Location(Bukkit.getWorld("world"), 1079, 69, -162);
+                loc = new Location(player.getWorld(), 1079, 69, -162);
                 break;
             case "hrt":
-                loc = new Location(Bukkit.getWorld("world"), 1042, 69, -285);
+                loc = new Location(player.getWorld(), 1042, 69, -285);
                 break;
             case "uc17":
-                loc = new Location(Bukkit.getWorld("world"), 615, 69, 107);
+                loc = new Location(player.getWorld(), 615, 69, 107);
                 break;
             case "insel":
-                loc = new Location(Bukkit.getWorld("world"), 720, 68, -499);
+                loc = new Location(player.getWorld(), 720, 68, -499);
                 break;
             case "swat":
-                loc = new Location(Bukkit.getWorld("world"), 403, 69, -75);
+                loc = new Location(player.getWorld(), 403, 69, -75);
                 break;
             case "mall":
-                loc = new Location(Bukkit.getWorld("world"), 474, 69, 80);
+                loc = new Location(player.getWorld(), 474, 69, 80);
                 break;
             case "farm":
-                loc = new Location(Bukkit.getWorld("world"), 482, 66, 533);
+                loc = new Location(player.getWorld(), 482, 66, 533);
                 break;
             case "altstadt":
-                loc = new Location(Bukkit.getWorld("world"), 248, 69, 691);
+                loc = new Location(player.getWorld(), 248, 69, 691);
                 break;
             case "labor":
-                loc = new Location(Bukkit.getWorld("world"), 0, 69, 609);
+                loc = new Location(player.getWorld(), 0, 69, 609);
                 break;
             case "weinberg":
-                loc = new Location(Bukkit.getWorld("world"), 14, 91, 557);
+                loc = new Location(player.getWorld(), 14, 91, 557);
                 break;
             case "tabakplantage":
-                loc = new Location(Bukkit.getWorld("world"), 400, 64, 634);
+                loc = new Location(player.getWorld(), 400, 64, 634);
                 break;
             case "müllhalde":
-                loc = new Location(Bukkit.getWorld("world"), 844, 69, 365);
+                loc = new Location(player.getWorld(), 844, 69, 365);
                 break;
             case "eisenstollen":
-                loc = new Location(Bukkit.getWorld("world"), 1054, 69, 336);
+                loc = new Location(player.getWorld(), 1054, 69, 336);
                 break;
             case "kh":
             case "krankenhaus":
-                loc = new Location(Bukkit.getWorld("world"), 289, 69, 238);
+                loc = new Location(player.getWorld(), 289, 69, 238);
                 break;
             case "maklerbüro":
-                loc = new Location(Bukkit.getWorld("world"), 163, 69, 304);
+                loc = new Location(player.getWorld(), 163, 69, 304);
                 break;
             case "park":
-                loc = new Location(Bukkit.getWorld("world"), 114, 69, 327);
+                loc = new Location(player.getWorld(), 114, 69, 327);
                 break;
             case "sh-kran":
-                loc = new Location(Bukkit.getWorld("world"), 70, 152, 216);
+                loc = new Location(player.getWorld(), 70, 152, 216);
                 break;
             case "cherrys":
-                loc = new Location(Bukkit.getWorld("world"), 39, 69, 395);
+                loc = new Location(player.getWorld(), 39, 69, 395);
                 break;
             case "cafe":
-                loc = new Location(Bukkit.getWorld("world"), -50, 69, 321);
+                loc = new Location(player.getWorld(), -50, 69, 321);
                 break;
             case "bar":
-                loc = new Location(Bukkit.getWorld("world"), -47, 69, 193);
+                loc = new Location(player.getWorld(), -47, 69, 193);
                 break;
             case "windrad-mex":
-                loc = new Location(Bukkit.getWorld("world"), 35, 135, -197);
+                loc = new Location(player.getWorld(), 35, 135, -197);
                 break;
             case "hausaddon-shop":
-                loc = new Location(Bukkit.getWorld("world"), 94, 69, -200);
+                loc = new Location(player.getWorld(), 94, 69, -200);
                 break;
             case "lasertag":
-                loc = new Location(Bukkit.getWorld("world"), 94, 71, -275);
+                loc = new Location(player.getWorld(), 94, 71, -275);
                 break;
             case "news":
-                loc = new Location(Bukkit.getWorld("world"), -90, 69, -350);
+                loc = new Location(player.getWorld(), -90, 69, -350);
                 break;
             case "feuerwehr":
-                loc = new Location(Bukkit.getWorld("world"), -117, 69, -248);
+                loc = new Location(player.getWorld(), -117, 69, -248);
                 break;
             case "314":
-                loc = new Location(Bukkit.getWorld("world"), -187, 69, -252);
+                loc = new Location(player.getWorld(), -187, 69, -252);
                 break;
             case "kartell":
-                loc = new Location(Bukkit.getWorld("world"), -284, 69, -123);
+                loc = new Location(player.getWorld(), -284, 69, -123);
                 break;
             case "disko":
-                loc = new Location(Bukkit.getWorld("world"), -236, 69, -1);
+                loc = new Location(player.getWorld(), -236, 69, -1);
                 break;
             case "strand-mex":
-                loc = new Location(Bukkit.getWorld("world"), -500, 67, -242);
+                loc = new Location(player.getWorld(), -500, 67, -242);
                 break;
             case "militärbasis":
-                loc = new Location(Bukkit.getWorld("world"), -464, 69, -524);
+                loc = new Location(player.getWorld(), -464, 69, -524);
                 break;
             case "freibad":
-                loc = new Location(Bukkit.getWorld("world"), -272, 69, -485);
+                loc = new Location(player.getWorld(), -272, 69, -485);
                 break;
             case "polizei":
-                loc = new Location(Bukkit.getWorld("world"), -219, 71, -473);
+                loc = new Location(player.getWorld(), -219, 71, -473);
                 break;
             case "mafia":
-                loc = new Location(Bukkit.getWorld("world"), -1, 69, -463);
+                loc = new Location(player.getWorld(), -1, 69, -463);
                 break;
             case "yachthafen":
-                loc = new Location(Bukkit.getWorld("world"), 284, 69, -505);
+                loc = new Location(player.getWorld(), 284, 69, -505);
                 break;
             case "luxus-autohändler":
-                loc = new Location(Bukkit.getWorld("world"), -169, 69, -528);
+                loc = new Location(player.getWorld(), -169, 69, -528);
                 break;
             case "waffenladen-murica":
-                loc = new Location(Bukkit.getWorld("world"), -69, 69, -397);
+                loc = new Location(player.getWorld(), -69, 69, -397);
                 break;
             case "tankstelle-polizei":
-                loc = new Location(Bukkit.getWorld("world"), -169, 69, -356);
+                loc = new Location(player.getWorld(), -169, 69, -356);
                 break;
             case "waffenfabrik":
-                loc = new Location(Bukkit.getWorld("world"), -223, 69, -437);
+                loc = new Location(player.getWorld(), -223, 69, -437);
                 break;
             case "papierfabrik":
-                loc = new Location(Bukkit.getWorld("world"), -242, 69, -393);
+                loc = new Location(player.getWorld(), -242, 69, -393);
                 break;
             case "hitman":
-                loc = new Location(Bukkit.getWorld("world"), 316, 69, 59);
+                loc = new Location(player.getWorld(), 316, 69, 59);
                 break;
             case "luigis":
-                loc = new Location(Bukkit.getWorld("world"), 252, 69, 58);
+                loc = new Location(player.getWorld(), 252, 69, 58);
                 break;
             case "apotheke-casino":
-                loc = new Location(Bukkit.getWorld("world"), 267, 69, 22);
+                loc = new Location(player.getWorld(), 267, 69, 22);
                 break;
             case "casino":
-                loc = new Location(Bukkit.getWorld("world"), 255, 69, -11);
+                loc = new Location(player.getWorld(), 255, 69, -11);
                 break;
             case "kirche":
-                loc = new Location(Bukkit.getWorld("world"), 308, 72, -101);
+                loc = new Location(player.getWorld(), 308, 72, -101);
                 break;
             case "gemeindehaus":
-                loc = new Location(Bukkit.getWorld("world"), 261, 69, -106);
+                loc = new Location(player.getWorld(), 261, 69, -106);
                 break;
             case "hausaddon":
-                loc = new Location(Bukkit.getWorld("world"), 238, 69, -158);
+                loc = new Location(player.getWorld(), 238, 69, -158);
                 break;
             case "autohändler":
-                loc = new Location(Bukkit.getWorld("world"), 167, 69, -215);
+                loc = new Location(player.getWorld(), 167, 69, -215);
                 break;
             case "mileu":
             case "le-mileu":
-                loc = new Location(Bukkit.getWorld("world"), 286, 69, -247);
+                loc = new Location(player.getWorld(), 286, 69, -247);
                 break;
             case "asservatenkammer":
-                loc = new Location(Bukkit.getWorld("world"), 122, 69, -256);
+                loc = new Location(player.getWorld(), 122, 69, -256);
                 break;
             case "apotheke-zentrale":
-                loc = new Location(Bukkit.getWorld("world"), -91, 71, -394);
+                loc = new Location(player.getWorld(), -91, 71, -394);
                 break;
             case "feinkostladen":
-                loc = new Location(Bukkit.getWorld("world"), -94, 69, -331);
+                loc = new Location(player.getWorld(), -94, 69, -331);
                 break;
             case "fleischer":
-                loc = new Location(Bukkit.getWorld("world"), -150, 69, -325);
+                loc = new Location(player.getWorld(), -150, 69, -325);
                 break;
             case "wendys":
-                loc = new Location(Bukkit.getWorld("world"), -182, 69, -427);
+                loc = new Location(player.getWorld(), -182, 69, -427);
                 break;
             case "shishabar":
-                loc = new Location(Bukkit.getWorld("world"), -144, 69, -69);
+                loc = new Location(player.getWorld(), -144, 69, -69);
                 break;
             case "tankstelle-mex":
-                loc = new Location(Bukkit.getWorld("world"), -157, 69, -3);
+                loc = new Location(player.getWorld(), -157, 69, -3);
                 break;
             case "chickenfightclub":
-                loc = new Location(Bukkit.getWorld("world"), -366, 69, -113);
+                loc = new Location(player.getWorld(), -366, 69, -113);
                 break;
             case "tankstelle-chinatown":
-                loc = new Location(Bukkit.getWorld("world"), 1095, 69, -187);
+                loc = new Location(player.getWorld(), 1095, 69, -187);
                 break;
             case "windrad-chinatown":
-                loc = new Location(Bukkit.getWorld("world"), 896, 128, 21);
+                loc = new Location(player.getWorld(), 896, 128, 21);
                 break;
             case "fischerhütte":
-                loc = new Location(Bukkit.getWorld("world"), -119, 69, 370);
+                loc = new Location(player.getWorld(), -119, 69, 370);
                 break;
             case "ballas":
             case "westside-ballas":
-                loc = new Location(Bukkit.getWorld("world"), -161, 69, 201);
+                loc = new Location(player.getWorld(), -161, 69, 201);
                 break;
             case "mechaniker":
-                loc = new Location(Bukkit.getWorld("world"), -153, 69, 259);
+                loc = new Location(player.getWorld(), -153, 69, 259);
                 break;
             case "waffenladen-ballas":
-                loc = new Location(Bukkit.getWorld("world"), -178, 69, 236);
+                loc = new Location(player.getWorld(), -178, 69, 236);
                 break;
             case "basketball":
-                loc = new Location(Bukkit.getWorld("world"), -279, 69, 329);
+                loc = new Location(player.getWorld(), -279, 69, 329);
                 break;
             case "cfk":
-                loc = new Location(Bukkit.getWorld("world"), -325, 69, 348);
+                loc = new Location(player.getWorld(), -325, 69, 348);
                 break;
             case "kran-uran":
-                loc = new Location(Bukkit.getWorld("world"), -377, 109, 443);
+                loc = new Location(player.getWorld(), -377, 109, 443);
                 break;
             case "neulingshotel":
-                loc = new Location(Bukkit.getWorld("world"), -368, 69, 530);
+                loc = new Location(player.getWorld(), -368, 69, 530);
                 break;
             case "flughafen-unica":
-                loc = new Location(Bukkit.getWorld("world"), -264, 69, 631);
+                loc = new Location(player.getWorld(), -264, 69, 631);
                 break;
             case "flughafen-chinatown":
-                loc = new Location(Bukkit.getWorld("world"), 1256, 69, 45);
+                loc = new Location(player.getWorld(), 1256, 69, 45);
                 break;
             case "flughafen-lasunicas":
-                loc = new Location(Bukkit.getWorld("world"), 1679, 69, 475);
+                loc = new Location(player.getWorld(), 1679, 69, 475);
                 break;
             case "urantransport":
-                loc = new Location(Bukkit.getWorld("world"), -501, 66, 682);
+                loc = new Location(player.getWorld(), -501, 66, 682);
                 break;
             case "deathmatch-arena":
-                loc = new Location(Bukkit.getWorld("world"), -502, 69, 337);
+                loc = new Location(player.getWorld(), -502, 69, 337);
                 break;
             case "gefängnis":
-                loc = new Location(Bukkit.getWorld("world"), -634, 69, 222);
+                loc = new Location(player.getWorld(), -634, 69, 222);
                 break;
             case "hochseefischer":
-                loc = new Location(Bukkit.getWorld("world"), -503, 63, 199);
+                loc = new Location(player.getWorld(), -503, 63, 199);
                 break;
             case "feuerwerksladen":
-                loc = new Location(Bukkit.getWorld("world"), -275, 70, 129);
+                loc = new Location(player.getWorld(), -275, 70, 129);
                 break;
             case "angelschein":
-                loc = new Location(Bukkit.getWorld("world"), -345, 63, 67);
+                loc = new Location(player.getWorld(), -345, 63, 67);
                 break;
             case "terroristen":
-                loc = new Location(Bukkit.getWorld("world"), -53, 69, 490);
+                loc = new Location(player.getWorld(), -53, 69, 490);
                 break;
             case "sägewerk":
-                loc = new Location(Bukkit.getWorld("world"), 428, 64, 425);
+                loc = new Location(player.getWorld(), 428, 64, 425);
                 break;
             case "200":
-                loc = new Location(Bukkit.getWorld("world"), 620, 73, 156);
+                loc = new Location(player.getWorld(), 620, 73, 156);
                 break;
             case "363":
-                loc = new Location(Bukkit.getWorld("world"), 75, 69, 256);
+                loc = new Location(player.getWorld(), 75, 69, 256);
                 break;
             case "531":
-                loc = new Location(Bukkit.getWorld("world"), 43, 105, 251);
+                loc = new Location(player.getWorld(), 43, 105, 251);
                 break;
             case "bäckerei":
-                loc = new Location(Bukkit.getWorld("world"), 223, 69, 327);
+                loc = new Location(player.getWorld(), 223, 69, 327);
                 break;
             case "shop":
-                loc = new Location(Bukkit.getWorld("world"), 45, 69, 197);
+                loc = new Location(player.getWorld(), 45, 69, 197);
                 break;
             case "windrad-fbi":
-                loc = new Location(Bukkit.getWorld("world"), 897, 128, 21);
+                loc = new Location(player.getWorld(), 897, 128, 21);
                 break;
             case "ucm":
-                loc = new Location(Bukkit.getWorld("world"), 1154, 69, -186);
+                loc = new Location(player.getWorld(), 1154, 69, -186);
                 break;
             case "altes-gefängnis":
-                loc = new Location(Bukkit.getWorld("world"), 117, 37, 218);
+                loc = new Location(player.getWorld(), 117, 37, 218);
                 break;
             case "hölle":
-                loc = new Location(Bukkit.getWorld("world"), 345, 9, -106);
+                loc = new Location(player.getWorld(), 345, 9, -106);
                 break;
             case "himmel":
-                loc = new Location(Bukkit.getWorld("world"), 647, 230, -621);
+                loc = new Location(player.getWorld(), 647, 230, -621);
                 break;
             case "checkpoint-gefängnis":
-                loc = new Location(Bukkit.getWorld("world"), -638, 9, 144);
+                loc = new Location(player.getWorld(), -638, 9, 144);
                 break;
             case "anwaltskanzelei":
-                loc = new Location(Bukkit.getWorld("world"), -134, 71, -500);
+                loc = new Location(player.getWorld(), -134, 71, -500);
                 break;
             case "alcatraz":
-                loc = new Location(Bukkit.getWorld("world"), 1183, 75, 685);
+                loc = new Location(player.getWorld(), 1183, 75, 685);
                 break;
             case "36":
-                loc = new Location(Bukkit.getWorld("world"), -157, 69, -21);
+                loc = new Location(player.getWorld(), -157, 69, -21);
                 break;
             case "144":
-                loc = new Location(Bukkit.getWorld("world"), -382, 69, -267);
+                loc = new Location(player.getWorld(), -382, 69, -267);
                 break;
             case "171":
-                loc = new Location(Bukkit.getWorld("world"), -81, 74, 284);
+                loc = new Location(player.getWorld(), -81, 74, 284);
                 break;
             case "190":
-                loc = new Location(Bukkit.getWorld("world"), 590, 69, 206);
+                loc = new Location(player.getWorld(), 590, 69, 206);
                 break;
             case "382":
-                loc = new Location(Bukkit.getWorld("world"), -61, 69, -566);
+                loc = new Location(player.getWorld(), -61, 69, -566);
                 break;
             case "stadion":
-                loc = new Location(Bukkit.getWorld("world"), 1558, 69, 48);
+                loc = new Location(player.getWorld(), 1558, 69, 48);
                 break;
             case "433":
-                loc = new Location(Bukkit.getWorld("world"), -450, 69, -279);
+                loc = new Location(player.getWorld(), -450, 69, -279);
                 break;
             case "metzgerei":
-                loc = new Location(Bukkit.getWorld("world"), -145, 69, -325);
+                loc = new Location(player.getWorld(), -145, 69, -325);
                 break;
             case "las-unicas":
-                loc = new Location(Bukkit.getWorld("world"), 1509, 69, 305);
+                loc = new Location(player.getWorld(), 1509, 69, 305);
                 break;
             case "ct-shop":
-                loc = new Location(Bukkit.getWorld("world"), 1062, 69, -188);
+                loc = new Location(player.getWorld(), 1062, 69, -188);
+                break;
+            case "278":
+                loc = new Location(player.getWorld(), -538, 70, 338);
+                break;
+            case "280":
+                loc = new Location(player.getWorld(), -548, 70, 308);
+                break;
+            case "523":
+                loc = new Location(player.getWorld(), 693, 69, -19);
+                break;
+            case "121":
+                loc = new Location(player.getWorld(), -250, 69, 281);
                 break;
             default:
                 String[] coords = warp.split("/");
                 if (coords.length == 3) {
-                    loc = new Location(Bukkit.getWorld("world"), Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2]));
+                    loc = new Location(player.getWorld(), Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2]));
                 } else if (Bukkit.getServer().getPlayer(warp) != null) {
                     if (hidden.contains(Bukkit.getServer().getPlayer(warp)) && Bukkit.getServer().getPlayer(warp) != player) {
                         player.sendMessage(ChatColor.GOLD + warp + ChatColor.YELLOW + " ist kein gültiges Ziel!");
@@ -454,7 +466,7 @@ public class WarpPoints {
                 "Urantransport", "Deathmatch-Arena", "Gefängnis", "Hochseefischer", "Feuerwerksladen", "Angelschein", "Terroristen",
                 "Sägewerk", "200", "363", "531", "Bäckerei", "Shop", "Windrad-FBI", "UCM", "Altes-Gefängnis", "Hölle",
                 "Himmel", "Checkpoint-Gefängnis", "Anwaltskanzelei", "Musikladen", "Alcatraz", "36", "144", "171", "190", "Stadion", "433",
-                "382", "Metzgerei", "Las-Unicas", "CT-Shop", "Mileu", "Ballas","SH", "KH", "Uran"};
+                "382", "Metzgerei", "Las-Unicas", "CT-Shop", "Mileu", "Ballas","SH", "KH", "Uran", "278", "280", "523", "121"};
         ArrayList<String> targetsList = new ArrayList<>(Arrays.asList(targets));
         ArrayList<String> playersList = new ArrayList<>();
         for (Player tempplayer : Bukkit.getServer().getOnlinePlayers()) {

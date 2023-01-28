@@ -50,7 +50,11 @@ public class PlayerSwitchItemListener implements Listener {
       } else {
         item = event.getCursor();
       }
-      PlayerJoinListener.playerconfig.get(player.getUniqueId()).set(EquipCommand.playerequip.get(player.getName()) + "." + event.getSlot(), item.getType().toString());
+      if (EquipCommand.playerequip.containsKey(player.getName())) {
+        PlayerJoinListener.playerconfig.get(player.getUniqueId()).set(EquipCommand.playerequip.get(player.getName()) + "." + event.getSlot(), item.getType().toString());
+      } else {
+        return;
+      }
       try {
         PlayerJoinListener.playerconfig.get(player.getUniqueId()).save(PlayerJoinListener.playersave.get(player.getUniqueId()));
       } catch (IOException e) {

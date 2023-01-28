@@ -60,7 +60,7 @@ public class Functions {
     PlayerJoinListener.playerconfig.get(player.getUniqueId()).set("swat.5", Items.getAir().getType().toString());
     PlayerJoinListener.playerconfig.get(player.getUniqueId()).set("swat.6", Items.getAir().getType().toString());
     PlayerJoinListener.playerconfig.get(player.getUniqueId()).set("swat.7", Items.getAir().getType().toString());
-    PlayerJoinListener.playerconfig.get(player.getUniqueId()).set("swat.8", Items.getAir().getType().toString());
+    PlayerJoinListener.playerconfig.get(player.getUniqueId()).set("swat.8", Items.getElytra().getType().toString());
     PlayerJoinListener.playerconfig.get(player.getUniqueId()).set("polizei.0", Items.getKev((short)50).getType().toString());
     PlayerJoinListener.playerconfig.get(player.getUniqueId()).set("polizei.1", Items.getM4().getType().toString());
     PlayerJoinListener.playerconfig.get(player.getUniqueId()).set("polizei.2", Items.getMp5().getType().toString());

@@ -10,6 +10,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.ItemMergeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -45,6 +46,7 @@ public class PlayerDeathListener implements Listener {
     Location deathloc = player.getLocation();
 
     Entity skull = player.getWorld().dropItem(deathloc, new ItemStack(Material.SKULL_ITEM));
+    Bukkit.getScheduler().runTaskLater(plugin, skull::remove, 300L);
     skull.setCustomName(ChatColor.GRAY + "✟ " + player.getName());
     skull.setCustomNameVisible(true);
 
@@ -75,6 +77,8 @@ public class PlayerDeathListener implements Listener {
       playerdeathmessage = ChatColor.translateAlternateColorCodes('&', "&7&f&lDu wurdest von &7" + killer + " &f&lmit&7&l " + weapon + " &f&l" + verb + ".");
     } else {
       skull.setCustomName(ChatColor.DARK_GRAY + "✟ " + player.getName());
+      skull.setCustomNameVisible(true);
+
       String killcause = "";
       try {
         killcause = String.valueOf(event.getEntity().getLastDamageCause().getCause());
@@ -91,6 +95,8 @@ public class PlayerDeathListener implements Listener {
           break;
         case "FIRE_TICK":
           skull.setCustomName(ChatColor.GRAY + "✟ " + player.getName());
+          skull.setCustomNameVisible(true);
+
           killer = "Flammenwerfer";
           break;
       } 
@@ -98,6 +104,9 @@ public class PlayerDeathListener implements Listener {
       playerdeathmessage = ChatColor.translateAlternateColorCodes('&', "&7&f&lDu wurdest von &7" + killer + " &f&lgetötet");
     }
 
+    if (skull.getCustomName().equals("")) {
+      skull.setCustomName(ChatColor.GRAY + "✟ " + player.getName());
+    }
     skull.setCustomNameVisible(true);
 
     if (Bukkit.getServer().getPlayer(killer) != null) {
@@ -144,12 +153,11 @@ public class PlayerDeathListener implements Listener {
           if (i[0] == 15) {
             i[0] = 0;
             if (player.getBedSpawnLocation() == null) {
-              player.setBedSpawnLocation(new Location(Bukkit.getWorld("world"), 103, 70, 157), true);
+              player.setBedSpawnLocation(new Location(Bukkit.getWorld("Training"), 103, 70, 157), true);
             }
-            player.teleport(new Location(Bukkit.getWorld(player.getWorld().getName()), player.getBedSpawnLocation().getBlockX(), (player.getBedSpawnLocation().getBlockY() + 1), player.getBedSpawnLocation().getBlockZ()));
+            player.teleport(new Location(player.getBedSpawnLocation().getWorld(), player.getBedSpawnLocation().getBlockX(), (player.getBedSpawnLocation().getBlockY() + 1), player.getBedSpawnLocation().getBlockZ()));
             player.sendTitle(ChatColor.GREEN + "Du lebst nun wieder!", "", 10, 30, 20);
             player.setCustomName(player.getDisplayName());
-            skull.remove();
             EquipCommand.playerequip.putIfAbsent(player.getName(), "none");
             Functions.equipPlayer(player);
             deathtask.get(player.getName()).cancel();
@@ -186,5 +194,12 @@ public class PlayerDeathListener implements Listener {
     } 
     entities.removeIf(entity -> (entity.getLocation().distanceSquared(location) > radius * radius));
     return entities;
+  }
+
+  @EventHandler
+  public void onItemMerge(ItemMergeEvent event) {
+    if (Objects.equals(event.getEntity().getItemStack(), new ItemStack(Material.SKULL_ITEM))) {
+      event.setCancelled(true);
+    }
   }
 }

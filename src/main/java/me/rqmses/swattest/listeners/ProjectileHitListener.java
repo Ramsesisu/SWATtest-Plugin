@@ -20,7 +20,13 @@ public class ProjectileHitListener implements Listener {
   @EventHandler
   public void onProjectileHit(ProjectileHitEvent event) {
     if (event.getEntity() instanceof Arrow) {
-      String[] bulletinfo = event.getEntity().getCustomName().split(":");
+      String[] bulletinfo;
+      if (event.getEntity().getCustomName() != null) {
+        bulletinfo = event.getEntity().getCustomName().split(":");
+      } else {
+        event.getEntity().remove();
+        return;
+      }
       String weapontype = bulletinfo[0];
       if (Objects.equals(weapontype, "rpg")) {
         if (event.getHitBlock() != null) {

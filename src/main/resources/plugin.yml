@@ -107,3 +107,9 @@ commands:
   verify:
     description: Verifiziert einen Spieler.
     usage: /<command> <player>
+  world:
+    description: Interagiert mit den Server-Welten.
+    usage: /<command> <argument> <name>
+  baustelle:
+    description: Betritt die Bauwelt.
+    usage: /<command>

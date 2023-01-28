@@ -45,6 +45,11 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
               this.player = Bukkit.getPlayer(args[1]);
           } else {
             this.player = (Player) sender;
+            if (player.getWorld().getName().equals("Baustelle")) {
+              player.sendMessage(ChatColor.GRAY + "Du kannst dich auf der " + ChatColor.GOLD + "B" + ChatColor.DARK_GRAY + "a" + ChatColor.GOLD + "u" + ChatColor.DARK_GRAY + "s" + ChatColor.GOLD + "t" + ChatColor.DARK_GRAY + "e" + ChatColor.GOLD + "l" + ChatColor.DARK_GRAY + "l" + ChatColor.GOLD + "e" + ChatColor.GRAY + " nicht equipen!");
+              return true;
+            }
+
             int cooldownTime = 30;
             if (cooldowns.containsKey(this.player.getName())) {
               long secondsLeft = cooldowns.get(this.player.getName()) / 1000L + cooldownTime - System.currentTimeMillis() / 1000L;
@@ -199,7 +204,7 @@ public class EquipCommand implements CommandExecutor, TabCompleter {
               }
 
               if (Objects.equals(playerequip.get(player.getName()), "swat")) {
-                if (itemamount != 5) {
+                if (itemamount != 6) {
                   PlayerJoinListener.playersave.get(player.getUniqueId()).delete();
                   Functions.createFile(player);
                   Functions.equipPlayer(player);

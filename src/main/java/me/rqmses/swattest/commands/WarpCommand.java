@@ -39,6 +39,9 @@ public class WarpCommand implements CommandExecutor, TabCompleter {
                         return true;
                     }
                     player.teleport(loc);
+                    if (player.isGliding()) {
+                        player.teleport(player.getLocation().add(0,1,0));
+                    }
                     player.sendMessage(ChatColor.YELLOW + "Du wurdest zu " + ChatColor.GOLD + args[0] + ChatColor.YELLOW + " teleportiert!");
                 }
             }

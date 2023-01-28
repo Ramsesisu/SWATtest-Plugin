@@ -25,13 +25,13 @@ public class BombeCommand implements CommandExecutor {
         if (Admins.isVerified(player)) {
           Location loc = player.getLocation();
           if (bomb) {
-            if (Bukkit.getWorld(player.getWorld().getName()).getBlockAt(bombloc).getType() == Material.TNT) {
-              Bukkit.getWorld(player.getWorld().getName()).getBlockAt(bombloc).setType(Material.AIR);
+            if (Bukkit.getWorld("Training").getBlockAt(bombloc).getType() == Material.TNT) {
+              Bukkit.getWorld("Training").getBlockAt(bombloc).setType(Material.AIR);
               bomb = false;
               player.sendMessage(ChatColor.DARK_RED + "Du hast die Bombe bei " + ChatColor.GRAY + bombloc.getBlockX() + ", " + bombloc.getBlockY() + ", " + bombloc.getBlockZ() + ChatColor.DARK_RED + " entfernt.");
             }
-          } else if (Bukkit.getWorld(player.getWorld().getName()).getBlockAt(loc).getType() == Material.AIR) {
-            Bukkit.getWorld(player.getWorld().getName()).getBlockAt(loc).setType(Material.TNT);
+          } else if (Bukkit.getWorld("Training").getBlockAt(loc).getType() == Material.AIR) {
+            Bukkit.getWorld("Training").getBlockAt(loc).setType(Material.TNT);
             bombloc = loc;
             bomb = true;
             player.sendMessage(ChatColor.DARK_RED + "Du hast eine Bombe bei " + ChatColor.GRAY + bombloc.getBlockX() + ", " + bombloc.getBlockY() + ", " + bombloc.getBlockZ() + ChatColor.DARK_RED + " platziert.");

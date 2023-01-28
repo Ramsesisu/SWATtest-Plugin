@@ -24,7 +24,12 @@ public class MinecartListener implements Listener {
         if (event.getEntered() instanceof Player) {
             Player player = (Player) event.getEntered();
             Player owner = Bukkit.getServer().getPlayer(event.getVehicle().getCustomName());
-            if (!Objects.equals(player.getName(), owner.getName())) {
+            if (owner == null) {
+                event.getVehicle().remove();
+                event.setCancelled(true);
+                return;
+            }
+            if (!Objects.equals(player.getName(), Objects.requireNonNull(owner).getName())) {
                 event.setCancelled(true);
             } else {
                 minecartplayerslist.add(player.getName());

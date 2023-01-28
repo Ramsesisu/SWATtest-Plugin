@@ -42,20 +42,21 @@ public class PlayerJoinListener implements Listener {
     player.setCustomName(" ");
     player.getActivePotionEffects().clear();
     player.getInventory().clear();
+
+    PermissionAttachment pperms = player.addAttachment(plugin);
+    pperms.setPermission("booknews.news", true);
+
     spawnprotection.put(player.getUniqueId(), Boolean.FALSE);
     playersave.put(player.getUniqueId(), new File("data" + File.separator + player.getUniqueId() + ".yml"));
     playerconfig.put(player.getUniqueId(), YamlConfiguration.loadConfiguration(playersave.get(player.getUniqueId())));
     if (!playersave.get(player.getUniqueId()).exists()) {
       Functions.createFile(player);
-      player.setBedSpawnLocation(new Location(Bukkit.getWorld("world"), 103, 70, 157), true);
-      player.teleport(new Location(Bukkit.getWorld("world"), 103, 70, 157));
+      player.setBedSpawnLocation(new Location(Bukkit.getWorld("Training"), 103, 70, 157), true);
+      player.teleport(new Location(Bukkit.getWorld("Training"), 103, 70, 157));
       player.chat("/news");
     }
     team0.addEntry(player.getName());
     Functions.equipPlayer(player);
-
-    PermissionAttachment pperms = player.addAttachment(plugin);
-    pperms.setPermission("booknews.news", true);
 
     if (PlayerQuitListener.deadplayers.contains(player.getUniqueId())) {
       PlayerQuitListener.deadplayers.remove(player.getUniqueId());

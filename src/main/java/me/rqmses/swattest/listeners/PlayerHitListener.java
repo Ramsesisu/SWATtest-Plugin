@@ -36,7 +36,7 @@ public class PlayerHitListener implements Listener {
       event.getDamager() instanceof Player) {
       if (event.getEntity().getName().contains("-KI")) {return true;}
       hitter = (Player) event.getDamager();
-      if (hidden.contains(hitter) || buildmode.contains(hitter)) {
+      if (hidden.contains(hitter) || buildmode.contains(hitter) || hitter.getWorld().getName().equals("Baustelle")) {
         event.setCancelled(true);
         return true;
       }
@@ -80,7 +80,7 @@ public class PlayerHitListener implements Listener {
         lore.add(templore);
         meta.setLore(lore);
         messer.setItemMeta(meta);
-        cooldownTime = 12000;
+        cooldownTime = 10000;
       } else {
         event.setDamage(1.0D);
       } 

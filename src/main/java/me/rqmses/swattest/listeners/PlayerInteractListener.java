@@ -64,6 +64,9 @@ public class PlayerInteractListener implements Listener {
   @EventHandler
   public static boolean onPlayerUse(PlayerInteractEvent event) {
     Player player = event.getPlayer();
+    if (player.getWorld().getName().equals("Baustelle")) {
+      return true;
+    }
     if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
       if (player.getGameMode() == GameMode.SURVIVAL) {
         if (Items.getStairs().contains(event.getClickedBlock().getType())) {
@@ -92,8 +95,8 @@ public class PlayerInteractListener implements Listener {
       }
     }
     if (!Objects.equals(event.getPlayer().getInventory().getItemInMainHand().getType(), Material.AIR)) {
-      itemtoggles.putIfAbsent(event.getItem().getType(), Boolean.TRUE);
-      if (!itemtoggles.get(event.getItem().getType())) {
+      itemtoggles.putIfAbsent(event.getPlayer().getInventory().getItemInMainHand().getType(), Boolean.TRUE);
+      if (!itemtoggles.get(event.getPlayer().getInventory().getItemInMainHand().getType())) {
         event.getPlayer().sendMessage("Dieses Item ist deaktiviert!");
         event.setCancelled(true);
         return true;
@@ -101,7 +104,7 @@ public class PlayerInteractListener implements Listener {
     }
     if (player.getGameMode() == GameMode.SPECTATOR)
       return false; 
-    if (player.isFlying())
+    if (player.isFlying() || player.isGliding())
       return false;
     if (minecartplayerslist.contains(player.getName()) || hidden.contains(player) || buildmode.contains(player)) {
       return false;
@@ -413,7 +416,7 @@ public class PlayerInteractListener implements Listener {
             public void run() {
               temptazerstatus[0] = temptazerstatus[0] + 1;
               PlayerInteractListener.tazerreloadmsg.put(player.getName(), new String[] { ((String[])PlayerInteractListener.tazerreloadmsg.get(player.getName()))[0].replaceFirst("8", "a") });
-              player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(((String[])PlayerInteractListener.tazerreloadmsg.get(player.getName()))[0]));
+              Bukkit.getScheduler().runTaskTimer(SWATtest.plugin, () -> player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(((String[])PlayerInteractListener.tazerreloadmsg.get(player.getName()))[0])), 0, 100L);
               PlayerInteractListener.tazerstatus.put(player.getName(), temptazerstatus[0]);
               if (temptazerstatus[0] >= 10) {
                 player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', "&eRecharge... &7&aComplete")));
@@ -722,7 +725,7 @@ public class PlayerInteractListener implements Listener {
   }
 
   @EventHandler
-  public static void onDismord(EntityDismountEvent event) {
+  public static void onDismount(EntityDismountEvent event) {
     if (event.getDismounted().getVehicle() != null) {
       if (event.getDismounted().getVehicle().getType() == EntityType.ARMOR_STAND) {
         event.getDismounted().getVehicle().remove();

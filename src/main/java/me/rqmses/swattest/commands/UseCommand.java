@@ -51,7 +51,7 @@ public class UseCommand implements CommandExecutor, TabCompleter {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 3000, 4));
                 player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 320, 0));
                 if (!player.getActivePotionEffects().toString().contains("SLOW"))
-                  player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 200, 0));
+                  player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 200, 1));
                 break;
               case "marihuana":
               case "gras":
@@ -65,7 +65,7 @@ public class UseCommand implements CommandExecutor, TabCompleter {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 4400, 4));
                 player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 320, 1));
                 if (!player.getActivePotionEffects().toString().contains("SLOW"))
-                  player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 200, 0));
+                  player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 200, 1));
                 player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 320, 0));
                 break;
               default:
