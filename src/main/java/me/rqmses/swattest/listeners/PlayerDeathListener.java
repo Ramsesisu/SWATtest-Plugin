@@ -155,7 +155,7 @@ public class PlayerDeathListener implements Listener {
             if (player.getBedSpawnLocation() == null) {
               player.setBedSpawnLocation(new Location(Bukkit.getWorld("Training"), 103, 70, 157), true);
             }
-            player.teleport(new Location(player.getBedSpawnLocation().getWorld(), player.getBedSpawnLocation().getBlockX(), (player.getBedSpawnLocation().getBlockY() + 1), player.getBedSpawnLocation().getBlockZ()));
+            player.teleport(new Location(deathloc.getWorld(), player.getBedSpawnLocation().getBlockX(), (player.getBedSpawnLocation().getBlockY() + 1), player.getBedSpawnLocation().getBlockZ()));
             player.sendTitle(ChatColor.GREEN + "Du lebst nun wieder!", "", 10, 30, 20);
             player.setCustomName(player.getDisplayName());
             EquipCommand.playerequip.putIfAbsent(player.getName(), "none");
@@ -192,7 +192,7 @@ public class PlayerDeathListener implements Listener {
           entities.addAll(Arrays.asList(world.getChunkAt(x, z).getEntities())); 
       } 
     } 
-    entities.removeIf(entity -> (entity.getLocation().distanceSquared(location) > radius * radius));
+    entities.removeIf(entity -> (entity.getWorld() != Bukkit.getWorld("Training") || entity.getLocation().distanceSquared(location) > radius * radius));
     return entities;
   }
 

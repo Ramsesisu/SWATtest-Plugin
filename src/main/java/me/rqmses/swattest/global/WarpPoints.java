@@ -1,5 +1,6 @@
 package me.rqmses.swattest.global;
 
+import me.rqmses.swattest.commands.BombeCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -408,6 +409,20 @@ public class WarpPoints {
             case "121":
                 loc = new Location(player.getWorld(), -250, 69, 281);
                 break;
+            case "brauerei":
+                loc = new Location(player.getWorld(), 197, 69, 664);
+                break;
+            case "470":
+                loc = new Location(player.getWorld(), -32, 69, -311);
+                break;
+            case "113":
+                loc = new Location(player.getWorld(), -260, 70, 114);
+                break;
+            case "bombe":
+                if (BombeCommand.bombloc != null) {
+                    loc = BombeCommand.bombloc;
+                }
+                break;
             default:
                 String[] coords = warp.split("/");
                 if (coords.length == 3) {
@@ -465,8 +480,10 @@ public class WarpPoints {
                 "Basketball", "CFK", "Kran-Uran", "Neulingshotel", "Flughafen-Unica", "Flughafen-Chinatown", "Flughafen-LasUnicas",
                 "Urantransport", "Deathmatch-Arena", "Gefängnis", "Hochseefischer", "Feuerwerksladen", "Angelschein", "Terroristen",
                 "Sägewerk", "200", "363", "531", "Bäckerei", "Shop", "Windrad-FBI", "UCM", "Altes-Gefängnis", "Hölle",
-                "Himmel", "Checkpoint-Gefängnis", "Anwaltskanzelei", "Musikladen", "Alcatraz", "36", "144", "171", "190", "Stadion", "433",
-                "382", "Metzgerei", "Las-Unicas", "CT-Shop", "Mileu", "Ballas","SH", "KH", "Uran", "278", "280", "523", "121"};
+                "Himmel", "Checkpoint-Gefängnis", "Anwaltskanzelei", "Musikladen", "Alcatraz", "36", "144", "171", "190",
+                "Stadion", "433", "382", "Metzgerei", "Las-Unicas", "CT-Shop", "Mileu", "Ballas","SH", "KH", "Uran", "278",
+                "280", "523", "121", "Brauerei", "470", "113", "Bombe"};
+
         ArrayList<String> targetsList = new ArrayList<>(Arrays.asList(targets));
         ArrayList<String> playersList = new ArrayList<>();
         for (Player tempplayer : Bukkit.getServer().getOnlinePlayers()) {

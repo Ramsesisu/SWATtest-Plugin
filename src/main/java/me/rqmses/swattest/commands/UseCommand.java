@@ -28,7 +28,7 @@ public class UseCommand implements CommandExecutor, TabCompleter {
           if (player.getInventory().getChestplate() != null && player.getInventory().getChestplate().getItemMeta().getDisplayName().contains("Sprenggürtel")) {
             player.sendMessage(ChatColor.GRAY + "In dieser Situation darfst du keine Drogen nehmen!");
           }
-          int cooldownTime = 10;
+          int cooldownTime = 3;
           if (cooldowns.containsKey(player.getUniqueId())) {
             long secondsLeft = cooldowns.get(player.getUniqueId()) / 1000L + cooldownTime - System.currentTimeMillis() / 1000L;
             if (secondsLeft > 0L)
@@ -125,7 +125,7 @@ public class UseCommand implements CommandExecutor, TabCompleter {
           entities.addAll(Arrays.asList(world.getChunkAt(x, z).getEntities())); 
       } 
     } 
-    entities.removeIf(entity -> (entity.getLocation().distanceSquared(location) > radius * radius));
+    entities.removeIf(entity -> (entity.getWorld() != Bukkit.getWorld("Training") || entity.getLocation().distanceSquared(location) > radius * radius));
     return entities;
   }
 }
